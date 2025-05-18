@@ -1,6 +1,6 @@
 import React from 'react';
 
-const user = process.env.username
+const user = process.env.NEXT_PUBLIC_USERNAME
 
 export default function Home() {
   return (
