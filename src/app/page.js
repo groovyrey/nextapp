@@ -5,15 +5,10 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
       <header className="bg-blue-600 text-white py-16 text-center">
-        <h1 className="text-4xl font-bold">Welcome to Your Website</h1>
-        <p className="mt-4">A modern, clean, and fast landing page for your business.</p>
-        <button className="btn btn-primary mt-6 px-6 py-3 text-dark font-semibold rounded-lg">Get Started</button>
+        <h1 className="text-4xl font-bold">Ryza maliit</h1>
+        <p className="mt-4">BWHAHAHAHAHAHAHAHAHHAAHAHHAHAHAHAHAHA</p>
+        <button className="btn btn-primary mt-6 px-6 py-3 font-semibold rounded-lg">learn More</button>
       </header>
-
-      {/* Footer */}
-      <footer className="bg-blue-800 text-white py-6 text-center">
-        <p>&copy; 2025 Your Website. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
