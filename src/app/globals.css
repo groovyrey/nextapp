@@ -4,12 +4,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --dyna-bg: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --dyna-bg: #0a0a0a;
   }
 }
 
