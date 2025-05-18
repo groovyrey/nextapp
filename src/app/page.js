@@ -7,7 +7,7 @@ export default function Home() {
       <header className="bg-blue-600 text-white py-16 text-center">
         <h1 className="text-4xl font-bold">Welcome to Your Website</h1>
         <p className="mt-4">A modern, clean, and fast landing page for your business.</p>
-        <button className="btn btn-primary mt-6 px-6 py-3 bg-white text-dark font-semibold rounded-lg">Get Started</button>
+        <button className="btn btn-primary mt-6 px-6 py-3 text-dark font-semibold rounded-lg">Get Started</button>
       </header>
 
       {/* Footer */}
