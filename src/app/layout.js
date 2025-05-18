@@ -1,5 +1,5 @@
 /* app/globals.css */
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './node_modules/bootstrap/dist/css/bootstrap.min.css';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "My App",
+  title: "My App1",
   description: "My test website app",
 };
 
