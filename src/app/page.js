@@ -10,16 +10,6 @@ export default function Home() {
         <button className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg">Get Started</button>
       </header>
 
-      {/* Features Section */}
-      <section className="py-16 bg-gray-100 text-center">
-        <h2 className="text-3xl font-semibold mb-8">Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="p-6 bg-white rounded-lg shadow-md">Feature 1</div>
-          <div className="p-6 bg-white rounded-lg shadow-md">Feature 2</div>
-          <div className="p-6 bg-white rounded-lg shadow-md">Feature 3</div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="bg-blue-800 text-white py-6 text-center">
         <p>&copy; 2025 Your Website. All rights reserved.</p>
