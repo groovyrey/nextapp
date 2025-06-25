@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./lib/firebase.js";
+import { auth } from "/lib/firebase.js";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -14,7 +14,7 @@ export default function LoginPage() {
  const handleLogin = async () => {
   try {
    await signInWithEmailAndPassword(auth, email, password);
-   router.push("/dashboard"); // redirect after login
+   router.push("/"); // redirect after login
   } catch (err) {
    setError("Login failed: " + err.message);
   }
