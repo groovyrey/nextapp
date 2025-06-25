@@ -14,7 +14,7 @@ export default function LoginPage() {
 	const handleLogin = async () => {
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			router.push("/dashboard"); // redirect after login
+			router.push("/"); // redirect after login
 		} catch (err) {
 			setError("Login failed: " + err.message);
 		}
