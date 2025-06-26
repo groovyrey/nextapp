@@ -24,7 +24,7 @@ export default function LoginPage() {
 	
 	return (
 		<div className="container mt-5">
-      <h2>Login</h2>
+      <h2>Login1</h2>
       {error && <p className="text-danger">{error}</p>}
       <input type="email" className="form-control my-2" placeholder="Email" onChange={e => setEmail(e.target.value)} />
       <input type="password" className="form-control my-2" placeholder="Password" onChange={e => setPassword(e.target.value)} />
