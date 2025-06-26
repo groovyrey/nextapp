@@ -14,8 +14,8 @@ export default function LoginPage() {
 	const handleLogin = async () => {
 		try {
 			const cred = await signInWithEmailAndPassword(auth, email, password);
-			setError("Credentials: "+cred.user.getIdToken())
-		//	router.push("/"); // redirect after login
+		 console.log(cred.user.getIdToken())
+		//router.push("/"); // redirect after login
 		} catch (err) {
 			setError("Login failed: " + err.message);
 		}
