@@ -15,6 +15,7 @@ export default function LoginPage() {
 		try {
 			const cred = await signInWithEmailAndPassword(auth, email, password);
 		 console.log(cred.user.getIdToken())
+		 setError('Login successful')
 		//router.push("/"); // redirect after login
 		} catch (err) {
 			setError("Login failed: " + err.message);
