@@ -52,7 +52,7 @@ export default function UserProfilePage({ params }) {
     <div className="container">
       <div className="card m-2">
         <div className="card-body">
-          <h2 className="card-title"><span className="bi-person-fill"></span>User Profile</h2>
+          <h2 className="card-title"><span className="bi-person-fill"></span>{" "}User Profile</h2>
           <p><strong>First Name:</strong> {profileData.firstName}</p>
           <p><strong>Last Name:</strong> {profileData.lastName}</p>
           <p><strong>Email:</strong> {profileData.email}</p>

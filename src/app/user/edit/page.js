@@ -72,7 +72,7 @@ export default function EditUserPage() {
     <div className="container">
       <div className="card m-2">
         <div className="card-body">
-          <h2 className="card-title"><span className="person-fill-gear"></span>Edit Profile</h2>
+          <h2 className="card-title"><span className="bi-person-fill-gear"></span>{" "}Edit Profile</h2>
           {error && <p className="text-danger">{error}</p>}
           {success && <p className="text-success">{success}</p>}
           <input type="text" className="form-control my-2" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
