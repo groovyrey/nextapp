@@ -1,42 +1,66 @@
-import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
+'use client';
 
-async function getUser(id) {
-  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/user/${id}`, { cache: 'no-store' });
-  if (!res.ok) {
-    if (res.status === 404) {
-      return null; // User not found
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from '../../../app/context/UserContext';
+
+export default function UserProfilePage({ params }) {
+  const { id } = params;
+  const { user, loading } = useUser();
+  const router = useRouter();
+  const [profileData, setProfileData] = useState(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+      return;
     }
-    throw new Error('Failed to fetch user data');
-  }
-  return res.json();
-}
 
-function UserDetails({ user }) {
+    if (user && id) {
+      const fetchProfile = async () => {
+        try {
+          const res = await fetch(`/api/user/${id}`);
+          if (res.ok) {
+            const data = await res.json();
+            setProfileData(data);
+          } else {
+            const errorData = await res.json();
+            setError(errorData.error || 'Failed to fetch profile.');
+          }
+        } catch (err) {
+          setError('An unexpected error occurred while fetching profile.');
+        }
+      };
+      fetchProfile();
+    }
+  }, [user, loading, id, router]);
+
+  if (loading || !user) {
+    return <div>Loading profile...</div>;
+  }
+
+  if (error) {
+    return <div className="text-danger">Error: {error}</div>;
+  }
+
+  if (!profileData) {
+    return <div>No profile data found.</div>;
+  }
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">User Details</h1>
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <p className="text-lg mb-2"><strong>First Name:</strong> {user.firstName}</p>
-        <p className="text-lg mb-2"><strong>Last Name:</strong> {user.lastName}</p>
-        <p className="text-lg mb-2"><strong>Email:</strong> {user.email}</p>
-        <p className="text-lg mb-2"><strong>Age:</strong> {user.age}</p>
+    <div className="container">
+      <div className="card m-2">
+        <div className="card-body">
+          <h2 className="card-title">User Profile</h2>
+          <p><strong>First Name:</strong> {profileData.firstName}</p>
+          <p><strong>Last Name:</strong> {profileData.lastName}</p>
+          <p><strong>Email:</strong> {profileData.email}</p>
+          <p><strong>Age:</strong> {profileData.age}</p>
+          <button className="btn btn-primary" onClick={() => router.push('/user/edit')}>Edit Profile</button>
+          <p className="mt-3"><a href="/">Back to Home</a></p>
+        </div>
       </div>
     </div>
-  );
-}
-
-export default async function UserDetailPage({ params }) {
-  const user = await getUser(params.id);
-
-  if (!user) {
-    notFound();
-  }
-
-  return (
-    <Suspense fallback={<div>Loading user data...</div>}>
-      <UserDetails user={user} />
-    </Suspense>
   );
 }

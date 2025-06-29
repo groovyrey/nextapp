@@ -1,5 +1,6 @@
-import { admin } from "/lib/firebase-admin.js";
+import { admin, auth } from "/lib/firebase-admin.js";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function GET(request, { params }) {
   try {
@@ -10,17 +11,31 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "User not found." }, { status: 404 });
     }
 
-    // IMPORTANT: Implement authentication and authorization here to ensure only authorized users can access this data.
-    // For example, check if the requesting user has permission to view this user's profile.
+    const session = cookies().get("session")?.value || "";
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    let decodedClaims;
+    try {
+      decodedClaims = await auth.verifySessionCookie(session, true);
+    } catch (error) {
+      console.error("Error verifying session cookie:", error);
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const queriedUserUid = userDoc.id;
+
+    if (decodedClaims.uid !== queriedUserUid) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
 
     const userData = userDoc.data();
-    // Filter out any sensitive data that should not be exposed to the client
     const publicUserData = {
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
       age: userData.age,
-      // Add other public fields as needed
     };
 
     return NextResponse.json(publicUserData, { status: 200 });

@@ -4,13 +4,18 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     const { idToken, firstName, lastName, age } = await request.json();
+
+    if (!firstName || !lastName || !age || isNaN(parseInt(age))) {
+      return NextResponse.json({ error: "Missing or invalid user data." }, { status: 400 });
+    }
+
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
     await admin.firestore().collection("users").doc(uid).set({
       firstName,
       lastName,
-      age,
+      age: parseInt(age),
       email: decodedToken.email,
     });
 
