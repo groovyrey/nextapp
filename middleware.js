@@ -10,11 +10,17 @@ export async function middleware(request) {
   }
 
   // Call the authentication endpoint
-    const responseAPI = await fetch(`${request.nextUrl.origin}/api/auth`, {
-    headers: {
-      Cookie: `session=${session?.value}`,
-    },
-  });
+    let responseAPI;
+    try {
+      responseAPI = await fetch(`${request.nextUrl.origin}/api/auth`, {
+        headers: {
+          Cookie: `session=${session?.value}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching auth API:", error);
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
 
   // Return to /login if token is not authorized
   if (responseAPI.status !== 200) {
