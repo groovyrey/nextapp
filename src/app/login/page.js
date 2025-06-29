@@ -59,6 +59,7 @@ export default function LoginPage() {
       <input type="email" className="form-control my-2" placeholder="Email" onChange={e => setEmail(e.target.value)} />
       <input type="password" className="form-control my-2" placeholder="Password" onChange={e => setPassword(e.target.value)} />
       <button className="btn btn-primary" onClick={handleLogin}>Login</button>
+      <p className="mt-3">Don't have an account? <a href="/signup">Sign up</a></p>
       </div>
       </div>
     </div>
