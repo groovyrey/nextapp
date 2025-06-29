@@ -1,24 +1,23 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "/lib/firebase.js";
 import { useRouter } from "next/navigation";
+import { useUser } from '../context/UserContext';
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const router = useRouter();
+  const { user, loading } = useUser();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.push('/');
-      }
-    });
-    return () => unsubscribe();
-  }, [router]);
+    if (!loading && user) {
+      router.push('/');
+    }
+  }, [user, loading, router]);
 	
 	const handleLogin = async () => {
     try {
@@ -43,6 +42,14 @@ export default function LoginPage() {
     }
   };
 	
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (user) {
+    return null; // User is logged in, redirect will happen in useEffect
+  }
+
 	return (
 		<div className="container mt-5">
       <h2>Login1</h2>
