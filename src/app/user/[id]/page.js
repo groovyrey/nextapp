@@ -57,7 +57,7 @@ export default function UserProfilePage({ params }) {
           <p><strong>Last Name:</strong> {profileData.lastName}</p>
           <p><strong>Email:</strong> {profileData.email}</p>
           <p><strong>Age:</strong> {profileData.age}</p>
-          {user==id?
+          {user.uid==id?
           <button className="btn btn-primary" onClick={() => router.push('/user/edit')}>Edit Profile</button>:""}
           <p className="mt-3"><a href="/">Back to Home</a></p>
         </div>
