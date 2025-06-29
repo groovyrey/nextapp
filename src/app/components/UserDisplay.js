@@ -11,11 +11,13 @@ export default function UserDisplay() {
   }
 
   return (
-    <div>
+    <div className="card m-2">
       {user ? (
         <>
-          <p>Logged in as: {user.email}</p>
-          <button onClick={logout}>Logout</button>
+          <div className="card-body">
+          <p className="card-title">Logged in as: {user.email}</p>
+          <button className="btn btn-danger" onClick={logout}>Logout</button>
+          </div>
         </>
       ) : (
         <p>Not logged in.</p>
