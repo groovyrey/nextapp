@@ -18,7 +18,7 @@ export default function UserDisplay() {
         <>
           <div className="card-body">
           <p className="card-title">Logged in as: {user.email}</p>
-          <button className="btn btn-primary me-2" onClick={() => router.push(`/user/${user.id}`)}>View Profile</button>
+          <button className="btn btn-primary me-2" onClick={() => router.push(`/user/${user.uid}`)}>View Profile</button>
           <button className="btn btn-danger" onClick={logout}>Logout</button>
           </div>
         </>
