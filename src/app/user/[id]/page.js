@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 async function getUser(id) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/${id}`, { cache: 'no-store' });
+  const res = await fetch(`/api/user/${id}`, { cache: 'no-store' });
   if (!res.ok) {
     if (res.status === 404) {
       return null; // User not found
