@@ -26,9 +26,9 @@ export async function GET(request, { params }) {
 
     const queriedUserUid = userDoc.id;
 
-    if (decodedClaims.uid !== queriedUserUid) {
+    /*if (decodedClaims.uid !== queriedUserUid) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+    }*/
 
     const userData = userDoc.data();
     const publicUserData = {
