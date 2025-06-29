@@ -35,6 +35,10 @@ export default function UserProfilePage({ params }) {
       fetchProfile();
     }
   }, [user, loading, id, router]);
+  
+  if (!profileData) {
+  return <div>No profile data found.</div>;
+}
 
   if (loading || !user) {
     return <div>Loading profile...</div>;
@@ -44,9 +48,7 @@ export default function UserProfilePage({ params }) {
     return <div className="text-danger">Error: {error}</div>;
   }
 
-  if (!profileData) {
-    return <div>No profile data found.</div>;
-  }
+  
 
   return (
     <div className="container">
