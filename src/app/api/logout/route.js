@@ -10,6 +10,7 @@ export async function GET(request) {
   try {
     // Revoke the Firebase session
     // Verify the session cookie and revoke the user's refresh tokens
+    console.log("Session cookie received for logout:", sessionCookie);
     const decodedClaims = await auth.verifySessionCookie(sessionCookie);
     await auth.revokeRefreshTokens(decodedClaims.uid);
     return NextResponse.json({ status: "success" });
