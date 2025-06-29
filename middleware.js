@@ -10,7 +10,7 @@ export async function middleware(request) {
   }
 
   // Call the authentication endpoint
-  const responseAPI = await fetch("http://localhost:3000/api/auth", {
+    const responseAPI = await fetch(`${request.nextUrl.origin}/api/auth`, {
     headers: {
       Cookie: `session=${session?.value}`,
     },

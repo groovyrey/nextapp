@@ -14,6 +14,7 @@ export async function POST(request) {
     maxAge: expiresIn,
     httpOnly: true,
     secure: true,
+    sameSite: 'Lax',
   });
 
   return NextResponse.json({ status: "success" });

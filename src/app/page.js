@@ -7,6 +7,8 @@ import { useUser } from './context/UserContext';
 export default function Home() {
   const router = useRouter();
   const { user, loading } = useUser();
+  const [logoutError, setLogoutError] = useState('');
+
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
@@ -14,12 +16,17 @@ export default function Home() {
   }, [user, loading, router]);
 
   const handleLogout = async () => {
-    const res = await fetch('/api/logout');
-    if (res.ok) {
-      router.push('/login');
-    } else {
-      const errorData = await res.json();
-      alert(`Failed to log out: ${errorData.message}`);
+    setLogoutError(''); // Clear previous errors
+    try {
+      const res = await fetch('/api/logout');
+      if (res.ok) {
+        router.push('/login');
+      } else {
+        const errorData = await res.json();
+        setLogoutError(`Failed to log out: ${errorData.message}`);
+      }
+    } catch (err) {
+      setLogoutError('An unexpected error occurred during logout.');
     }
   };
 
@@ -34,6 +41,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <UserDisplay />
+      {logoutError && <p className="text-danger">{logoutError}</p>}
       {/* Hero Section */}
       <header className="bg-blue-600 py-16 text-center">
         <h1 className="text-4xl font-bold">Test webpage</h1>

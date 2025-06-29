@@ -14,6 +14,7 @@ export async function GET() {
     const decodedClaims = await auth.verifySessionCookie(session, true);
     return NextResponse.json({ isLogged: true, decodedClaims });
   } catch (error) {
-    return NextResponse.json({ isLogged: false }, { status: 401 });
+    console.error("Error verifying session cookie:", error);
+    return NextResponse.json({ isLogged: false, message: error.message }, { status: 401 });
   }
 }
