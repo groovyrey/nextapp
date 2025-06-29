@@ -51,7 +51,7 @@ export default function LoginPage() {
   }
 
 	return (
-		<div className="container mt-5">
+		<div className="container">
 		  <div className="card">
 		    <div className="card-body">
       <h2 className="card-title">Login</h2>
