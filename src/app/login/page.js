@@ -52,7 +52,7 @@ export default function LoginPage() {
 
 	return (
 		<div className="container">
-		  <div className="card">
+		  <div className="card m-2">
 		    <div className="card-body">
       <h2 className="card-title">Login</h2>
       {error && <p className="text-danger">{error}</p>}
