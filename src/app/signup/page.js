@@ -85,7 +85,7 @@ export default function SignupPage() {
           <input type="number" className="form-control my-2" placeholder="Age" onChange={e => setAge(e.target.value)} />
           <input type="email" className="form-control my-2" placeholder="Email" onChange={e => setEmail(e.target.value)} />
           <input type="password" className="form-control my-2" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-          <button className="btn btn-primary" onClick={handleSignup}>Sign Up</button>
+          <button className="btn btn-primary" onClick={handleSignup}><i className="bi-person-plus"></i> Sign Up</button>
           <p className="mt-3">Already have an account? <a className="text-primary" href="/login">Login</a></p>
         </div>
       </div>

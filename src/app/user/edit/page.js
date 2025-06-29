@@ -79,7 +79,7 @@ export default function EditUserPage() {
           <input type="text" className="form-control my-2" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
           <input type="text" className="form-control my-2" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
           <input type="number" className="form-control my-2" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} />
-          <button className="btn btn-primary" onClick={handleUpdate}>Update Profile</button>
+          <button className="btn btn-primary" onClick={handleUpdate}><i className="bi-save"></i> Update Profile</button>
           <p className="mt-3"><a href="/">Back to Home</a></p>
         </div>
       </div>
