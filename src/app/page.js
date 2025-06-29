@@ -33,7 +33,7 @@ export default function Home() {
 
   import LoadingCard from './components/LoadingCard';
 
-if (loading) {
+  if (loading) {
     return <LoadingCard message="Loading..." />;
   }
 
