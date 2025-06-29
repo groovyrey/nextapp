@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../../app/context/UserContext';
+import LoadingMessage from '../../../app/components/LoadingMessage';
 
 export default function EditUserPage() {
   const { user, loading } = useUser();
@@ -61,11 +62,11 @@ export default function EditUserPage() {
   };
 
   if (loading) {
-    return null; // Redirect handled by useEffect
+    return <LoadingMessage />;
   }
 
   if (!user) {
-    return null; // Redirect handled by useEffect
+    return <LoadingMessage />;
   }
 
   return (

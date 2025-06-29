@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "/lib/firebase.js";
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
+import LoadingMessage from '../components/LoadingMessage';
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
@@ -43,11 +44,11 @@ export default function LoginPage() {
   };
 	
   if (loading) {
-    return null; // User is logged in, redirect will happen in useEffect
+    return <LoadingMessage />;
   }
 
   if (user) {
-    return null; // User is logged in, redirect will happen in useEffect
+    return <LoadingMessage />;
   }
 
 	return (

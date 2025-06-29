@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../../app/context/UserContext';
+import LoadingMessage from '../../../app/components/LoadingMessage';
 
 export default function UserProfilePage({ params }) {
   const { id } = params;
@@ -37,11 +38,11 @@ export default function UserProfilePage({ params }) {
   }, [user, loading, id, router]);
   
   if (!profileData) {
-  return <div>No profile data found.</div>;
+  return <LoadingMessage />;
 }
 
   if (loading || !user) {
-    return null;
+    return <LoadingMessage />;
   }
 
   if (error) {

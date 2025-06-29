@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import UserDisplay from './components/UserDisplay';
 import { useUser } from './context/UserContext';
 
+import LoadingMessage from './components/LoadingMessage';
+
 export default function Home() {
   const router = useRouter();
   const { user, loading } = useUser();
@@ -32,11 +34,11 @@ export default function Home() {
   };
 
   if (loading) {
-    return null; // Or a loading spinner, as the redirect will happen in useEffect
+    return <LoadingMessage />;
   }
 
   if (!user) {
-    return null; // Or a loading spinner, as the redirect will happen in useEffect
+    return <LoadingMessage />;
   }
 
   return (

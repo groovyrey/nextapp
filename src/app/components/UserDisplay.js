@@ -3,13 +3,14 @@
 import React from 'react';
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
+import LoadingMessage from './LoadingMessage';
 
 export default function UserDisplay() {
   const router = useRouter();
   const { user, loading, logout } = useUser();
 
   if (loading) {
-    return null;
+    return <LoadingMessage />;
   }
 
   return (
