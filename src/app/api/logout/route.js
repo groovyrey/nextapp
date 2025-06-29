@@ -13,6 +13,6 @@ export async function GET(request) {
     return NextResponse.json({ status: "success" });
   } catch (error) {
     console.error("Error revoking Firebase session:", error);
-    return NextResponse.json({ status: "error", message: error.message }, { status: 500 });
+    return NextResponse.json({ status: "error", message: error.message, details: error }, { status: 500 });
   }
 }
