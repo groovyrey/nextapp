@@ -44,7 +44,7 @@ export default function UserProfilePage({ params }) {
     return <div className="text-danger">Error: {error}</div>;
   }
 
-  if (!profileData) {
+  if (!profileData && !loading) {
     return <div>No profile data found.</div>;
   }
 
