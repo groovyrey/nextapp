@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 
 export default function UserDisplay() {
+  const router = useRouter();
   const { user, loading, logout } = useUser();
 
   if (loading) {
@@ -16,6 +18,7 @@ export default function UserDisplay() {
         <>
           <div className="card-body">
           <p className="card-title">Logged in as: {user.email}</p>
+          <button className="btn btn-primary me-2" onClick={() => router.push(`/user/${user.id}`)}>View Profile</button>
           <button className="btn btn-danger" onClick={logout}>Logout</button>
           </div>
         </>
