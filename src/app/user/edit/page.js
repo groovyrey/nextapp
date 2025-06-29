@@ -13,13 +13,14 @@ export default function EditUserPage() {
   const [age, setAge] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isFetchingUserData, setIsFetchingUserData] = useState(true); // New state for data fetching
 
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     } else if (user) {
-      // Fetch current user data to pre-fill the form
       const fetchUserData = async () => {
+        setIsFetchingUserData(true); // Start loading
         try {
           const res = await fetch(`/api/user/${user.uid}`);
           if (res.ok) {
@@ -32,15 +33,35 @@ export default function EditUserPage() {
           }
         } catch (err) {
           setError('An error occurred while fetching user data.');
+        } finally {
+          setIsFetchingUserData(false); // End loading
         }
       };
       fetchUserData();
     }
   }, [user, loading, router]);
 
+  const [isUpdating, setIsUpdating] = useState(false); // New state for update loading
+
   const handleUpdate = async () => {
     setError('');
     setSuccess('');
+
+    // Client-side validation
+    if (!firstName.trim()) {
+      setError('First Name cannot be empty.');
+      return;
+    }
+    if (!lastName.trim()) {
+      setError('Last Name cannot be empty.');
+      return;
+    }
+    if (!age || isNaN(parseInt(age)) || parseInt(age) <= 0) {
+      setError('Please enter a valid age.');
+      return;
+    }
+
+    setIsUpdating(true); // Start update loading
     try {
       const res = await fetch('/api/user/update', {
         method: 'PUT',
@@ -58,10 +79,12 @@ export default function EditUserPage() {
       }
     } catch (err) {
       setError('An unexpected error occurred.');
+    } finally {
+      setIsUpdating(false); // End update loading
     }
   };
 
-  if (loading) {
+  if (loading || isFetchingUserData) { // Include isFetchingUserData in loading check
     return <LoadingMessage />;
   }
 
@@ -74,12 +97,12 @@ export default function EditUserPage() {
       <div className="card m-2">
         <div className="card-body">
           <h2 className="card-title"><span className="bi-person-fill-gear"></span>{" "}Edit Profile</h2>
-          {error && <p className="text-danger">{error}</p>}
-          {success && <p className="text-success">{success}</p>}
-          <input type="text" className="form-control my-2" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-          <input type="text" className="form-control my-2" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-          <input type="number" className="form-control my-2" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} />
-          <button className="btn btn-primary" onClick={handleUpdate}><i className="bi-save"></i> Update Profile</button>
+          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          {success && <div className="alert alert-success" role="alert">{success}</div>}
+          <input type="text" className="form-control my-2" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} disabled={isUpdating} />
+          <input type="text" className="form-control my-2" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} disabled={isUpdating} />
+          <input type="number" className="form-control my-2" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} disabled={isUpdating} />
+          <button className="btn btn-primary" onClick={handleUpdate} disabled={isUpdating}><i className="bi-save"></i> Update Profile</button>
           <p className="mt-3"><a href="/">Back to Home</a></p>
         </div>
       </div>
