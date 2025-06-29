@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 
 async function getUser(id) {
-  const res = await fetch(`/api/user/${id}`, { cache: 'no-store' });
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}/api/user/${id}`, { cache: 'no-store' });
   if (!res.ok) {
     if (res.status === 404) {
       return null; // User not found
