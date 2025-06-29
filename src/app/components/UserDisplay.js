@@ -4,7 +4,7 @@ import React from 'react';
 import { useUser } from '../context/UserContext';
 
 export default function UserDisplay() {
-  const { user, loading } = useUser();
+  const { user, loading, logout } = useUser();
 
   if (loading) {
     return <p>Loading user...</p>;
@@ -13,7 +13,10 @@ export default function UserDisplay() {
   return (
     <div>
       {user ? (
-        <p>Logged in as: {user.email}</p>
+        <>
+          <p>Logged in as: {user.email}</p>
+          <button onClick={logout}>Logout</button>
+        </>
       ) : (
         <p>Not logged in.</p>
       )}
