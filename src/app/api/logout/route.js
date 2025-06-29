@@ -9,7 +9,9 @@ export async function GET(request) {
 
   try {
     // Revoke the Firebase session
-    await auth.revokeRefreshTokens(sessionCookie);
+    // Verify the session cookie and revoke the user's refresh tokens
+    const decodedClaims = await auth.verifySessionCookie(sessionCookie);
+    await auth.revokeRefreshTokens(decodedClaims.uid);
     return NextResponse.json({ status: "success" });
   } catch (error) {
     console.error("Error revoking Firebase session:", error);
