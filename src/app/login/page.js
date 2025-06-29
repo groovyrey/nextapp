@@ -42,8 +42,10 @@ export default function LoginPage() {
     }
   };
 	
-  if (loading) {
-    return <div>Loading...</div>;
+  import LoadingCard from '../components/LoadingCard';
+
+if (loading) {
+    return <LoadingCard message="Loading..." />;
   }
 
   if (user) {

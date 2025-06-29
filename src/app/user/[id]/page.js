@@ -40,8 +40,10 @@ export default function UserProfilePage({ params }) {
   return <div>No profile data found.</div>;
 }
 
-  if (loading || !user) {
-    return <div>Loading profile...</div>;
+  import LoadingCard from '../../../components/LoadingCard';
+
+if (loading || !user) {
+    return <LoadingCard message="Loading profile..." />;
   }
 
   if (error) {
