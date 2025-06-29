@@ -65,10 +65,8 @@ export default function SignupPage() {
     }
   };
 
-  import LoadingCard from '../components/LoadingCard';
-
-if (loading) {
-    return <LoadingCard message="Loading..." />;
+  if (loading) {
+    return null; // User is logged in, redirect will happen in useEffect
   }
 
   if (user) {

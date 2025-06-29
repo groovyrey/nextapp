@@ -31,10 +31,8 @@ export default function Home() {
     }
   };
 
-  import LoadingCard from './components/LoadingCard';
-
   if (loading) {
-    return <LoadingCard message="Loading..." />;
+    return null; // Or a loading spinner, as the redirect will happen in useEffect
   }
 
   if (!user) {

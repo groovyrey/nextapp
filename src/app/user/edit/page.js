@@ -60,10 +60,8 @@ export default function EditUserPage() {
     }
   };
 
-  import LoadingCard from '../../components/LoadingCard';
-
-if (loading) {
-    return <LoadingCard message="Loading..." />;
+  if (loading) {
+    return null; // Redirect handled by useEffect
   }
 
   if (!user) {

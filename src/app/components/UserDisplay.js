@@ -8,10 +8,8 @@ export default function UserDisplay() {
   const router = useRouter();
   const { user, loading, logout } = useUser();
 
-  import LoadingCard from './LoadingCard';
-
-if (loading) {
-    return <LoadingCard message="Loading user..." />;
+  if (loading) {
+    return null;
   }
 
   return (
