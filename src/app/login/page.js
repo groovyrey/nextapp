@@ -12,15 +12,27 @@ export default function LoginPage() {
 	const router = useRouter();
 	
 	const handleLogin = async () => {
-		try {
-			const cred = await signInWithEmailAndPassword(auth, email, password);
-		 console.log(cred.user.getIdToken())
-		 setError('Login successful')
-		//router.push("/"); // redirect after login
-		} catch (err) {
-			setError("Login failed: " + err.message);
-		}
-	};
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const idToken = await user.getIdToken();
+
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (res.ok) {
+        router.push('/');
+      } else {
+        setError('Failed to create session.');
+      }
+    } catch (err) {
+      setError("Login failed: " + err.message);
+    }
+  };
 	
 	return (
 		<div className="container mt-5">
