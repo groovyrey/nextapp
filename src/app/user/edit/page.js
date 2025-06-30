@@ -102,7 +102,13 @@ export default function EditUserPage() {
           <input type="text" className="form-control my-2" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} disabled={isUpdating} />
           <input type="text" className="form-control my-2" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} disabled={isUpdating} />
           <input type="number" className="form-control my-2" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} disabled={isUpdating} />
-          <button className="btn btn-primary" onClick={handleUpdate} disabled={isUpdating}><i className="bi-save"></i> Update Profile</button>
+          <button className="btn btn-primary w-100" onClick={handleUpdate} disabled={isUpdating}>
+            {isUpdating ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : (
+              <i className="bi-save"></i>
+            )}{' '}{isUpdating ? 'Updating...' : 'Update Profile'}
+          </button>
           <p className="mt-3"><a href="/">Back to Home</a></p>
         </div>
       </div>
