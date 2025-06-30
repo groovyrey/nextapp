@@ -33,11 +33,7 @@ export default function Home() {
     }
   };
 
-  if (loading) {
-    return <LoadingMessage />;
-  }
-
-  if (!user) {
+  if (loading || !user) {
     return <LoadingMessage />;
   }
 
