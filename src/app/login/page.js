@@ -38,9 +38,7 @@ export default function LoginPage() {
     return <LoadingMessage />;
   }
 
-  if (user) {
-    return <LoadingMessage />;
-  }
+  
 
 	return (
 		<div className="container">
