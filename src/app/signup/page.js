@@ -97,7 +97,7 @@ export default function SignupPage() {
               <i className="bi-person-plus"></i>
             )}{' '}{isSigningUp ? 'Signing up...' : 'Sign Up'}
           </button>
-          <p className="mt-3">Already have an account? <a className="text-primary" href="/login">Login</a></p>
+          <p className="mt-3 text-center">Already have an account? <a className="text-primary" href="/login">Login</a></p>
         </div>
       </div>
     </div>

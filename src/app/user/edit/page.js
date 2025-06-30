@@ -109,7 +109,7 @@ export default function EditUserPage() {
               <i className="bi-save"></i>
             )}{' '}{isUpdating ? 'Updating...' : 'Update Profile'}
           </button>
-          <p className="mt-3"><a href="/">Back to Home</a></p>
+          <p className="text-primary mt-3"><a href="/">Back to Home</a></p>
         </div>
       </div>
     </div>
