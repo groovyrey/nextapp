@@ -18,6 +18,10 @@ export default function MessageCard({ message, onDelete }) {
       return;
     }
 
+    if (!window.confirm('Are you sure you want to delete this message?')) {
+      return;
+    }
+
     try {
       const response = await fetch('/api/messages/delete', {
         method: 'POST',
@@ -59,7 +63,7 @@ export default function MessageCard({ message, onDelete }) {
           </small>
           {user && user.authLevel === 1 && (
             <button onClick={handleDelete} className="btn btn-danger btn-sm">
-              Delete
+              <i className="bi bi-trash"></i>
             </button>
           )}
         </div>

@@ -17,6 +17,10 @@ export default function PrivateMessagesPage() {
   const [pageCursors, setPageCursors] = useState([null]); // pageCursors[0] is for page 1 (no cursor)
   const [hasNextPage, setHasNextPage] = useState(true);
 
+  const handleDeleteMessage = (deletedMessageId) => {
+    setMessages(prevMessages => prevMessages.filter(msg => msg.id !== deletedMessageId));
+  };
+
   if (userLoading) {
     return <LoadingMessage />;
   }
@@ -99,7 +103,7 @@ export default function PrivateMessagesPage() {
       <div className="row">
         {messages.map(message => (
           <div className="col-md-6 col-lg-4" key={message.id}>
-            <MessageCard message={message} />
+            <MessageCard message={message} onDelete={handleDeleteMessage} />
           </div>
         ))}
       </div>
