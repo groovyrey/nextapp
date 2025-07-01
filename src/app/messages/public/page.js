@@ -79,6 +79,10 @@ export default function PublicMessagesPage() {
     }
   };
 
+  const handleDeleteMessage = (deletedMessageId) => {
+    setMessages(prevMessages => prevMessages.filter(msg => msg.id !== deletedMessageId));
+  };
+
   return (
     <div className="container">
       <h1 className="text-center my-4 text-primary"><i className="bi bi-globe me-2"></i>Public Messages</h1>
@@ -99,7 +103,7 @@ export default function PublicMessagesPage() {
           >
             {messages.map(message => (
               <div className="col-md-6 col-lg-4" key={message.id}>
-                <MessageCard message={message} />
+                <MessageCard message={message} onDelete={handleDeleteMessage} />
               </div>
             ))}
           </motion.div>

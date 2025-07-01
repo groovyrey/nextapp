@@ -3,11 +3,43 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './MessageCard.module.css';
+import { useUser } from '../context/UserContext';
 
-export default function MessageCard({ message }) {
+export default function MessageCard({ message, onDelete }) {
+  const { user } = useUser();
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
+  };
+
+  const handleDelete = async () => {
+    if (!user || !user.idToken) {
+      console.error('User not authenticated or ID token not available.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/messages/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.idToken}`,
+        },
+        body: JSON.stringify({ messageId: message.id }),
+      });
+
+      if (response.ok) {
+        console.log('Message deleted successfully');
+        if (onDelete) {
+          onDelete(message.id);
+        }
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to delete message:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Error deleting message:', error);
+    }
   };
 
   return (
@@ -25,6 +57,11 @@ export default function MessageCard({ message }) {
           <small className="text-muted">
             {message.date ? formatTimeAgo(message.date) : 'Date N/A'}
           </small>
+          {user && user.authLevel === 1 && (
+            <button onClick={handleDelete} className="btn btn-danger btn-sm">
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </motion.div>
