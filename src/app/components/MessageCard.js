@@ -5,8 +5,6 @@ import React from 'react';
 export default function MessageCard({ message }) {
   const { date, message: text, private: isPrivate, sender } = message;
 
-  const { date, message: text, private: isPrivate, sender } = message;
-
   const timeAgo = (timestamp) => {
     const seconds = Math.floor((new Date() - (timestamp.seconds * 1000)) / 1000);
 
