@@ -83,21 +83,36 @@ export default function SignupPage() {
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <div className="card m-2" style={{ maxWidth: '400px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title text-center mb-4">Sign Up</h2>
+          <h2 className="card-title text-center mb-4"><i className="bi bi-person-plus-fill me-2"></i>Sign Up</h2>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
-          <input type="text" className="form-control mb-3" placeholder="First Name" onChange={e => setFirstName(e.target.value)} />
-          <input type="text" className="form-control mb-3" placeholder="Last Name" onChange={e => setLastName(e.target.value)} />
-          <input type="number" className="form-control mb-3" placeholder="Age" onChange={e => setAge(e.target.value)} />
-          <input type="email" className="form-control mb-3" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-          <input type="password" className="form-control mb-3" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+          <div className="input-group mb-3">
+            <span className="input-group-text"><i className="bi bi-person"></i></span>
+            <input type="text" className="form-control" placeholder="First Name" onChange={e => setFirstName(e.target.value)} />
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text"><i className="bi bi-person"></i></span>
+            <input type="text" className="form-control" placeholder="Last Name" onChange={e => setLastName(e.target.value)} />
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text"><i className="bi bi-calendar"></i></span>
+            <input type="number" className="form-control" placeholder="Age" onChange={e => setAge(e.target.value)} />
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text"><i className="bi bi-envelope"></i></span>
+            <input type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+          </div>
+          <div className="input-group mb-3">
+            <span className="input-group-text"><i className="bi bi-lock"></i></span>
+            <input type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+          </div>
           <button className="btn btn-primary w-100" onClick={handleSignup} disabled={isSigningUp}>
             {isSigningUp ? (
               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             ) : (
-              <i className="bi-person-plus"></i>
+              <i className="bi-person-plus me-2"></i>
             )}{' '}{isSigningUp ? 'Signing up...' : 'Sign Up'}
           </button>
-          <p className="mt-3 text-center">Already have an account? <a className="text-primary" href="/login">Login</a></p>
+          <p className="mt-3 text-center">Already have an account? <a className="text-primary" href="/login"><i className="bi bi-box-arrow-in-right me-2"></i>Login</a></p>
         </div>
       </div>
     </div>

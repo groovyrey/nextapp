@@ -11,26 +11,26 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
-          Msgrey
+          <i className="bi bi-house-door-fill me-2"></i>Msgrey
         </Link>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             {user ? (
               <li className="nav-item">
                 <button className="btn btn-outline-light" onClick={logout}>
-                  Logout
+                  <i className="bi bi-box-arrow-right me-2"></i>Logout
                 </button>
               </li>
             ) : (
               <>
                 <li className="nav-item">
                   <Link className="btn btn-outline-light me-2" href="/login">
-                    Login
+                    <i className="bi bi-box-arrow-in-right me-2"></i>Login
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="btn btn-light" href="/signup">
-                    Sign Up
+                    <i className="bi bi-person-plus-fill me-2"></i>Sign Up
                   </Link>
                 </li>
               </>

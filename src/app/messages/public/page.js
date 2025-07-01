@@ -81,11 +81,11 @@ export default function PublicMessagesPage() {
 
   return (
     <div className="container">
-      <h1 className="text-center my-4 text-primary">Public Messages</h1>
+      <h1 className="text-center my-4 text-primary"><i className="bi bi-globe me-2"></i>Public Messages</h1>
       <div className="text-center my-4">
-        <Link href="/messages/public" className="btn btn-primary mx-2">Public</Link>
-        <Link href="/messages/private" className="btn btn-outline-primary mx-2">Private</Link>
-        <Link href="/messages/send" className="btn btn-outline-primary mx-2">Send a Message</Link>
+        <Link href="/messages/public" className="btn btn-primary mx-2"><i className="bi bi-globe me-2"></i>Public</Link>
+        <Link href="/messages/private" className="btn btn-outline-primary mx-2"><i className="bi bi-lock me-2"></i>Private</Link>
+        <Link href="/messages/send" className="btn btn-outline-primary mx-2"><i className="bi bi-send me-2"></i>Send a Message</Link>
       </div>
       <AnimatePresence>
         {loading ? (
@@ -106,8 +106,8 @@ export default function PublicMessagesPage() {
         )}
       </AnimatePresence>
       <div className="d-flex justify-content-center my-4">
-        <button className="btn btn-primary mx-2" onClick={handlePrevPage} disabled={page === 1}>Previous</button>
-        <button className="btn btn-primary mx-2" onClick={handleNextPage} disabled={!hasNextPage}>Next</button>
+        <button className="btn btn-primary mx-2" onClick={handlePrevPage} disabled={page === 1}><i className="bi bi-arrow-left-circle me-2"></i>Previous</button>
+        <button className="btn btn-primary mx-2" onClick={handleNextPage} disabled={!hasNextPage}><i className="bi bi-arrow-right-circle me-2"></i>Next</button>
       </div>
     </div>
   );

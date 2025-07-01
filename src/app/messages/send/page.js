@@ -43,11 +43,11 @@ export default function SendMessage() {
     >
       <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title text-primary text-center mb-4">Send a Message</h2>
+          <h2 className="card-title text-primary text-center mb-4"><i className="bi bi-send me-2"></i>Send a Message</h2>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="sender" className="form-label">Sender Email or Name</label>
+              <label htmlFor="sender" className="form-label"><i className="bi bi-person me-2"></i>Sender Email or Name</label>
               <input
                 type="text"
                 id="sender"
@@ -59,7 +59,7 @@ export default function SendMessage() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="message" className="form-label">Message Content</label>
+              <label htmlFor="message" className="form-label"><i className="bi bi-chat-left-text me-2"></i>Message Content</label>
               <textarea
                 id="message"
                 className="form-control"
@@ -79,7 +79,7 @@ export default function SendMessage() {
                 checked={isPrivate}
                 onChange={(e) => setIsPrivate(e.target.checked)}
               />
-              <label className="form-check-label" htmlFor="privateSwitch">Private Message</label>
+              <label className="form-check-label" htmlFor="privateSwitch"><i className="bi bi-eye-slash me-2"></i>Private Message</label>
             </div>
             <motion.button
               type="submit"
@@ -91,7 +91,7 @@ export default function SendMessage() {
               {isSending ? (
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               ) : (
-                <i className="bi-send"></i>
+                <i className="bi-send me-2"></i>
               )}{' '}
               {isSending ? 'Sending...' : 'Send Message'}
             </motion.button>
