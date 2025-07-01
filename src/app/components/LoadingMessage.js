@@ -17,7 +17,6 @@ const LoadingMessage = () => {
     <div className={`${styles.loadingMessageContainer} d-flex justify-content-center align-items-center`} style={{ height: '100vh' }}>
       <div className="text-center">
         <Lottie options={defaultOptions} height={200} width={200} />
-        <p className="mt-3">Loading...</p>
       </div>
     </div>
   );
