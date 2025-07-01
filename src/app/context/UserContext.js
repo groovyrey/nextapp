@@ -43,16 +43,18 @@ export function UserProvider({ children }) {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        const idTokenResult = await currentUser.getIdTokenResult();
-        setUser({ ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token });
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    if (auth) {
+      const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+          const idTokenResult = await currentUser.getIdTokenResult();
+          setUser({ ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token });
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      });
+      return () => unsubscribe();
+    }
   }, []);
 
   return (
