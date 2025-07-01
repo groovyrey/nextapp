@@ -10,12 +10,16 @@ import Link from 'next/link';
 import { useUser } from '@/app/context/UserContext'; // Import useUser
 
 export default function PrivateMessagesPage() {
-  const { user } = useUser(); // Get user from context
+  const { user, loading: userLoading } = useUser(); // Get user from context
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageCursors, setPageCursors] = useState([null]); // pageCursors[0] is for page 1 (no cursor)
   const [hasNextPage, setHasNextPage] = useState(true);
+
+  if (userLoading) {
+    return <LoadingMessage />;
+  }
 
   // If user is not authenticated or authLevel is not 1, display unauthorized message
   if (!user || user.authLevel !== 1) {

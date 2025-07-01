@@ -3,12 +3,16 @@
 import { useState, useContext } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 
 export default function SendMessage() {
   const [message, setMessage] = useState('');
   const [isPublic, setIsPublic] = useState(true);
-  const { user } = useContext(UserContext);
+  const { user, loading } = useUser();
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
