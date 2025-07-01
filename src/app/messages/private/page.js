@@ -27,7 +27,7 @@ export default function PrivateMessagesPage() {
       <div className="container text-center my-5">
         <h1 className="text-danger">Unauthorized Access</h1>
         <p>You are not authorized to view this page.</p>
-        <Link href="/">Go to Home</Link>
+        <Link href="/messages">Go to Messages</Link>
       </div>
     );
   }
