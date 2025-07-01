@@ -45,48 +45,45 @@ export default function UpdateAuthLevelPage() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "500px", margin: "0 auto" }}>
-      <h1>Update User Auth Level</h1>
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-        <div>
-          <label htmlFor="uid" style={{ display: "block", marginBottom: "5px" }}>User UID:</label>
-          <input
-            type="text"
-            id="uid"
-            value={uid}
-            onChange={(e) => setUid(e.target.value)}
-            style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            required
-          />
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+      <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
+        <div className="card-body">
+          <h2 className="card-title text-center mb-4">Update User Auth Level</h2>
+          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          {message && <div className="alert alert-success" role="alert">{message}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="uid" className="form-label">User UID:</label>
+              <input
+                type="text"
+                id="uid"
+                className="form-control"
+                value={uid}
+                onChange={(e) => setUid(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="authLevel" className="form-label">Auth Level:</label>
+              <input
+                type="number"
+                id="authLevel"
+                className="form-control"
+                value={authLevel}
+                onChange={(e) => setAuthLevel(e.target.value)}
+                required
+                min="0"
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary w-100"
+            >
+              Update Auth Level
+            </button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="authLevel" style={{ display: "block", marginBottom: "5px" }}>Auth Level:</label>
-          <input
-            type="number"
-            id="authLevel"
-            value={authLevel}
-            onChange={(e) => setAuthLevel(e.target.value)}
-            style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
-            required
-            min="0"
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            padding: "10px 15px",
-            backgroundColor: "#0070f3",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          Update Auth Level
-        </button>
-      </form>
-      {message && <p style={{ color: "green", marginTop: "15px" }}>{message}</p>}
-      {error && <p style={{ color: "red", marginTop: "15px" }}>{error}</p>}
+      </div>
     </div>
   );
 }

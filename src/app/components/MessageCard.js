@@ -18,9 +18,9 @@ export default function MessageCard({ message }) {
       transition={{ duration: 0.5 }}
     >
       <div className="card-body">
-        <p className="card-text">{message.message}</p>
+        <h5 className="card-title">From: {message.sender}</h5>
+        <p className="card-text fs-5">{message.message}</p>
         <div className="d-flex justify-content-between align-items-center">
-          <small className="text-muted">From: {message.sender}</small>
           <small className="text-muted">
             {new Date(message.timestamp.seconds * 1000).toLocaleString()}
           </small>

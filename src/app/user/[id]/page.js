@@ -37,15 +37,18 @@ export default function UserProfilePage({ params }) {
   }
 
   return (
-    <div className="container">
-      <div className="card m-2">
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+      <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title"><span className="bi-person-fill"></span>{" "}User Profile</h2>
+          <h2 className="card-title text-center mb-4"><span className="bi-person-fill"></span>{" "}User Profile</h2>
+          {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
           <p><strong>First Name:</strong> {profileData.firstName}</p>
           <p><strong>Last Name:</strong> {profileData.lastName}</p>
           <p><strong>Email:</strong> {profileData.email}</p>
           <p><strong>Age:</strong> {profileData.age}</p>
-          <p className="text-primary mt-3"><a href="/">Back to Home</a></p>
+          <div className="text-center mt-4">
+            <a href="/" className="btn btn-primary">Back to Home</a>
+          </div>
         </div>
       </div>
     </div>

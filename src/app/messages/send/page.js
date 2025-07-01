@@ -35,20 +35,21 @@ export default function SendMessage() {
 
   return (
     <motion.div
-      className="container"
+      className="d-flex flex-column align-items-center justify-content-center"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
+      style={{ minHeight: '80vh' }}
     >
-      <div className="card m-2">
+      <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title text-primary">Send a Message</h2>
-          {error && <p className="text-danger">{error}</p>}
+          <h2 className="card-title text-primary text-center mb-4">Send a Message</h2>
+          {error && <div className="alert alert-danger" role="alert">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="sender" className="form-label">Sender</label>
+              <label htmlFor="sender" className="form-label">Sender Email or Name</label>
               <input
-                type="email"
+                type="text"
                 id="sender"
                 className="form-control"
                 value={sender}
@@ -58,11 +59,11 @@ export default function SendMessage() {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="message" className="form-label">Message</label>
+              <label htmlFor="message" className="form-label">Message Content</label>
               <textarea
                 id="message"
                 className="form-control"
-                rows="3"
+                rows="5"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your message here..."
@@ -78,7 +79,7 @@ export default function SendMessage() {
                 checked={isPrivate}
                 onChange={(e) => setIsPrivate(e.target.checked)}
               />
-              <label className="form-check-label" htmlFor="privateSwitch">Private</label>
+              <label className="form-check-label" htmlFor="privateSwitch">Private Message</label>
             </div>
             <motion.button
               type="submit"

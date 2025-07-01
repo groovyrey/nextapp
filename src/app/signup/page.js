@@ -80,11 +80,11 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="container">
-      <div className="card m-2">
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+      <div className="card m-2" style={{ maxWidth: '400px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title">Sign Up</h2>
-          {error && <p className="text-danger">{error}</p>}
+          <h2 className="card-title text-center mb-4">Sign Up</h2>
+          {error && <div className="alert alert-danger" role="alert">{error}</div>}
           <input type="text" className="form-control mb-3" placeholder="First Name" onChange={e => setFirstName(e.target.value)} />
           <input type="text" className="form-control mb-3" placeholder="Last Name" onChange={e => setLastName(e.target.value)} />
           <input type="number" className="form-control mb-3" placeholder="Age" onChange={e => setAge(e.target.value)} />

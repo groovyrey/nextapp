@@ -41,24 +41,24 @@ export default function LoginPage() {
   
 
 	return (
-		<div className="container">
-		  <div className="card m-2">
-		    <div className="card-body">
-      <h2 className="card-title">Login</h2>
-      {error && <p className="text-danger">{error}</p>}
-      <input type="email" className="form-control mb-3" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input type="password" className="form-control mb-3" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-      <button className="btn btn-primary w-100" onClick={handleLogin} disabled={isLoggingIn}>
-        {isLoggingIn ? (
-          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        ) : (
-          <i className="bi-box-arrow-in-right"></i>
-        )}{' '}
-        {isLoggingIn ? 'Logging in...' : 'Login'}
-      </button>
-      <p className="mt-3 text-center">Don't have an account? <a className="text-primary" href="/signup">Sign up</a></p>
-      </div>
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+      <div className="card m-2" style={{ maxWidth: '400px', width: '100%' }}>
+        <div className="card-body">
+          <h2 className="card-title text-center mb-4">Login</h2>
+          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          <input type="email" className="form-control mb-3" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+          <input type="password" className="form-control mb-3" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+          <button className="btn btn-primary w-100" onClick={handleLogin} disabled={isLoggingIn}>
+            {isLoggingIn ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : (
+              <i className="bi-box-arrow-in-right"></i>
+            )}{' '}
+            {isLoggingIn ? 'Logging in...' : 'Login'}
+          </button>
+          <p className="mt-3 text-center">Don't have an account? <a className="text-primary" href="/signup">Sign up</a></p>
+        </div>
       </div>
     </div>
-	);
+  );
 }

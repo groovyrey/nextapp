@@ -93,15 +93,24 @@ export default function EditUserPage() {
   }
 
   return (
-    <div className="container">
-      <div className="card m-2">
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+      <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title"><span className="bi-person-fill-gear"></span>{" "}Edit Profile</h2>
+          <h2 className="card-title text-center mb-4"><span className="bi-person-fill-gear"></span>{" "}Edit Profile</h2>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
           {success && <div className="alert alert-success" role="alert">{success}</div>}
-          <input type="text" className="form-control my-2" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} disabled={isUpdating} />
-          <input type="text" className="form-control my-2" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} disabled={isUpdating} />
-          <input type="number" className="form-control my-2" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} disabled={isUpdating} />
+          <div className="mb-3">
+            <label htmlFor="firstName" className="form-label">First Name</label>
+            <input type="text" id="firstName" className="form-control" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} disabled={isUpdating} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="lastName" className="form-label">Last Name</label>
+            <input type="text" id="lastName" className="form-control" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} disabled={isUpdating} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="age" className="form-label">Age</label>
+            <input type="number" id="age" className="form-control" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} disabled={isUpdating} />
+          </div>
           <button className="btn btn-primary w-100" onClick={handleUpdate} disabled={isUpdating}>
             {isUpdating ? (
               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -109,7 +118,9 @@ export default function EditUserPage() {
               <i className="bi-save"></i>
             )}{' '}{isUpdating ? 'Updating...' : 'Update Profile'}
           </button>
-          <p className="text-primary mt-3"><a href="/">Back to Home</a></p>
+          <div className="text-center mt-3">
+            <a href="/" className="btn btn-link">Back to Home</a>
+          </div>
         </div>
       </div>
     </div>

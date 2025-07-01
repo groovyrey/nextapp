@@ -83,9 +83,11 @@ export default function PrivateMessagesPage() {
 
   return (
     <div className="container">
-      <h1 className="text-center my-4">Private Messages</h1>
+      <h1 className="text-center my-4 text-primary">Private Messages</h1>
       <div className="text-center my-4">
-        <Link href="/messages/public">Public</Link> | <Link href="/messages/private">Private</Link>
+        <Link href="/messages/public" className="btn btn-outline-primary mx-2">Public</Link>
+        <Link href="/messages/private" className="btn btn-primary mx-2">Private</Link>
+        <Link href="/messages/send" className="btn btn-outline-primary mx-2">Send a Message</Link>
       </div>
       <div className="row">
         {messages.map(message => (

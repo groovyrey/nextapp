@@ -38,9 +38,9 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-column align-items-center justify-content-center">
       <UserDisplay />
-      {logoutError && <p className="text-danger">{logoutError}</p>}
+      {logoutError && <div className="alert alert-danger mt-3" role="alert">{logoutError}</div>}
     </div>
   );
 }
