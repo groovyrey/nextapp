@@ -20,7 +20,7 @@ export default function SendMessage() {
         sender: sender,
         message: message,
         private: isPrivate,
-        timestamp: new Date(),
+        date: new Date(),
       });
       setMessage('');
       setSender('');
