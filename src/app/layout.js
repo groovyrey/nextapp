@@ -30,8 +30,14 @@ export default function RootLayout({ children }) {
               <Link href="/" className="navbar-brand">Home</Link>
               <div className="collapse navbar-collapse">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li className="nav-item">
-                    <Link href="/messages" className="nav-link">Messages</Link>
+                  <li className="nav-item dropdown">
+                    <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Messages
+                    </a>
+                    <ul className="dropdown-menu">
+                      <li><Link href="/messages/public" className="dropdown-item">Public</Link></li>
+                      <li><Link href="/messages/private" className="dropdown-item">Private</Link></li>
+                    </ul>
                   </li>
                 </ul>
               </div>
@@ -39,6 +45,7 @@ export default function RootLayout({ children }) {
           </nav>
           {children}
         </UserProvider>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
       </body>
     </html>
   );
