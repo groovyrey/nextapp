@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -7,6 +6,7 @@ import { collection, query, where, orderBy, limit, getDocs, startAfter } from 'f
 import MessageCard from '@/app/components/MessageCard';
 import LoadingMessage from '@/app/components/LoadingMessage';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PublicMessagesPage() {
   const [messages, setMessages] = useState([]);
@@ -21,7 +21,7 @@ export default function PublicMessagesPage() {
       const q = query(
         collection(db, "maindata"),
         where("private", "==", false),
-        orderBy("date", "desc"),
+        orderBy("timestamp", "desc"),
         orderBy("__name__", "desc"),
         ...(pageCursors[page - 1] ? [startAfter(pageCursors[page - 1])] : []),
         limit(6) // Fetch one more to check if there is a next page
@@ -64,20 +64,40 @@ export default function PublicMessagesPage() {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
   return (
     <div className="container">
-      <h1 className="text-center my-4">Public Messages</h1>
+      <h1 className="text-center my-4 text-primary">Public Messages</h1>
       <div className="text-center my-4">
-        <Link href="/messages/public">Public</Link> | <Link href="/messages/private">Private</Link>
+        <Link href="/messages/public" className="btn btn-primary mx-2">Public</Link>
+        <Link href="/messages/private" className="btn btn-outline-primary mx-2">Private</Link>
+        <Link href="/messages/send" className="btn btn-outline-primary mx-2">Send a Message</Link>
       </div>
-      <div className="row">
-        {messages.map(message => (
-          <div className="col-md-6 col-lg-4" key={message.id}>
-            <MessageCard message={message} />
-          </div>
-        ))}
-      </div>
-      {loading && <LoadingMessage />}
+      <AnimatePresence>
+        {loading ? (
+          <LoadingMessage />
+        ) : (
+          <motion.div
+            className="row"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {messages.map(message => (
+              <div className="col-md-6 col-lg-4" key={message.id}>
+                <MessageCard message={message} />
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="d-flex justify-content-center my-4">
         <button className="btn btn-primary mx-2" onClick={handlePrevPage} disabled={page === 1}>Previous</button>
         <button className="btn btn-primary mx-2" onClick={handleNextPage} disabled={!hasNextPage}>Next</button>

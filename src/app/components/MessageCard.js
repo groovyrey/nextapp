@@ -1,44 +1,31 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 
 export default function MessageCard({ message }) {
-  const { date, message: text, private: isPrivate, sender } = message;
-
-  const timeAgo = (timestamp) => {
-    const seconds = Math.floor((new Date() - (timestamp.seconds * 1000)) / 1000);
-
-    let interval = seconds / 31536000;
-    if (interval > 1) {
-      return Math.floor(interval) + " year" + (Math.floor(interval) === 1 ? "" : "s") + " ago";
-    }
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      return Math.floor(interval) + " month" + (Math.floor(interval) === 1 ? "" : "s") + " ago";
-    }
-    interval = seconds / 86400;
-    if (interval > 1) {
-      return Math.floor(interval) + " day" + (Math.floor(interval) === 1 ? "" : "s") + " ago";
-    }
-    interval = seconds / 3600;
-    if (interval > 1) {
-      return Math.floor(interval) + " hour" + (Math.floor(interval) === 1 ? "" : "s") + " ago";
-    }
-    interval = seconds / 60;
-    if (interval > 1) {
-      return Math.floor(interval) + " minute" + (Math.floor(interval) === 1 ? "" : "s") + " ago";
-    }
-    return Math.floor(seconds) + " second" + (Math.floor(seconds) === 1 ? "" : "s") + " ago";
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
-    <div className="card m-2">
+    <motion.div
+      className="card mb-4"
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 0.5 }}
+    >
       <div className="card-body">
-        <p className="card-title">From: {sender}</p>
-        <p className="card-text">{text}</p>
-        <p className="card-text"><small className="text-muted">{timeAgo(date)}</small></p>
-        {isPrivate && <span className="badge bg-danger">Private</span>}
+        <p className="card-text">{message.message}</p>
+        <div className="d-flex justify-content-between align-items-center">
+          <small className="text-muted">From: {message.sender}</small>
+          <small className="text-muted">
+            {new Date(message.timestamp.seconds * 1000).toLocaleString()}
+          </small>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

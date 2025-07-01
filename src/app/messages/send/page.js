@@ -2,32 +2,28 @@
 import { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
-import { useUser } from '../../context/UserContext';
-import LoadingMessage from '../../components/LoadingMessage';
+import { motion } from 'framer-motion';
 
 export default function SendMessage() {
   const [message, setMessage] = useState('');
+  const [sender, setSender] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
   const [error, setError] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const { user, loading } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user) {
-      setError('You must be logged in to send a message.');
-      return;
-    }
     setIsSending(true);
     setError('');
     try {
       await addDoc(collection(db, 'maindata'), {
-        sender: user.email,
+        sender: sender,
         message: message,
         private: isPrivate,
         timestamp: new Date(),
       });
       setMessage('');
+      setSender('');
       setIsPrivate(false);
       alert('Message sent successfully!');
     } catch (error) {
@@ -37,15 +33,16 @@ export default function SendMessage() {
     }
   };
 
-  if (loading) {
-    return <LoadingMessage />;
-  }
-
   return (
-    <div className="container">
+    <motion.div
+      className="container"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="card m-2">
         <div className="card-body">
-          <h2 className="card-title">Send a Message</h2>
+          <h2 className="card-title text-primary">Send a Message</h2>
           {error && <p className="text-danger">{error}</p>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -54,8 +51,10 @@ export default function SendMessage() {
                 type="email"
                 id="sender"
                 className="form-control"
-                value={user ? user.email : ''}
-                disabled
+                value={sender}
+                onChange={(e) => setSender(e.target.value)}
+                placeholder="Your email or name"
+                required
               />
             </div>
             <div className="mb-3">
@@ -81,17 +80,23 @@ export default function SendMessage() {
               />
               <label className="form-check-label" htmlFor="privateSwitch">Private</label>
             </div>
-            <button type="submit" className="btn btn-primary w-100" disabled={isSending}>
+            <motion.button
+              type="submit"
+              className="btn btn-primary w-100"
+              disabled={isSending}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               {isSending ? (
                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               ) : (
                 <i className="bi-send"></i>
               )}{' '}
               {isSending ? 'Sending...' : 'Send Message'}
-            </button>
+            </motion.button>
           </form>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
