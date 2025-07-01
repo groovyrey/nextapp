@@ -79,8 +79,12 @@ export default function PublicMessagesPage() {
     }
   };
 
-  const handleDeleteMessage = (deletedMessageId) => {
-    setMessages(prevMessages => prevMessages.filter(msg => msg.id !== deletedMessageId));
+  const handleDeleteMessage = async (deletedMessageId) => {
+    // Assuming MessageCard handles the actual API call and returns success/failure
+    // We just need to trigger a re-fetch if the deletion was successful
+    // The MessageCard component will call onDelete with the messageId if successful
+    // So, we don't need to filter here, just re-fetch
+    fetchMessages();
   };
 
   return (

@@ -16,7 +16,7 @@ export async function POST(req) {
     }
 
     const db = admin.firestore();
-    await db.collection('messages').doc(messageId).delete();
+    await db.collection('maindata').doc(messageId).delete();
 
     return new Response(JSON.stringify({ message: 'Message deleted successfully' }), { status: 200 });
   } catch (error) {

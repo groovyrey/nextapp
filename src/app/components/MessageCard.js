@@ -33,14 +33,16 @@ export default function MessageCard({ message, onDelete }) {
       });
 
       if (response.ok) {
-        console.log('Message deleted successfully');
-        if (onDelete) {
-          onDelete(message.id);
+          console.log('Message deleted successfully');
+          if (onDelete) {
+            onDelete(message.id);
+          }
+          return true; // Indicate success
+        } else {
+          const errorData = await response.json();
+          console.error('Failed to delete message:', errorData.message);
+          return false; // Indicate failure
         }
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to delete message:', errorData.message);
-      }
     } catch (error) {
       console.error('Error deleting message:', error);
     }
