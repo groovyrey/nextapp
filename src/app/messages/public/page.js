@@ -83,9 +83,9 @@ export default function PublicMessagesPage() {
     <div className="container">
       <h1 className="text-center my-4 text-primary"><i className="bi bi-globe me-2"></i>Public Messages</h1>
       <div className="text-center my-4">
-        <Link href="/messages/public" className="btn btn-primary mx-2"><i className="bi bi-globe me-2"></i>Public</Link>
-        <Link href="/messages/private" className="btn btn-outline-primary mx-2"><i className="bi bi-lock me-2"></i>Private</Link>
-        <Link href="/messages/send" className="btn btn-outline-primary mx-2"><i className="bi bi-send me-2"></i>Send a Message</Link>
+        <Link href="/messages/public" className="btn btn-primary m-2"><i className="bi bi-globe me-2"></i>Public</Link>
+        <Link href="/messages/private" className="btn btn-outline-primary m-2"><i className="bi bi-lock me-2"></i>Private</Link>
+        <Link href="/messages/send" className="btn btn-outline-primary m-2"><i className="bi bi-send me-2"></i>Send a Message</Link>
       </div>
       <AnimatePresence>
         {loading ? (
