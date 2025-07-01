@@ -8,8 +8,8 @@ import Navbar from "./components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Msgrey",
-  description: "A messaging app",
+  title: "Mensahe para kay rey",
+  description: "App ni reymart",
 };
 
 export default function RootLayout({ children }) {
