@@ -97,7 +97,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
       });
 
       if (response.ok) {
-        console.log('Message visibility updated successfully');
+        alert('Message visibility changed successfully');
         if (onUpdateMessage) {
           // Assuming the API returns the updated message or we can construct it
           onUpdateMessage({ ...message, isVisible: newVisibility });
@@ -105,9 +105,11 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
         setShowOptions(false); // Close options after action
       } else {
         const errorData = await response.json();
+        alert(`Failed to update message visibility: ${errorData.message}`);
         console.error('Failed to update message visibility:', errorData.message);
       }
     } catch (error) {
+      alert(`Error updating message visibility: ${error.message}`);
       console.error('Error updating message visibility:', error);
     }
   };
