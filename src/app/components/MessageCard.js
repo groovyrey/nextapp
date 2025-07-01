@@ -57,8 +57,3 @@ function formatTimeAgo(dateString) {
   }
   return Math.floor(seconds) + " seconds ago";
 }
-        </div>
-      </div>
-    </motion.div>
-  );
-}
