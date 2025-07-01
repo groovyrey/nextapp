@@ -8,46 +8,42 @@ export default function Navbar() {
   const { user, logout } = useUser();
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container-fluid">
-        <Link className="navbar-brand" href="/">
-          <i className="bi bi-house-door-fill me-2"></i>Home
+    <header className="navbar-grid">
+      <div className="navbar-brand-container">
+        <Link href="/">
+          <i className="bi bi-house-door-fill"></i>Home
         </Link>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" href="/messages/public">
-                Public Messages
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/messages/send">
-                Send Message
-              </Link>
-            </li>
-            {user ? (
-              <li className="nav-item">
-                <button className="btn btn-outline-light" onClick={logout}>
-                  <i className="bi bi-box-arrow-right me-2"></i>Logout
-                </button>
-              </li>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <Link className="btn btn-outline-light me-2" href="/login">
-                    <i className="bi bi-box-arrow-in-right me-2"></i>Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="btn btn-light" href="/signup">
-                    <i className="bi bi-person-plus-fill me-2"></i>Sign Up
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
       </div>
-    </nav>
+      <div className="navbar-links">
+        <ul>
+          <li>
+            <Link href="/messages/public">
+              Public Messages
+            </Link>
+          </li>
+          <li>
+            <Link href="/messages/send">
+              Send Message
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <div className="navbar-actions">
+        {user ? (
+          <button onClick={logout}>
+            <i className="bi bi-box-arrow-right"></i>Logout
+          </button>
+        ) : (
+          <>
+            <Link href="/login">
+              <i className="bi bi-box-arrow-in-right"></i>Login
+            </Link>
+            <Link href="/signup">
+              <i className="bi bi-person-plus-fill"></i>Sign Up
+            </Link>
+          </>
+        )}
+      </div>
+    </header>
   );
 }
