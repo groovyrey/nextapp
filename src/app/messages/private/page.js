@@ -22,6 +22,7 @@ export default function PrivateMessagesPage() {
         collection(db, "maindata"),
         where("visibility", "==", "private"),
         orderBy("date", "desc"),
+        orderBy("__name__", "desc"),
         ...(pageCursors[page - 1] ? [startAfter(pageCursors[page - 1])] : []),
         limit(6) // Fetch one more to check if there is a next page
       );
