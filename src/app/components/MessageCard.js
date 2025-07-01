@@ -22,7 +22,7 @@ export default function MessageCard({ message }) {
         <p className="card-text fs-5">{message.message}</p>
         <div className="d-flex justify-content-between align-items-center">
           <small className="text-muted">
-            {new Date(message.timestamp.seconds * 1000).toLocaleString()}
+            {new Date(message.date).toLocaleString()}
           </small>
         </div>
       </div>
