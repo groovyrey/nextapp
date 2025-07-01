@@ -1,3 +1,28 @@
 .messageCardContainer {
-  /* Add any specific styles for MessageCard component here */
+  border-radius: var(--border-radius-base);
+  overflow: hidden; /* Ensures content respects border-radius */
+  transition: var(--transition-base);
+}
+
+.messageCardContainer .card-body {
+  padding: 1.5rem;
+}
+
+.messageCardContainer .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+}
+
+.messageCardContainer .card-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.messageCardContainer small {
+  color: var(--light-text-color);
+  font-size: 0.85rem;
 }

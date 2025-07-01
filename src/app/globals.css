@@ -1,15 +1,19 @@
 /* globals.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #00B8D4; /* Cyan */
-  --secondary-color: #E0F7FA; /* Light Cyan */
-  --background-color: #FAFAFA; /* Off-White */
-  --text-color: #263238;
+  --primary-color: #6A67CE; /* A vibrant, yet soft purple */
+  --secondary-color: #8B88E8; /* Lighter shade of purple */
+  --accent-color: #FFD700; /* Gold for highlights */
+  --background-color: #F0F2F5; /* Light grey background */
+  --text-color: #333333; /* Darker text for readability */
+  --light-text-color: #666666;
   --card-background-color: #ffffff;
   --card-border-color: #e0e0e0;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
+  --border-radius-base: 8px;
+  --transition-base: all 0.3s ease-in-out;
 }
 
 body {
@@ -19,6 +23,13 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Prevent horizontal scroll */
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .container {
@@ -30,32 +41,37 @@ body {
 .card {
   background-color: var(--card-background-color);
   border: 1px solid var(--card-border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-base);
   box-shadow: 0 4px 12px var(--shadow-color);
-  transition: all 0.3s ease-in-out;
+  transition: var(--transition-base);
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px var(--shadow-color);
+  transform: translateY(-3px); /* Slightly less aggressive lift */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Slightly more pronounced shadow on hover */
 }
 
 .btn-primary {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
-  border-radius: 8px;
+  border-radius: var(--border-radius-base);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
-  transition: background-color 0.3s ease;
+  transition: var(--transition-base);
+  color: white; /* Ensure text is white on primary buttons */
 }
 
 .btn-primary:hover {
-  background-color: #5a4ab9;
+  background-color: var(--secondary-color); /* Lighter primary on hover */
+  border-color: var(--secondary-color);
 }
 
 .btn-outline-primary {
   color: var(--primary-color);
   border-color: var(--primary-color);
+  border-radius: var(--border-radius-base);
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-base);
 }
 
 .btn-outline-primary:hover {
@@ -64,14 +80,16 @@ body {
 }
 
 .form-control {
-  border-radius: 8px;
+  border-radius: var(--border-radius-base);
   border: 1px solid var(--card-border-color);
   padding: 0.75rem 1rem;
+  transition: var(--transition-base);
 }
 
 .form-control:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(106, 90, 205, 0.2);
+  box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.25); /* Adjusted shadow color */
+  outline: none;
 }
 
 .text-primary {
@@ -79,38 +97,48 @@ body {
 }
 
 .text-danger {
-  color: #dc3545 !important;
+  color: #dc3545 !important; /* Keep standard danger color */
 }
 
 .spinner-border {
   color: var(--primary-color);
 }
 
-/* Add a subtle background pattern */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--background-color) 0%, var(--secondary-color) 100%);
-  opacity: 0.3;
-  z-index: -1;
-  pointer-events: none;
+.btn-secondary {
+  background-color: var(--light-text-color);
+  border-color: var(--light-text-color);
+  color: white;
+  border-radius: var(--border-radius-base);
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-base);
 }
 
-body::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 0h3v3H0V0zm3 3h3v3H3V3z'/%3E%3C/g%3E%3C/svg%3E");
-  opacity: 0.1;
-  z-index: -1;
-  pointer-events: none;
+.btn-secondary:hover {
+  background-color: #5a6268; /* A slightly darker grey for hover */
+  border-color: #5a6268;
 }
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+  border-radius: var(--border-radius-base);
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-base);
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Remove subtle background patterns for a cleaner look */
+body::before,
+body::after {
+  content: none;
+}
+
 
 
