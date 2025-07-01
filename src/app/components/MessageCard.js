@@ -65,7 +65,7 @@ export default function MessageCard({ message, onDelete }) {
           </small>
           {user && user.authLevel === 1 && (
             <button onClick={handleDelete} className={`${styles.deleteButton} btn btn-danger text-danger bg-transparent`}>
-              <i className="bi bi-trash"></i>
+              <i className="bi bi-trash-fill"></i>
             </button>
           )}
         </div>
