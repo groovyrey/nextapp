@@ -21,7 +21,7 @@ export default function UpdateAuthLevelPage() {
     }
 
     try {
-      const response = await fetch("/api/user/update", {
+      const response = await fetch("/api/user/update-authlevel", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
