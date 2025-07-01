@@ -4,8 +4,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../../lib/firebase';
 import { collection, query, where, orderBy, limit, getDocs, startAfter } from 'firebase/firestore';
-import MessageCard from '../../../components/MessageCard';
-import LoadingMessage from '../../../components/LoadingMessage';
+import MessageCard from '@/app/components/MessageCard';
+import LoadingMessage from '@/app/components/LoadingMessage';
 import Link from 'next/link';
 
 export default function PrivateMessagesPage() {
