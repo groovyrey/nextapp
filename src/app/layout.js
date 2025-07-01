@@ -37,6 +37,7 @@ export default function RootLayout({ children }) {
                     <ul className="dropdown-menu">
                       <li><Link href="/messages/public" className="dropdown-item">Public</Link></li>
                       <li><Link href="/messages/private" className="dropdown-item">Private</Link></li>
+                      <li><Link href="/messages/send" className="dropdown-item">Send</Link></li>
                     </ul>
                   </li>
                 </ul>
