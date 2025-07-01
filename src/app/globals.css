@@ -14,6 +14,8 @@
   --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
   --border-radius-base: 8px;
   --transition-base: all 0.3s ease-in-out;
+  --background-color-dark: #e0e2e5; /* A slightly darker grey for the menu background */
+  --border-color: var(--card-border-color); /* Using existing card border color */
 }
 
 body {

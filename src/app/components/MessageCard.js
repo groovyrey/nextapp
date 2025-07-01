@@ -2,11 +2,13 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import styles from './MessageCard.module.css';
 import { useUser } from '../context/UserContext';
 
-export default function MessageCard({ message, onDelete }) {
+export default function MessageCard({ message, onDelete, onUpdateMessage }) {
   const { user } = useUser();
+  const router = useRouter(); // Initialize useRouter
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
 
@@ -72,15 +74,42 @@ export default function MessageCard({ message, onDelete }) {
   };
 
   const handleEdit = () => {
-    console.log('Edit message:', message.id);
     setShowOptions(false); // Close options after action
-    // Implement edit functionality here
+    router.push(`/messages/edit/${message.id}`); // Navigate to edit page
   };
 
-  const handleChangeVisibility = () => {
-    console.log('Change visibility for message:', message.id);
-    setShowOptions(false); // Close options after action
-    // Implement change visibility functionality here
+  const handleChangeVisibility = async () => {
+    if (!user || !user.idToken) {
+      console.error('User not authenticated or ID token not available.');
+      return;
+    }
+
+    try {
+      // Assuming a toggle for visibility for now
+      const newVisibility = !message.isVisible; // You'll need to add 'isVisible' to your message object
+      const response = await fetch('/api/messages/update-visibility', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.idToken}`,
+        },
+        body: JSON.stringify({ messageId: message.id, isVisible: newVisibility }),
+      });
+
+      if (response.ok) {
+        console.log('Message visibility updated successfully');
+        if (onUpdateMessage) {
+          // Assuming the API returns the updated message or we can construct it
+          onUpdateMessage({ ...message, isVisible: newVisibility });
+        }
+        setShowOptions(false); // Close options after action
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to update message visibility:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Error updating message visibility:', error);
+    }
   };
 
   return (
