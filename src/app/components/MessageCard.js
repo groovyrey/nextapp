@@ -30,7 +30,16 @@ export default function MessageCard({ message }) {
   );
 }
 
+function isValidDate(dateString) {
+  const date = new Date(dateString);
+  return !isNaN(date.getTime());
+}
+
 function formatTimeAgo(dateString) {
+  if (!isValidDate(dateString)) {
+    return "Invalid Date";
+  }
+
   const date = new Date(dateString);
   const now = new Date();
   const seconds = Math.floor((now - date) / 1000);

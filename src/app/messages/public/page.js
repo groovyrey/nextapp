@@ -28,7 +28,14 @@ export default function PublicMessagesPage() {
       );
 
       const documentSnapshots = await getDocs(q);
-      const newMessages = documentSnapshots.docs.slice(0, 5).map(doc => ({ id: doc.id, ...doc.data() }));
+      const newMessages = documentSnapshots.docs.slice(0, 5).map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          date: data.date && typeof data.date.toDate === 'function' ? data.date.toDate().toISOString() : data.date,
+        };
+      });
       
       setMessages(newMessages);
 
