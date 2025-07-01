@@ -6,8 +6,6 @@ import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const { user, logout } = useUser();
-export default function Navbar() {
-  const { user, logout } = useUser();
 
   return (
     <header className={styles.navbarGrid}>
