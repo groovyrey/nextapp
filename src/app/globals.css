@@ -3,10 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #6a5acd; /* Slate Blue */
-  --secondary-color: #f0e6ff; /* Lavender */
-  --background-color: #f8f9fa; /* Light Gray */
-  --text-color: #333;
+  --primary-color: #00B8D4; /* Cyan */
+  --secondary-color: #E0F7FA; /* Light Cyan */
+  --background-color: #FAFAFA; /* Off-White */
+  --text-color: #263238;
   --card-background-color: #ffffff;
   --card-border-color: #e0e0e0;
   --shadow-color: rgba(0, 0, 0, 0.1);
