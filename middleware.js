@@ -27,10 +27,17 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  const user = await responseAPI.json();
+
+  // Redirect if authLevel is not 1 for /messages/private
+  if (request.nextUrl.pathname === "/messages/private" && user.authLevel !== 1) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   return NextResponse.next();
 }
 
 //Add your protected routes
 export const config = {
-  matcher: ["/"],
+  matcher: ["/", "/messages/private"],
 };

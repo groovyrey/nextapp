@@ -12,7 +12,7 @@ export async function GET() {
 
   try {
     const decodedClaims = await auth.verifySessionCookie(session, true);
-    return NextResponse.json({ isLogged: true, decodedClaims });
+    return NextResponse.json({ isLogged: true, user: { authLevel: decodedClaims.authLevel || 0 } });
   } catch (error) {
     console.error("Error verifying session cookie:", error);
     return NextResponse.json({ isLogged: false, message: error.message }, { status: 401 });

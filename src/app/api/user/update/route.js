@@ -15,6 +15,10 @@ export async function PUT(request) {
       age: parseInt(age),
     });
 
+    if (authLevel !== undefined) {
+      await admin.auth().setCustomUserClaims(uid, { authLevel: parseInt(authLevel) });
+    }
+
     return NextResponse.json({ message: "User data updated successfully." }, { status: 200 });
   } catch (error) {
     console.error("Error updating user data:", error);
