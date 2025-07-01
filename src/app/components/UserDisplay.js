@@ -4,6 +4,7 @@ import React from 'react';
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
+import styles from './UserDisplay.module.css';
 
 export default function UserDisplay() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function UserDisplay() {
   }
 
   return (
-    <div className="card m-2 text-center">
+    <div className={`${styles.userDisplayContainer} card m-2 text-center`}>
       <div className="card-header">
         <h3><i className="bi bi-info-circle me-2"></i>User Information</h3>
       </div>

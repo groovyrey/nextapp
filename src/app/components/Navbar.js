@@ -3,18 +3,19 @@
 import React from 'react';
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
+import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const { user, logout } = useUser();
 
   return (
-    <header className="navbar-grid">
-      <div className="navbar-brand-container">
+    <header className={styles.navbarGrid}>
+      <div className={styles.navbarBrandContainer}>
         <Link href="/">
           <i className="bi bi-house-door-fill"></i>Home
         </Link>
       </div>
-      <div className="navbar-links">
+      <div className={styles.navbarLinks}>
         <ul>
           <li>
             <Link href="/messages/public">
@@ -28,7 +29,7 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
-      <div className="navbar-actions">
+      <div className={styles.navbarActions}>
         {user ? (
           <button onClick={logout}>
             <i className="bi bi-box-arrow-right"></i>Logout

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import styles from './MessageCard.module.css';
 
 export default function MessageCard({ message }) {
   const cardVariants = {
@@ -11,7 +12,7 @@ export default function MessageCard({ message }) {
 
   return (
     <motion.div
-      className="card mb-4"
+      className={`${styles.messageCardContainer} card mb-4`}
       variants={cardVariants}
       initial="hidden"
       animate="visible"
