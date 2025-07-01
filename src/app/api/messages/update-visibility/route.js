@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '../../../../lib/firebase-admin'; // Assuming firebase-admin is set up for auth
+import { auth } from '../../../lib/firebase-admin'; // Assuming firebase-admin is set up for auth
 
 export async function POST(request) {
   try {
