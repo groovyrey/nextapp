@@ -64,7 +64,7 @@ export default function MessageCard({ message, onDelete }) {
             {message.date ? formatTimeAgo(message.date) : 'Date N/A'}
           </small>
           {user && user.authLevel === 1 && (
-            <button onClick={handleDelete} className="btn btn-danger btn-sm">
+            <button onClick={handleDelete} className="btn btn-danger text-danger bg-transparent btn-sm">
               <i className="bi bi-trash"></i>
             </button>
           )}
