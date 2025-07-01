@@ -1,15 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import styles from './Navbar.module.css';
+import { gsap } from 'gsap';
 
 export default function Navbar() {
   const { user, logout } = useUser();
+  const navbarRef = useRef(null);
+
+  useEffect(() => {
+    gsap.from(navbarRef.current, { opacity: 0, y: -50, duration: 0.8, ease: "power3.out" });
+  }, []);
 
   return (
-    <header className={styles.navbarGrid}>
+    <header ref={navbarRef} className={styles.navbarGrid}>
       <div className={styles.navbarBrandContainer}>
         <Link href="/">
           <i className="bi bi-house-door-fill"></i>Home
