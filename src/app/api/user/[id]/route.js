@@ -11,25 +11,6 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "User not found." }, { status: 404 });
     }
 
-    const session = cookies().get("session")?.value || "";
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    let decodedClaims;
-    try {
-      decodedClaims = await auth.verifySessionCookie(session, true);
-    } catch (error) {
-      console.error("Error verifying session cookie:", error);
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const queriedUserUid = userDoc.id;
-
-    /*if (decodedClaims.uid !== queriedUserUid) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }*/
-
     const userData = userDoc.data();
     const publicUserData = {
       firstName: userData.firstName,

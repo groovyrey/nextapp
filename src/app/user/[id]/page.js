@@ -1,24 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useUser } from '../../../app/context/UserContext';
 import LoadingMessage from '../../../app/components/LoadingMessage';
 
 export default function UserProfilePage({ params }) {
   const { id } = params;
-  const { user, loading } = useUser();
-  const router = useRouter();
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-      return;
-    }
-
-    if (user && id) {
+    if (id) {
       const fetchProfile = async () => {
         try {
           const res = await fetch(`/api/user/${id}`);
@@ -35,21 +26,15 @@ export default function UserProfilePage({ params }) {
       };
       fetchProfile();
     }
-  }, [user, loading, id, router]);
+  }, [id]);
   
   if (!profileData) {
   return <LoadingMessage />;
 }
 
-  if (loading || !user) {
-    return <LoadingMessage />;
-  }
-
   if (error) {
     return <div className="text-danger">Error: {error}</div>;
   }
-
-  
 
   return (
     <div className="container">
@@ -60,8 +45,6 @@ export default function UserProfilePage({ params }) {
           <p><strong>Last Name:</strong> {profileData.lastName}</p>
           <p><strong>Email:</strong> {profileData.email}</p>
           <p><strong>Age:</strong> {profileData.age}</p>
-          {user.uid==id?
-          <button className="btn btn-primary" onClick={() => router.push('/user/edit')}><i className="bi-pencil"></i> Edit Profile</button>:""}
           <p className="text-primary mt-3"><a href="/">Back to Home</a></p>
         </div>
       </div>
