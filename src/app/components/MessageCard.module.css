@@ -26,3 +26,10 @@
   color: var(--light-text-color);
   font-size: 0.85rem;
 }
+
+.deleteButton {
+  padding: 0.5rem 1rem; /* Adjust padding to make it bigger */
+  border: 1px solid transparent; /* Transparent border */
+  background-color: transparent; /* Transparent background */
+  font-size: 1.2rem; /* Increase font size for the icon */
+}
