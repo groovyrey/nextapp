@@ -173,3 +173,34 @@ body::before {
 .navbar-actions a i {
   margin-right: 0.5rem;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .navbar-grid {
+    grid-template-columns: 1fr; /* Stack items vertically */
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .navbar-brand-container {
+    margin-bottom: 1rem;
+  }
+
+  .navbar-links ul {
+    flex-direction: column; /* Stack links vertically */
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .navbar-actions {
+    flex-direction: column; /* Stack actions vertically */
+    gap: 0.5rem;
+    align-items: center; /* Center buttons */
+  }
+
+  .navbar-actions a,
+  .navbar-actions button {
+    width: 80%; /* Make buttons take more width */
+    justify-content: center; /* Center text within buttons */
+  }
+}
