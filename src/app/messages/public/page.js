@@ -20,7 +20,7 @@ export default function PublicMessagesPage() {
     try {
       const q = query(
         collection(db, "maindata"),
-        where("visibility", "==", "public"),
+        where("private", "==", false),
         orderBy("date", "desc"),
         orderBy("__name__", "desc"),
         ...(pageCursors[page - 1] ? [startAfter(pageCursors[page - 1])] : []),

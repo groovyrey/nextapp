@@ -20,7 +20,7 @@ export default function PrivateMessagesPage() {
     try {
       const q = query(
         collection(db, "maindata"),
-        where("visibility", "==", "private"),
+        where("private", "==", true),
         orderBy("date", "desc"),
         orderBy("__name__", "desc"),
         ...(pageCursors[page - 1] ? [startAfter(pageCursors[page - 1])] : []),
