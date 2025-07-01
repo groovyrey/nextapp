@@ -85,22 +85,20 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
     }
 
     try {
-      // Assuming a toggle for visibility for now
-      const newVisibility = !message.isVisible; // You'll need to add 'isVisible' to your message object
+      const newVisibility = !message.private;
       const response = await fetch('/api/messages/update-visibility', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.idToken}`,
         },
-        body: JSON.stringify({ messageId: message.id, isVisible: newVisibility }),
+        body: JSON.stringify({ messageId: message.id, private: newVisibility }),
       });
 
       if (response.ok) {
         alert('Message visibility changed successfully');
         if (onUpdateMessage) {
-          // Assuming the API returns the updated message or we can construct it
-          onUpdateMessage({ ...message, isVisible: newVisibility });
+          onUpdateMessage({ ...message, private: newVisibility });
         }
         setShowOptions(false); // Close options after action
       } else {
@@ -124,7 +122,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
     >
       <div className="card-body">
         <div className={styles.cardHeader}>
-          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>}</h5>
+          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>} <span className={message.private ? 'text-danger' : 'text-success'}>{message.private ? 'Private' : 'Public'}</span></h5>
           {user && user.authLevel === 1 && (
             <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
               <i className="bi bi-three-dots"></i>
@@ -154,7 +152,8 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
               <i className="bi bi-pencil-square me-2"></i>Edit
             </button>
             <button className={styles.optionButton} onClick={handleChangeVisibility}>
-              <i className="bi bi-eye-fill me-2"></i>Change Visibility
+              <i className={`bi ${message.private ? 'bi-eye-slash-fill' : 'bi-eye-fill'} me-2`}></i>
+              {message.private ? 'Make Public' : 'Make Private'}
             </button>
             <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleDelete}>
               <i className="bi bi-trash-fill me-2"></i>Delete

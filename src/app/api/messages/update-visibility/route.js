@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '../../../../../lib/firebase-admin'; // Assuming firebase-admin is set up for auth
+import { auth, firestore } from '../../../../../lib/firebase-admin';
 
 export async function POST(request) {
   try {
@@ -17,20 +17,18 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Unauthorized: Invalid token' }, { status: 401 });
     }
 
-    // Check if the user has the necessary authorization level (e.g., admin)
-    if (decodedToken.authLevel !== 1) { // Assuming authLevel 1 is admin
+    if (decodedToken.authLevel !== 1) {
       return NextResponse.json({ message: 'Forbidden: Insufficient permissions' }, { status: 403 });
     }
 
-    const { messageId, isVisible } = await request.json();
+    const { messageId, private: isPrivate } = await request.json();
 
-    if (!messageId || typeof isVisible === 'undefined') {
-      return NextResponse.json({ message: 'Bad Request: messageId and isVisible are required' }, { status: 400 });
+    if (!messageId || typeof isPrivate === 'undefined') {
+      return NextResponse.json({ message: 'Bad Request: messageId and private are required' }, { status: 400 });
     }
 
-    // In a real application, you would update the message's visibility in your database here.
-    // For demonstration, we'll just log the action.
-    console.log(`Message ${messageId} visibility updated to ${isVisible}`);
+    const messageRef = firestore.collection('messages').doc(messageId);
+    await messageRef.update({ private: isPrivate });
 
     return NextResponse.json({ message: 'Message visibility updated successfully' });
 

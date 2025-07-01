@@ -17,11 +17,13 @@ export default function PrivateMessagesPage() {
   const [pageCursors, setPageCursors] = useState([null]); // pageCursors[0] is for page 1 (no cursor)
   const [hasNextPage, setHasNextPage] = useState(true);
 
-  const handleDeleteMessage = async (deletedMessageId) => {
-    // Assuming MessageCard handles the actual API call and returns success/failure
-    // We just need to trigger a re-fetch if the deletion was successful
-    // The MessageCard component will call onDelete with the messageId if successful
-    // So, we don't need to filter here, just re-fetch
+  const handleDeleteMessage = (deletedMessageId) => {
+    fetchMessages();
+  };
+
+  const handleUpdateMessage = (updatedMessage) => {
+    // A message's visibility might have changed, so we re-fetch to ensure
+    // this list only contains private messages.
     fetchMessages();
   };
 
@@ -107,7 +109,7 @@ export default function PrivateMessagesPage() {
       <div className="row">
         {messages.map(message => (
           <div className="col-md-6 col-lg-4" key={message.id}>
-            <MessageCard message={message} onDelete={handleDeleteMessage} />
+            <MessageCard message={message} onDelete={handleDeleteMessage} onUpdateMessage={handleUpdateMessage} />
           </div>
         ))}
       </div>
