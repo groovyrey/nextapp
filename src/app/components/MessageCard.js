@@ -18,7 +18,7 @@ export default function MessageCard({ message }) {
       transition={{ duration: 0.5 }}
     >
       <div className="card-body">
-        <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender}</h5>
+        <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender==""?<span className="text-primary">?</span>:<span>{message.sender}</span>}</h5>
         <p className="card-text fs-5">{message.message}</p>
         <div className="d-flex justify-content-between align-items-center">
           <small className="text-muted">
