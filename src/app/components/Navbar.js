@@ -11,10 +11,20 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
-          <i className="bi bi-house-door-fill me-2"></i>Msgrey
+          <i className="bi bi-house-door-fill me-2"></i>Home
         </Link>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link className="nav-link" href="/messages/public">
+                Public Messages
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/messages/send">
+                Send Message
+              </Link>
+            </li>
             {user ? (
               <li className="nav-item">
                 <button className="btn btn-outline-light" onClick={logout}>
