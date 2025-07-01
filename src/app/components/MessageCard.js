@@ -1,16 +1,38 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './MessageCard.module.css';
 import { useUser } from '../context/UserContext';
 
 export default function MessageCard({ message, onDelete }) {
   const { user } = useUser();
+  const [showOptions, setShowOptions] = useState(false);
+  const optionsRef = useRef(null);
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+
+  const optionsVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 50 },
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setShowOptions(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [optionsRef]);
 
   const handleDelete = async () => {
     if (!user || !user.idToken) {
@@ -33,19 +55,32 @@ export default function MessageCard({ message, onDelete }) {
       });
 
       if (response.ok) {
-          console.log('Message deleted successfully');
-          if (onDelete) {
-            onDelete(message.id);
-          }
-          return true; // Indicate success
-        } else {
-          const errorData = await response.json();
-          console.error('Failed to delete message:', errorData.message);
-          return false; // Indicate failure
+        console.log('Message deleted successfully');
+        if (onDelete) {
+          onDelete(message.id);
         }
+        setShowOptions(false); // Close options after action
+        return true; // Indicate success
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to delete message:', errorData.message);
+        return false; // Indicate failure
+      }
     } catch (error) {
       console.error('Error deleting message:', error);
     }
+  };
+
+  const handleEdit = () => {
+    console.log('Edit message:', message.id);
+    setShowOptions(false); // Close options after action
+    // Implement edit functionality here
+  };
+
+  const handleChangeVisibility = () => {
+    console.log('Change visibility for message:', message.id);
+    setShowOptions(false); // Close options after action
+    // Implement change visibility functionality here
   };
 
   return (
@@ -57,19 +92,45 @@ export default function MessageCard({ message, onDelete }) {
       transition={{ duration: 0.5 }}
     >
       <div className="card-body">
-        <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender==""?<span className="text-danger">?</span>:<span>{message.sender}</span>}</h5>
+        <div className={styles.cardHeader}>
+          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>}</h5>
+          {user && user.authLevel === 1 && (
+            <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
+              <i className="bi bi-three-dots"></i>
+            </button>
+          )}
+        </div>
         <p className="card-text fs-5">{message.message}</p>
         <div className="d-flex justify-content-between align-items-center">
           <small className="text-muted">
             {message.date ? formatTimeAgo(message.date) : 'Date N/A'}
           </small>
-          {user && user.authLevel === 1 && (
-            <button onClick={handleDelete} className={`${styles.deleteButton} btn btn-danger text-danger bg-transparent`}>
-              <i className="bi bi-trash-fill"></i>
-            </button>
-          )}
         </div>
       </div>
+
+      <AnimatePresence>
+        {showOptions && (
+          <motion.div
+            ref={optionsRef}
+            className={styles.optionsMenu}
+            variants={optionsVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ duration: 0.2 }}
+          >
+            <button className={styles.optionButton} onClick={handleEdit}>
+              <i className="bi bi-pencil-square me-2"></i>Edit
+            </button>
+            <button className={styles.optionButton} onClick={handleChangeVisibility}>
+              <i className="bi bi-eye-fill me-2"></i>Change Visibility
+            </button>
+            <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleDelete}>
+              <i className="bi bi-trash-fill me-2"></i>Delete
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
