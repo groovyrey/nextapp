@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function PUT(request) {
   try {
-    const { uid, firstName, lastName, age } = await request.json();
+    const { uid, firstName, lastName, age, authLevel } = await request.json();
 
     if (!uid || !firstName || !lastName || !age || isNaN(parseInt(age))) {
       return NextResponse.json({ error: "Missing or invalid user data." }, { status: 400 });
