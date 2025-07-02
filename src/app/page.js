@@ -9,7 +9,7 @@ import LoadingMessage from './components/LoadingMessage';
 
 export default function Home() {
   const router = useRouter();
-  const { user, loading } = useUser();
+  const { user, userData, loading } = useUser();
   const [logoutError, setLogoutError] = useState('');
 
   useEffect(() => {
