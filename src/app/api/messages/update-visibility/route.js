@@ -27,7 +27,7 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Bad Request: messageId and private are required' }, { status: 400 });
     }
 
-    const messageRef = firestore.collection('messages').doc(messageId);
+    const messageRef = firestore.collection('maindata').doc(messageId);
     const messageDoc = await messageRef.get();
 
     if (!messageDoc.exists) {
