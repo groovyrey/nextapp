@@ -63,11 +63,15 @@ export default function UserProfilePage({ params }) {
               style={{ objectFit: 'cover' }}
             />
           )}
-          <div className="row mb-3">
-            <div className="col-12">
-              <h1 className="m-0 text-center">{(profileData.firstName || '') + " " + (profileData.lastName || '')}</h1>
+          <div className="col-12 text-center mb-3">
+              <h1 className="display-4 d-inline-block me-2">{(profileData.firstName || '') + " " + (profileData.lastName || '')}</h1>
+              {profileData.authLevel === 1 && (
+                <span className="badge bg-primary align-middle">OWNER</span>
+              )}
+              {profileData.authLevel === 2 && (
+                <span className="badge bg-info align-middle">DEV</span>
+              )}
             </div>
-          </div>
           <div className="row mb-3">
             <div className="col-12 col-md-6">
               <p className="mb-1"><strong>Email:</strong></p>
