@@ -114,9 +114,9 @@ export default function UserProfilePage({ params }) {
                   width: '40px',
                   height: '40px',
                   backgroundColor: '#fff', /* Card background color */
-                  right: '5px', /* Adjust for overlap */
-                  bottom: '5px', /* Adjust for overlap */
-                  border: '2px solid var(--bs-primary)'
+                  right: '15px', /* Adjust for overlap */
+                  bottom: '15px', /* Adjust for overlap */
+                  /* border: '2px solid var(--bs-primary)' */
                 }}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
