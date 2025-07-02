@@ -100,7 +100,7 @@ export default function UserProfilePage({ params }) {
                 <i className="bi bi-star-fill text-warning align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Owner"></i>
               )}
               {profileData.authLevel === 2 && (
-                <i className="bi bi-code-slash text-info align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
+                <i className="bi bi-code-slash text-info align-middle fs-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
               )}
             </div>
           <div className="row mb-3">
