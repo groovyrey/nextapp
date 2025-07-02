@@ -32,7 +32,7 @@ export default function UserDisplay() {
     }
   }, [user]);
 
-  if (loading || (userData && userData.profilePictureUrl && !imageLoaded)) {
+  if (loading) {
     return <LoadingMessage />;
   }
 
