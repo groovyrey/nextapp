@@ -65,7 +65,7 @@ export default function UserProfilePage({ params }) {
           )}
           <div className="row mb-3">
             <div className="col-12">
-              <h1 className="m-0 text-center">{profileData.firstname + " " + profileData.lastname}</h1>
+              <h1 className="m-0 text-center">{(profileData.firstName || '') + " " + (profileData.lastName || '')}</h1>
             </div>
           </div>
           <div className="row mb-3">
