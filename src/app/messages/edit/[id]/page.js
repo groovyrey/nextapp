@@ -12,12 +12,14 @@ export default function EditMessagePage() {
 
   useEffect(() => {
     const fetchMessage = async () => {
+      console.log("Fetching message for ID:", id);
       try {
         const response = await fetch(`/api/messages/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        console.log("Fetched message data:", data);
         setMessageContent(data.message);
         setMessageSender(data.sender || ''); // Assuming sender might be null or undefined
       } catch (error) {
