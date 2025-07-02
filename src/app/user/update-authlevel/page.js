@@ -8,12 +8,14 @@ export default function UpdateAuthLevelPage() {
   const [authLevel, setAuthLevel] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
+    setIsUpdating(true);
 
     if (!uid || authLevel === "") {
       setError("Please enter both UID and Auth Level.");
@@ -41,6 +43,8 @@ export default function UpdateAuthLevelPage() {
     } catch (err) {
       console.error("Error updating auth level:", err);
       setError("An unexpected error occurred.");
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -78,8 +82,13 @@ export default function UpdateAuthLevelPage() {
             <button
               type="submit"
               className="btn btn-primary w-100"
+              disabled={isUpdating}
             >
-              Update Auth Level
+              {isUpdating ? (
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              ) : (
+                ''
+              )}{' '}{isUpdating ? 'Updating...' : 'Update Auth Level'}
             </button>
           </form>
         </div>

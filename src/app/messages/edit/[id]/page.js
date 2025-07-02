@@ -9,22 +9,27 @@ export default function EditMessagePage() {
 
   const [messageContent, setMessageContent] = useState('');
   const [messageSender, setMessageSender] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchMessage = async () => {
-      console.log("Fetching message for ID:", id);
+      setIsLoading(true);
+      setError('');
       try {
         const response = await fetch(`/api/messages/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("Fetched message data:", data);
         setMessageContent(data.message);
-        setMessageSender(data.sender || ''); // Assuming sender might be null or undefined
+        setMessageSender(data.sender || '');
       } catch (error) {
         console.error("Failed to fetch message:", error);
-        // Optionally, handle error in UI, e.g., redirect or show a message
+        setError('Failed to load message.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -33,13 +38,46 @@ export default function EditMessagePage() {
     }
   }, [id]);
 
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);
+    setError('');
+    try {
+      const response = await fetch(`/api/messages/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: messageContent, sender: messageSender }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      alert('Message updated successfully!');
+    } catch (error) {
+      console.error("Failed to save message:", error);
+      setError('Failed to save message.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) {
+    return <LoadingMessage />;
+  }
+
+  if (error) {
+    return <div className="text-danger text-center mt-5">Error: {error}</div>;
+  }
+
   return (
     <div className="container py-5">
       <div className="card p-4 shadow-sm">
         <h1 className="card-title text-center mb-4">Edit Message</h1>
+        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <p className="text-center text-muted mb-4">Editing message with ID: {id}</p>
         
-        <form>
+        <form onSubmit={handleSave}>
           <div className="mb-3">
             <label htmlFor="messageContent" className="form-label">Message Content</label>
             <textarea 
@@ -62,7 +100,13 @@ export default function EditMessagePage() {
               onChange={(e) => setMessageSender(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100 mt-3">Save Changes</button>
+          <button type="submit" className="btn btn-primary w-100 mt-3" disabled={isSaving}>
+            {isSaving ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : (
+              ''
+            )}{' '}{isSaving ? 'Saving...' : 'Save Changes'}
+          </button>
         </form>
       </div>
     </div>
