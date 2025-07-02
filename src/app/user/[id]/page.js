@@ -8,8 +8,10 @@ import dynamic from 'next/dynamic';
 const ProfilePictureModal = dynamic(() => import('../../../app/components/ProfilePictureModal'), { ssr: false });
 import { motion } from 'framer-motion';
 
+import React from 'react';
+
 export default function UserProfilePage({ params }) {
-  const { id } = params;
+  const { id } = React.use(params);
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);

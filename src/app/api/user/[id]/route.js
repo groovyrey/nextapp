@@ -4,7 +4,8 @@ import { cookies } from "next/headers";
 
 export async function GET(request, { params }) {
   try {
-    const { id } = params;
+    const awaitedParams = await params;
+    const { id } = awaitedParams;
     const userDoc = await admin.firestore().collection("users").doc(id).get();
 
     if (!userDoc.exists) {
