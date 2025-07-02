@@ -51,21 +51,21 @@ export default function UserProfilePage({ params }) {
 }
 
   if (error) {
-    return <div class="text-danger">Error: {error}</div>;
+    return <div className="text-danger">Error: {error}</div>;
   }
 
   return (
-    <div class="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <motion.div
-        class="card m-2 shadow-lg rounded-3"
+        className="card m-2 shadow-lg rounded-3"
         style={{ maxWidth: '600px', width: '100%' }}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div class="card-body p-4">
-          <h2 class="card-title text-center mb-4 display-6 fw-bold text-primary"><span class="bi-person-fill me-2"></span>User Profile</h2>
-          {error && <div class="alert alert-danger" role="alert">Error: {error}</div>}
+        <div className="card-body p-4">
+          <h2 className="card-title text-center mb-4 display-6 fw-bold text-primary"><span className="bi-person-fill me-2"></span>User Profile</h2>
+          {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
           
           {profileData.profilePictureUrl ? (
             <CldImage
@@ -74,32 +74,29 @@ export default function UserProfilePage({ params }) {
               width={150}
               height={150}
               crop="fill"
-              class="rounded-circle mb-4 mx-auto d-block border border-primary border-3"
+              className="rounded-circle mb-4 mx-auto d-block border border-primary border-3"
               style={{ objectFit: 'cover' }}
             />
           ) : (
             <div
-              class="rounded-circle mb-4 mx-auto d-block border border-primary border-3"
+              className="rounded-circle mb-4 mx-auto border border-primary border-3 d-flex align-items-center justify-content-center"
               style={{
                 width: '150px',
                 height: '150px',
                 backgroundColor: '#e9ecef',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
               }}
             >
-              <i class="bi bi-person-fill" style={{ fontSize: '75px', color: '#adb5bd' }}></i>
+              <i className="bi bi-person-fill" style={{ fontSize: '75px', color: '#adb5bd' }}></i>
             </div>
           )}
 
-          <div class="col-12 text-center mb-3 d-flex align-items-center justify-content-center">
-              <h1 class="display-4 d-inline-block me-2">{toTitleCase((profileData.firstName || '') + " " + (profileData.lastName || ''))}</h1>
+          <div className="col-12 text-center mb-3 d-flex align-items-center justify-content-center">
+              <h1 className="display-4 d-inline-block me-2">{toTitleCase((profileData.firstName || '') + " " + (profileData.lastName || ''))}</h1>
               {profileData.authLevel === 1 && (
-                <i class="bi bi-star-fill text-warning align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Owner"></i>
+                <i className="bi bi-star-fill text-warning align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Owner"></i>
               )}
               {profileData.authLevel === 2 && (
-                <i class="bi bi-code-slash text-info align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
+                <i className="bi bi-code-slash text-info align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
               )}
             </div>
           <div class="row mb-3">
