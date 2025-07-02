@@ -42,15 +42,20 @@ export default function UserProfilePage({ params }) {
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><span className="bi-person-fill"></span>{" "}User Profile</h2>
           {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
-          {profileData.profilePictureUrl && (
-            <div className="text-center mb-4">
-              <img
-                src={profileData.profilePictureUrl}
-                alt="Profile"
-                className="img-fluid rounded-circle"
-                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-              />
-            </div>
+          import { CldImage } from 'next-cloudinary';
+
+// ... (rest of the component)
+
+          {profileUser.profilePictureUrl && (
+            <CldImage
+              src={profileUser.profilePictureUrl}
+              alt="Profile"
+              width={150}
+              height={150}
+              crop="fill"
+              className="rounded-circle mb-3"
+              style={{ objectFit: 'cover' }}
+            />
           )}
           <p><strong>First Name:</strong> {profileData.firstName}</p>
           <p><strong>Last Name:</strong> {profileData.lastName}</p>

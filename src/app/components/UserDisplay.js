@@ -41,8 +41,20 @@ export default function UserDisplay() {
       </div>
       {user ? (
         <div className="card-body">
+          import { CldImage } from 'next-cloudinary';
+
+// ... (rest of the component)
+
           {userData && userData.profilePictureUrl && (
-            <img src={userData.profilePictureUrl} alt="Profile" className="rounded-circle mb-3" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+            <CldImage
+              src={userData.profilePictureUrl}
+              alt="Profile"
+              width={100}
+              height={100}
+              crop="fill"
+              className="rounded-circle mb-3"
+              style={{ objectFit: 'cover' }}
+            />
           )}
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column align-items-center gap-2 gap-sm-2 justify-content-sm-center">
