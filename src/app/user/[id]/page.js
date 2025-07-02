@@ -44,7 +44,7 @@ export default function UserProfilePage({ params }) {
   }, [profileData]); // Re-initialize when profileData changes
 
   const AUTH_LEVEL_RANKS = {
-    1: { title: "Lead Developer", icon: "bi-person-fill-gear", color: "text-warning" },
+    1: { title: "Lead Developer", icon: "bi-braces", color: "text-danger" },
     2: { title: "Developer", icon: "bi-code-slash", color: "text-info" },
     // Add more auth levels as needed
   };
