@@ -124,20 +124,7 @@ export default function UserProfilePage({ params }) {
         </div>
       </motion.div>
 
-      <motion.div
-        className="card m-2 shadow-lg rounded-3 mt-4"
-        style={{ maxWidth: '600px', width: '100%' }}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <div className="card-body p-4">
-          <h3 className="card-title text-center mb-4 display-6 fw-bold text-primary"><span className="bi-list-ol me-2"></span>Auth Level Ranks</h3>
-          <pre className="bg-light p-3 rounded" style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}>
-            <code>{JSON.stringify(AUTH_LEVEL_RANKS, null, 2)}</code>
-          </pre>
-        </div>
-      </motion.div>
+      
 
       {profileData.profilePictureUrl && (
         <ProfilePictureModal
