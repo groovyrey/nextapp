@@ -11,6 +11,7 @@ export default function UserProfilePage({ params }) {
   const { id } = params;
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
