@@ -5,7 +5,7 @@ import { doc, getDoc, collection } from "firebase/firestore";
 export async function GET(request, { params }) {
   try {
     const { id } = params;
-    const messageRef = doc(db, "messages", id);
+    const messageRef = doc(db, "maindata", id);
     const messageSnap = await getDoc(messageRef);
 
     if (!messageSnap.exists()) {
