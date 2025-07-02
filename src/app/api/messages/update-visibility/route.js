@@ -33,7 +33,7 @@ export async function POST(request) {
     return NextResponse.json({ message: 'Message visibility updated successfully' });
 
   } catch (error) {
-    console.error('Error updating message visibility:', error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    console.error('Error updating message visibility:', error.message, error.stack);
+    return NextResponse.json({ message: 'Internal Server Error', error: error.message }, { status: 500 });
   }
 }
