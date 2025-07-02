@@ -47,15 +47,14 @@ export default function SendMessage() {
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="sender" className="form-label"><i className="bi bi-person me-2"></i>Sender Email or Name</label>
+              <label htmlFor="sender" className="form-label"><i className="bi bi-person me-2"></i>Sender Email or Name (Optional)</label>
               <input
                 type="text"
                 id="sender"
                 className="form-control"
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
-                placeholder="Your email or name"
-                required
+                placeholder="Your email or name (e.g., Anonymous)"
               />
             </div>
             <div className="mb-3">
