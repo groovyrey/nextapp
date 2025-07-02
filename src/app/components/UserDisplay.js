@@ -20,6 +20,7 @@ export default function UserDisplay() {
   }
 
   return (
+    <>
     <div className={`${styles.userDisplayContainer} card m-2 text-center`}>
       <div className="card-header">
         <h3><i className="bi bi-info-circle me-2"></i>User Information</h3>
