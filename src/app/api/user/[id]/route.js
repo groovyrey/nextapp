@@ -12,12 +12,16 @@ export async function GET(request, { params }) {
     }
 
     const userData = userDoc.data();
+    const userRecord = await admin.auth().getUser(id);
+    const authLevel = userRecord.customClaims?.authLevel || 0;
+
     const publicUserData = {
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
       age: userData.age,
       profilePictureUrl: userData.profilePictureUrl || null,
+      authLevel: authLevel,
     };
 
     return NextResponse.json(publicUserData, { status: 200 });
