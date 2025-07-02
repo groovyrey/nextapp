@@ -60,9 +60,6 @@ export default function UserDisplay() {
     <div
       className={`${styles.userDisplayContainer} card m-2 text-center shadow-lg rounded-3`}
     >
-      <div className="card-header">
-        <h3><i className="bi bi-info-circle me-2"></i>User Information</h3>
-      </div>
       {user ? (
         <div className="card-body">
           {userData && (userData.profilePictureUrl ? (
