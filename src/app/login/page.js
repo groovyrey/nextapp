@@ -46,13 +46,13 @@ export default function LoginPage() {
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><i className="bi bi-person-circle me-2"></i>Login</h2>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-            <input type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+          <div className="form-floating input-group mb-3">
+            <input type="email" className="form-control" id="emailInput" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+            <label htmlFor="emailInput"><i className="bi bi-envelope me-2"></i>Email</label>
           </div>
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-lock"></i></span>
-            <input type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+          <div className="form-floating input-group mb-3">
+            <input type="password" className="form-control" id="passwordInput" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+            <label htmlFor="passwordInput"><i className="bi bi-lock me-2"></i>Password</label>
           </div>
           <button className="btn btn-primary w-100" onClick={handleLogin} disabled={isLoggingIn}>
             {isLoggingIn ? (

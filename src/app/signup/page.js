@@ -85,25 +85,25 @@ export default function SignupPage() {
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><i className="bi bi-person-plus-fill me-2"></i>Sign Up</h2>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-person"></i></span>
-            <input type="text" className="form-control" placeholder="First Name" onChange={e => setFirstName(e.target.value)} />
+          <div className="form-floating mb-3">
+            <input type="text" className="form-control" id="firstNameInput" placeholder="First Name" onChange={e => setFirstName(e.target.value)} />
+            <label htmlFor="firstNameInput"><i className="bi bi-person me-2"></i>First Name</label>
           </div>
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-person"></i></span>
-            <input type="text" className="form-control" placeholder="Last Name" onChange={e => setLastName(e.target.value)} />
+          <div className="form-floating mb-3">
+            <input type="text" className="form-control" id="lastNameInput" placeholder="Last Name" onChange={e => setLastName(e.target.value)} />
+            <label htmlFor="lastNameInput"><i className="bi bi-person me-2"></i>Last Name</label>
           </div>
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-calendar"></i></span>
-            <input type="number" className="form-control" placeholder="Age" onChange={e => setAge(e.target.value)} />
+          <div className="form-floating mb-3">
+            <input type="number" className="form-control" id="ageInput" placeholder="Age" onChange={e => setAge(e.target.value)} />
+            <label htmlFor="ageInput"><i className="bi bi-calendar me-2"></i>Age</label>
           </div>
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-            <input type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+          <div className="form-floating mb-3">
+            <input type="email" className="form-control" id="emailInput" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+            <label htmlFor="emailInput"><i className="bi bi-envelope me-2"></i>Email</label>
           </div>
-          <div className="input-group mb-3">
-            <span className="input-group-text"><i className="bi bi-lock"></i></span>
-            <input type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+          <div className="form-floating mb-3">
+            <input type="password" className="form-control" id="passwordInput" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+            <label htmlFor="passwordInput"><i className="bi bi-lock me-2"></i>Password</label>
           </div>
           <button className="btn btn-primary w-100" onClick={handleSignup} disabled={isSigningUp}>
             {isSigningUp ? (
