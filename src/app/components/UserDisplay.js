@@ -39,12 +39,8 @@ export default function UserDisplay() {
               height={100}
               crop="fill"
               className={`rounded-circle mb-3 border border-primary border-3`}
-              style={{ objectFit: 'cover', cursor: 'pointer' }}
+              style={{ objectFit: 'cover' }}
               onLoad={() => setImageLoaded(true)}
-              onClick={() => {
-                setModalImageUrl(userData.profilePictureUrl);
-                setShowModal(true);
-              }}
             />
           ) : (
             <div
