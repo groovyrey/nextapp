@@ -122,7 +122,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
     >
       <div className="card-body">
         <div className={styles.cardHeader}>
-          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>} <span className={message.private ? 'text-danger' : 'text-success'}>{message.private ? 'Private' : 'Public'}</span></h5>
+          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>}</h5>
           {user && user.authLevel === 1 && (
             <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
               <i className="bi bi-three-dots"></i>
@@ -133,6 +133,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
         <div className="d-flex justify-content-between align-items-center">
           <small className="text-muted">
             {message.date ? formatTimeAgo(message.date) : 'Date N/A'}
+            {message.private ? <i className="bi bi-eye-slash-fill ms-2" title="Private Message"></i> : <i className="bi bi-eye-fill ms-2" title="Public Message"></i>}
           </small>
         </div>
       </div>
