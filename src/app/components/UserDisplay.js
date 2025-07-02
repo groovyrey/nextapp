@@ -47,6 +47,7 @@ export default function UserDisplay() {
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column align-items-center gap-2 gap-sm-2 justify-content-sm-center">
             
+            <button className="btn btn-primary w-100 w-sm-auto" onClick={() => router.push(`/user/${user.uid}`)}><i className="bi-person-vcard me-2"></i> View Profile</button>
             <button className="btn btn-secondary w-100 w-sm-auto" onClick={() => router.push(`/user/edit`)}><i className="bi-pencil me-2"></i> Edit Profile</button>
             <button className="btn btn-danger w-100 w-sm-auto" onClick={logout}><i className="bi-box-arrow-right me-2"></i> Logout</button>
           </div>
