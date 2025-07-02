@@ -6,7 +6,8 @@ import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
 import styles from './UserDisplay.module.css';
 import { CldImage } from 'next-cloudinary';
-import ProfilePictureModal from './ProfilePictureModal';
+import dynamic from 'next/dynamic';
+const ProfilePictureModal = dynamic(() => import('./ProfilePictureModal'), { ssr: false });
 import { motion } from 'framer-motion';
 
 export default function UserDisplay() {
