@@ -20,9 +20,9 @@ export default function ProfilePictureModal({ imageUrl, onClose, isOpen }) {
           <motion.div
             className={styles.modalContent}
             onClick={e => e.stopPropagation()}
-            initial={{ y: "-100vh", opacity: 0 }}
-            animate={{ y: "0", opacity: 1 }}
-            exit={{ y: "100vh", opacity: 0 }}
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
             transition={{ type: "spring", stiffness: 120, damping: 14 }}
           >
             <button className={styles.closeButton} onClick={onClose}>&times;</button>
