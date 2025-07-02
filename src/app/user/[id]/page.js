@@ -42,6 +42,16 @@ export default function UserProfilePage({ params }) {
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><span className="bi-person-fill"></span>{" "}User Profile</h2>
           {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
+          {profileData.profilePictureUrl && (
+            <div className="text-center mb-4">
+              <img
+                src={profileData.profilePictureUrl}
+                alt="Profile"
+                className="img-fluid rounded-circle"
+                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+              />
+            </div>
+          )}
           <p><strong>First Name:</strong> {profileData.firstName}</p>
           <p><strong>Last Name:</strong> {profileData.lastName}</p>
           <p><strong>Email:</strong> {profileData.email}</p>

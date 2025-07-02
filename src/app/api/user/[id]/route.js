@@ -17,6 +17,7 @@ export async function GET(request, { params }) {
       lastName: userData.lastName,
       email: userData.email,
       age: userData.age,
+      profilePictureUrl: userData.profilePictureUrl || null,
     };
 
     return NextResponse.json(publicUserData, { status: 200 });
