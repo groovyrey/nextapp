@@ -52,7 +52,7 @@ export default function UserProfilePage({ params }) {
               width={150}
               height={150}
               crop="fill"
-              className="rounded-circle mb-3"
+              className="rounded-circle mb-3 mx-auto d-block"
               style={{ objectFit: 'cover' }}
             />
           )}
