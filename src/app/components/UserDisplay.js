@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
 import styles from './UserDisplay.module.css';
 import { CldImage } from 'next-cloudinary';
 import ProfilePictureModal from './ProfilePictureModal';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function UserDisplay() {
   const router = useRouter();
@@ -15,10 +15,46 @@ export default function UserDisplay() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalImageUrl, setModalImageUrl] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
+  const optionsRef = useRef(null);
+
+  const optionsVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 50 },
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setShowOptions(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [optionsRef]);
 
   if (loading) {
     return <LoadingMessage />;
   }
+
+  const handleViewProfile = () => {
+    setShowOptions(false);
+    router.push(`/user/${user.uid}`);
+  };
+
+  const handleEditProfile = () => {
+    setShowOptions(false);
+    router.push(`/user/edit`);
+  };
+
+  const handleLogout = () => {
+    setShowOptions(false);
+    logout();
+  };
 
   return (
     <div
@@ -29,8 +65,6 @@ export default function UserDisplay() {
       </div>
       {user ? (
         <div className="card-body">
-
-
           {userData && (userData.profilePictureUrl ? (
             <CldImage
               src={userData.profilePictureUrl}
@@ -57,11 +91,33 @@ export default function UserDisplay() {
           ))}
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column flex-md-row align-items-center justify-content-md-between gap-2 gap-md-3">
-            
-            <button className="btn btn-primary w-100 w-sm-auto" onClick={() => router.push(`/user/${user.uid}`)}><i className="bi-person-vcard me-2"></i> View Profile</button>
-            <button className="btn btn-secondary w-100 w-sm-auto" onClick={() => router.push(`/user/edit`)}><i className="bi-pencil me-2"></i> Edit Profile</button>
-            <button className="btn btn-danger w-100 w-sm-auto" onClick={logout}><i className="bi-box-arrow-right me-2"></i> Logout</button>
+            <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
+              <i className="bi bi-three-dots"></i>
+            </button>
           </div>
+          <AnimatePresence>
+            {showOptions && (
+              <motion.div
+                ref={optionsRef}
+                className={styles.optionsMenu}
+                variants={optionsVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 0.2 }}
+              >
+                <button className={styles.optionButton} onClick={handleViewProfile}>
+                  <i className="bi bi-person-vcard me-2"></i> View Profile
+                </button>
+                <button className={styles.optionButton} onClick={handleEditProfile}>
+                  <i className="bi bi-pencil me-2"></i> Edit Profile
+                </button>
+                <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleLogout}>
+                  <i className="bi bi-box-arrow-right me-2"></i> Logout
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       ) : (
         <div className="card-body">
