@@ -82,36 +82,52 @@ export default function UserProfilePage({ params }) {
           <h2 className="card-title text-center mb-4 display-6 fw-bold text-primary"><span className="bi-person-fill me-2"></span>User Profile</h2>
           {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
           
-          {profileData.profilePictureUrl ? (
-            <CldImage
-              src={profileData.profilePictureUrl}
-              alt="Profile"
-              width={150}
-              height={150}
-              crop="fill"
-              className="rounded-circle mb-4 mx-auto d-block border border-primary border-3"
-              style={{ objectFit: 'cover', cursor: 'pointer' }}
-              onClick={() => setIsModalOpen(true)}
-            />
-          ) : (
-            <div
-              className="rounded-circle mb-4 mx-auto border border-primary border-3 d-flex align-items-center justify-content-center"
-              style={{
-                width: '150px',
-                height: '150px',
-                backgroundColor: '#e9ecef',
-                cursor: 'not-allowed'
-              }}
-            >
-              <i className="bi bi-person-fill" style={{ fontSize: '75px', color: '#adb5bd' }}></i>
-            </div>
-          )}
+          <div className="position-relative mx-auto mb-4" style={{ width: '150px', height: '150px' }}>
+            {profileData.profilePictureUrl ? (
+              <CldImage
+                src={profileData.profilePictureUrl}
+                alt="Profile"
+                width={150}
+                height={150}
+                crop="fill"
+                className="rounded-circle border border-primary border-3"
+                style={{ objectFit: 'cover', cursor: 'pointer' }}
+                onClick={() => setIsModalOpen(true)}
+              />
+            ) : (
+              <div
+                className="rounded-circle border border-primary border-3 d-flex align-items-center justify-content-center"
+                style={{
+                  width: '150px',
+                  height: '150px',
+                  backgroundColor: '#e9ecef',
+                  cursor: 'not-allowed'
+                }}
+              >
+                <i className="bi bi-person-fill" style={{ fontSize: '75px', color: '#adb5bd' }}></i>
+              </div>
+            )}
+            {authLevelInfo && (
+              <div
+                className="position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center shadow"
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  backgroundColor: '#fff', /* Card background color */
+                  border: '2px solid var(--bs-primary)',
+                  transform: 'translate(25%, 25%)'
+                }}
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title={authLevelInfo.title}
+              >
+                <i className={`${authLevelInfo.icon} ${authLevelInfo.color} fs-5`}></i>
+              </div>
+            )}
+          </div>
 
-          <div className="col-12 text-center mb-3 d-flex align-items-center justify-content-center">
-              <h1 className="display-4 d-inline-block me-2">{toTitleCase((profileData.firstName || '') + " " + (profileData.lastName || ''))}</h1>
-              {authLevelInfo && (
-                <i className={`bi ${authLevelInfo.icon} ${authLevelInfo.color} align-middle fs-4`} data-bs-toggle="tooltip" data-bs-placement="top" title={authLevelInfo.title}></i>
-              )}
+          <div className="col-12 text-center mb-3">
+              <h1 className="display-4 d-inline-block">{toTitleCase((profileData.firstName || '') + " " + (profileData.lastName || ''))}</h1>
             </div>
           <div className="row mb-3">
             <div className="col-12 col-md-6">
