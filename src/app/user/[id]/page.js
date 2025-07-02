@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import * as bootstrap from 'bootstrap';
 import LoadingMessage from '../../../app/components/LoadingMessage';
 import { CldImage } from 'next-cloudinary';
+import ProfilePictureModal from '../../../app/components/ProfilePictureModal';
 import { motion } from 'framer-motion';
 
 export default function UserProfilePage({ params }) {
@@ -114,6 +115,13 @@ export default function UserProfilePage({ params }) {
           </div>
         </div>
       </motion.div>
+      {profileData.profilePictureUrl && (
+        <ProfilePictureModal
+          imageUrl={profileData.profilePictureUrl}
+          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalOpen}
+        />
+      )}
     </div>
   );
 }

@@ -5,8 +5,8 @@ import React from 'react';
 import styles from './ProfilePictureModal.module.css';
 import { CldImage } from 'next-cloudinary';
 
-export default function ProfilePictureModal({ imageUrl, onClose }) {
-  if (!imageUrl) return null;
+export default function ProfilePictureModal({ imageUrl, onClose, isOpen }) {
+  if (!imageUrl || !isOpen) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
