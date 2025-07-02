@@ -87,7 +87,7 @@ export default function UserDisplay() {
             </div>
           ))}
           <p className="card-title">Logged in as: {user.email}</p>
-          <div className="d-flex flex-column flex-md-row align-items-center justify-content-md-between gap-2 gap-md-3">
+          <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2 gap-md-3">
             <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
               <i className="bi bi-three-dots"></i>
             </button>
