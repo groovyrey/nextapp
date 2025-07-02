@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import * as bootstrap from 'bootstrap';
+
 import LoadingMessage from '../../../app/components/LoadingMessage';
 import { CldImage } from 'next-cloudinary';
 import dynamic from 'next/dynamic';
@@ -39,9 +39,11 @@ export default function UserProfilePage({ params }) {
   useEffect(() => {
     // Initialize tooltips after component mounts and data is loaded
     if (typeof document !== 'undefined') {
-      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
+      import('bootstrap').then(bootstrap => {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
       })
     }
   }, [profileData]); // Re-initialize when profileData changes
