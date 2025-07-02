@@ -131,7 +131,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
         </div>
         <p className="card-text fs-5">{message.message}</p>
         <div className="d-flex justify-content-between align-items-center">
-          <small className="text-muted">
+          <small className="">
             {message.date ? formatTimeAgo(message.date) : 'Date N/A'}
             {message.private ? <i className="bi bi-eye-slash-fill ms-2" title="Private Message"></i> : <i className="bi bi-eye-fill ms-2" title="Public Message"></i>}
           </small>
