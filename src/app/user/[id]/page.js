@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 
 import LoadingMessage from '../../../app/components/LoadingMessage';
 import { CldImage } from 'next-cloudinary';
-import dynamic from 'next/dynamic';
-const ProfilePictureModal = dynamic(() => import('../../../app/components/ProfilePictureModal'), { ssr: false });
+import ProfilePictureModal from '../../../app/components/ProfilePictureModal';
 import { motion } from 'framer-motion';
 
 import React from 'react';
