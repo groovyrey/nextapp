@@ -8,6 +8,7 @@ const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const login = async (email, password) => {
@@ -47,9 +48,27 @@ export function UserProvider({ children }) {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
           const idTokenResult = await currentUser.getIdTokenResult();
-          setUser({ ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token });
+          const userWithClaims = { ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token };
+          setUser(userWithClaims);
+
+          // Fetch user data from Firestore
+          try {
+            const res = await fetch(`/api/user/${currentUser.uid}`);
+            if (res.ok) {
+              const data = await res.json();
+              setUserData(data);
+            } else {
+              console.error("Failed to fetch user data from API");
+              setUserData(null);
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUserData(null);
+          }
+
         } else {
           setUser(null);
+          setUserData(null);
         }
         setLoading(false);
       });
@@ -58,7 +77,7 @@ export function UserProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading, login, logout }}>
+    <UserContext.Provider value={{ user, userData, loading, login, logout }}>
       {children}
     </UserContext.Provider>
   );

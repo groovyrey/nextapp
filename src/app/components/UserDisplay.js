@@ -9,28 +9,8 @@ import { CldImage } from 'next-cloudinary';
 
 export default function UserDisplay() {
   const router = useRouter();
-  const { user, loading, logout } = useUser();
-  const [userData, setUserData] = useState(null);
+  const { user, userData, loading, logout } = useUser();
   const [imageLoaded, setImageLoaded] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      const fetchUserData = async () => {
-        try {
-          const res = await fetch(`/api/user/${user.uid}`);
-          if (res.ok) {
-            const data = await res.json();
-            setUserData(data);
-          } else {
-            console.error("Failed to fetch user data");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      };
-      fetchUserData();
-    }
-  }, [user]);
 
   if (loading) {
     return <LoadingMessage />;
