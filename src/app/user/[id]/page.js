@@ -38,6 +38,9 @@ export default function UserProfilePage({ params }) {
     return <div className="text-danger">Error: {error}</div>;
   }
 
+  console.log("Profile Data:", profileData);
+  console.log("Auth Level:", profileData?.authLevel);
+
   return (
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <motion.div
