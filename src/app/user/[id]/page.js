@@ -109,19 +109,20 @@ export default function UserProfilePage({ params }) {
             )}
             {authLevelInfo && (
               <div
-                className="position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center shadow"
+                className="position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center"
                 style={{
-                  width: '40px',
-                  height: '40px',
-                  backgroundColor: '#fff', /* Card background color */
-                  border: '2px solid var(--bs-primary)',
-                  transform: 'translate(25%, 25%)'
+                  width: '24px',
+                  height: '24px',
+                  backgroundColor: '#28a745', /* Green for active status */
+                  right: '-5px', /* Adjust for overlap */
+                  bottom: '-5px', /* Adjust for overlap */
+                  border: '2px solid #fff' /* White border for separation */
                 }}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title={authLevelInfo.title}
               >
-                <i className={`${authLevelInfo.icon} ${authLevelInfo.color} fs-5`}></i>
+                <i className={`${authLevelInfo.icon} ${authLevelInfo.color} fs-6`}></i>
               </div>
             )}
           </div>
