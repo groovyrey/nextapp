@@ -46,15 +46,12 @@ export default function Home() {
       {userData && (
 
         <motion.div
-          className="card m-2 text-center shadow-lg rounded-3"
+          className={`${styles.userDisplayContainer} card m-2 text-center shadow-lg rounded-3`}
           style={{ maxWidth: '600px', width: '100%' }}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="card-header">
-            <h3><i className="bi bi-house-door me-2"></i>Welcome</h3>
-          </div>
           <div className="card-body p-4 text-center">
             <h1 className="display-4 mb-4">Welcome, {userData.firstName}!</h1>
           </div>
