@@ -31,7 +31,7 @@
 }
 
 .messageCardContainer small {
-  color: var(--light-text-color);
+  color: var(--secondary-color);
   font-size: 0.85rem;
 }
 
