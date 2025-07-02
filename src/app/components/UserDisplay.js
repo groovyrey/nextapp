@@ -11,6 +11,7 @@ export default function UserDisplay() {
   const router = useRouter();
   const { user, loading, logout } = useUser();
   const [userData, setUserData] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -31,7 +32,7 @@ export default function UserDisplay() {
     }
   }, [user]);
 
-  if (loading) {
+  if (loading || (userData && userData.profilePictureUrl && !imageLoaded)) {
     return <LoadingMessage />;
   }
 
@@ -53,6 +54,7 @@ export default function UserDisplay() {
               crop="fill"
               className="rounded-circle mb-3"
               style={{ objectFit: 'cover' }}
+              onLoad={() => setImageLoaded(true)}
             />
           )}
           <p className="card-title">Logged in as: {user.email}</p>
