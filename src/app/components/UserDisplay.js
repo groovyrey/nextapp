@@ -64,5 +64,5 @@ export default function UserDisplay() {
         onClose={() => setShowModal(false)}
       />
     )}
-  </>
+  </div>
 }
