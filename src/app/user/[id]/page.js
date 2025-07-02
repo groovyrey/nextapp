@@ -97,7 +97,7 @@ export default function UserProfilePage({ params }) {
           <div className="col-12 text-center mb-3 d-flex align-items-center justify-content-center">
               <h1 className="display-4 d-inline-block me-2">{toTitleCase((profileData.firstName || '') + " " + (profileData.lastName || ''))}</h1>
               {profileData.authLevel === 1 && (
-                <i className="bi bi-star-fill text-warning align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Owner"></i>
+                <i className="bi bi-star-fill text-warning align-middle fs-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Lead Developer"></i>
               )}
               {profileData.authLevel === 2 && (
                 <i className="bi bi-code-slash text-info align-middle fs-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
