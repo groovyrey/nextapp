@@ -122,7 +122,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
     >
       <div className="card-body">
         <div className={styles.cardHeader}>
-          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>From: {message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>}</h5>
+          <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>{" "}{message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>}</h5>
           {user && user.authLevel === 1 && (
             <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
               <i className="bi bi-three-dots"></i>
