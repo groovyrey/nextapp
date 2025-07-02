@@ -35,22 +35,34 @@ export default function UserDisplay() {
         <div className="card-body">
 
 
-          {userData && userData.profilePictureUrl && (
+          {userData && (userData.profilePictureUrl ? (
             <CldImage
               src={userData.profilePictureUrl}
               alt="Profile"
               width={100}
               height={100}
               crop="fill"
-              className={`${styles.profilePicture} rounded-circle mb-3 border border-primary border-3`}
-              style={{ objectFit: 'cover' }}
+              className={`rounded-circle mb-3 border border-primary border-3`}
+              style={{ objectFit: 'cover', cursor: 'pointer' }}
               onLoad={() => setImageLoaded(true)}
               onClick={() => {
                 setModalImageUrl(userData.profilePictureUrl);
                 setShowModal(true);
               }}
             />
-          )}
+          ) : (
+            <div
+              className={`${styles.profilePicture} rounded-circle mb-3 border border-primary border-3 d-flex align-items-center justify-content-center`}
+              style={{
+                width: '100px',
+                height: '100px',
+                backgroundColor: '#e9ecef',
+                cursor: 'not-allowed'
+              }}
+            >
+              <i className="bi bi-person-fill" style={{ fontSize: '50px', color: '#adb5bd' }}></i>
+            </div>
+          ))}
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column flex-md-row align-items-center justify-content-md-between gap-2 gap-md-3">
             

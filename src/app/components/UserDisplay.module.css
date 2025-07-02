@@ -6,5 +6,5 @@
 }
 
 .profilePicture {
-  cursor: pointer; /* Indicate that the image is clickable */
+  /* No specific styles for .profilePicture here, as cursor is handled inline */
 }
