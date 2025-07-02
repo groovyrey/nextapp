@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import LoadingMessage from '../../../components/LoadingMessage';
 
 export default function EditMessagePage() {
   const params = useParams();
   const { id } = params;
+  const router = useRouter();
 
   const [messageContent, setMessageContent] = useState('');
   const [messageSender, setMessageSender] = useState('');
@@ -55,6 +56,7 @@ export default function EditMessagePage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       alert('Message updated successfully!');
+      router.push('/messages');
     } catch (error) {
       console.error("Failed to save message:", error);
       setError('Failed to save message.');
