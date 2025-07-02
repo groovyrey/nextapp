@@ -26,6 +26,11 @@ export default function Navbar() {
               Send Message
             </Link>
           </li>
+          <li>
+            <Link href="/user/search">
+              Search Users
+            </Link>
+          </li>
         </ul>
       </div>
       <div className={styles.navbarActions}>

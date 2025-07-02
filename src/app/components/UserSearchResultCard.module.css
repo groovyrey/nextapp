@@ -1,0 +1,57 @@
+.card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+
+.profilePictureContainer {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+}
+
+.profilePicture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholderPicture {
+  font-size: 40px;
+  color: #ccc;
+}
+
+.userInfo {
+  flex-grow: 1;
+}
+
+.userName {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
