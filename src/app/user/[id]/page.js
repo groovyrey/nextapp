@@ -99,18 +99,18 @@ export default function UserProfilePage({ params }) {
                 <i className="bi bi-code-slash text-info align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
               )}
             </div>
-          <div class="row mb-3">
-            <div class="col-12 col-md-6">
-              <p class="mb-1"><strong>Email:</strong></p>
-              <p class="text-muted">{profileData.email.split('@')[0].substring(0, 3) + '***@' + profileData.email.split('@')[1]}</p>
+          <div className="row mb-3">
+            <div className="col-12 col-md-6">
+              <p className="mb-1"><strong>Email:</strong></p>
+              <p className="text-muted">{profileData.email.split('@')[0].substring(0, 3) + '***@' + profileData.email.split('@')[1]}</p>
             </div>
-            <div class="col-12 col-md-6">
-              <p class="mb-1"><strong>Age:</strong></p>
-              <p class="text-muted">{profileData.age}</p>
+            <div className="col-12 col-md-6">
+              <p className="mb-1"><strong>Age:</strong></p>
+              <p className="text-muted">{profileData.age}</p>
             </div>
           </div>
-          <div class="text-center mt-4 pt-3 border-top">
-            <a href="/" class="btn btn-primary btn-lg"><i class="bi-house-door me-2"></i>Back to Home</a>
+          <div className="text-center mt-4 pt-3 border-top">
+            <a href="/" className="btn btn-primary btn-lg"><i className="bi-house-door me-2"></i>Back to Home</a>
           </div>
         </div>
       </motion.div>
