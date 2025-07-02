@@ -68,6 +68,7 @@ export default function UserDisplay() {
       <ProfilePictureModal
         imageUrl={modalImageUrl}
         onClose={() => setShowModal(false)}
+        isOpen={showModal}
       />
     )}
   </motion.div>
