@@ -43,6 +43,12 @@ export default function UserProfilePage({ params }) {
     }
   }, [profileData]); // Re-initialize when profileData changes
 
+  const AUTH_LEVEL_RANKS = {
+    1: { title: "Lead Developer", icon: "bi-person-fill-gear", color: "text-warning" },
+    2: { title: "Developer", icon: "bi-code-slash", color: "text-info" },
+    // Add more auth levels as needed
+  };
+
   const toTitleCase = (str) => {
     if (!str) return '';
     return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
@@ -55,6 +61,8 @@ export default function UserProfilePage({ params }) {
   if (error) {
     return <div className="text-danger">Error: {error}</div>;
   }
+
+  const authLevelInfo = AUTH_LEVEL_RANKS[profileData.authLevel];
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
@@ -96,11 +104,8 @@ export default function UserProfilePage({ params }) {
 
           <div className="col-12 text-center mb-3 d-flex align-items-center justify-content-center">
               <h1 className="display-4 d-inline-block me-2">{toTitleCase((profileData.firstName || '') + " " + (profileData.lastName || ''))}</h1>
-              {profileData.authLevel === 1 && (
-                <i className="bi bi-star-fill text-warning align-middle fs-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Lead Developer"></i>
-              )}
-              {profileData.authLevel === 2 && (
-                <i className="bi bi-code-slash text-info align-middle fs-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
+              {authLevelInfo && (
+                <i className={`bi ${authLevelInfo.icon} ${authLevelInfo.color} align-middle fs-4`} data-bs-toggle="tooltip" data-bs-placement="top" title={authLevelInfo.title}></i>
               )}
             </div>
           <div className="row mb-3">
@@ -118,6 +123,22 @@ export default function UserProfilePage({ params }) {
           </div>
         </div>
       </motion.div>
+
+      <motion.div
+        className="card m-2 shadow-lg rounded-3 mt-4"
+        style={{ maxWidth: '600px', width: '100%' }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="card-body p-4">
+          <h3 className="card-title text-center mb-4 display-6 fw-bold text-primary"><span className="bi-list-ol me-2"></span>Auth Level Ranks</h3>
+          <pre className="bg-light p-3 rounded" style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}>
+            <code>{JSON.stringify(AUTH_LEVEL_RANKS, null, 2)}</code>
+          </pre>
+        </div>
+      </motion.div>
+
       {profileData.profilePictureUrl && (
         <ProfilePictureModal
           imageUrl={profileData.profilePictureUrl}
