@@ -16,7 +16,14 @@ export async function POST(req) {
     }
 
     const db = admin.firestore();
-    await db.collection('maindata').doc(messageId).delete();
+    const messageRef = db.collection('maindata').doc(messageId);
+    const messageDoc = await messageRef.get();
+
+    if (!messageDoc.exists) {
+      return new Response(JSON.stringify({ message: 'Not Found: Message not found' }), { status: 404 });
+    }
+
+    await messageRef.delete();
 
     return new Response(JSON.stringify({ message: 'Message deleted successfully' }), { status: 200 });
   } catch (error) {

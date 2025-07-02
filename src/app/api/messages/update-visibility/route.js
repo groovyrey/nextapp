@@ -28,6 +28,12 @@ export async function POST(request) {
     }
 
     const messageRef = firestore.collection('messages').doc(messageId);
+    const messageDoc = await messageRef.get();
+
+    if (!messageDoc.exists) {
+      return NextResponse.json({ message: 'Not Found: Message not found' }, { status: 404 });
+    }
+
     await messageRef.update({ private: isPrivate });
 
     return NextResponse.json({ message: 'Message visibility updated successfully' });
