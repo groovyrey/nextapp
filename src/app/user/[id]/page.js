@@ -72,7 +72,7 @@ export default function UserProfilePage({ params }) {
           <div className="row mb-3">
             <div className="col-12 col-md-6">
               <p className="mb-1"><strong>Email:</strong></p>
-              <p className="text-muted">{profileData.email.substring(0, 3) + '***'}</p>
+              <p className="text-muted">{profileData.email}</p>
             </div>
             <div className="col-12 col-md-6">
               <p className="mb-1"><strong>Age:</strong></p>
