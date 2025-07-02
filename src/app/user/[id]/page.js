@@ -64,19 +64,15 @@ export default function UserProfilePage({ params }) {
             />
           )}
           <div className="row mb-3">
-            <div className="col-12 col-md-6">
-              <p className="mb-1"><strong>First Name:</strong></p>
-              <p className="text-muted">{profileData.firstName}</p>
-            </div>
-            <div className="col-12 col-md-6">
-              <p className="mb-1"><strong>Last Name:</strong></p>
-              <p className="text-muted">{profileData.lastName}</p>
+            <div className="col-12">
+              <p className="mb-1"><strong>Full Name:</strong></p>
+              <p className="text-muted">{profileData.firstName} {profileData.lastName}</p>
             </div>
           </div>
           <div className="row mb-3">
             <div className="col-12 col-md-6">
               <p className="mb-1"><strong>Email:</strong></p>
-              <p className="text-muted">{profileData.email}</p>
+              <p className="text-muted">{profileData.email.substring(0, 3) + '***'}</p>
             </div>
             <div className="col-12 col-md-6">
               <p className="mb-1"><strong>Age:</strong></p>
