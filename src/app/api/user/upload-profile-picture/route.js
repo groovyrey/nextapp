@@ -29,15 +29,22 @@ export async function POST(request) {
           overwrite: true,
         },
         (error, result) => {
-          if (error) return reject(error);
+          if (error) {
+            console.error("Cloudinary upload error:", error);
+            return reject(error);
+          }
           resolve(result);
         }
       ).end(buffer);
     });
 
+    console.log("Cloudinary upload successful. Secure URL:", uploadResult.secure_url);
+
     await admin.firestore().collection("users").doc(uid).update({
       profilePictureUrl: uploadResult.secure_url,
     });
+
+    console.log("Profile picture URL saved to Firestore for UID:", uid);
 
     return NextResponse.json({ message: "Profile picture uploaded successfully.", url: uploadResult.secure_url }, { status: 200 });
   } catch (error) {
