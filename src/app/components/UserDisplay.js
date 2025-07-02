@@ -7,6 +7,7 @@ import LoadingMessage from './LoadingMessage';
 import styles from './UserDisplay.module.css';
 import { CldImage } from 'next-cloudinary';
 import ProfilePictureModal from './ProfilePictureModal';
+import { motion } from 'framer-motion';
 
 export default function UserDisplay() {
   const router = useRouter();
@@ -20,7 +21,12 @@ export default function UserDisplay() {
   }
 
   return (
-    <div className={`${styles.userDisplayContainer} card m-2 text-center`}>
+    <motion.div
+      className={`${styles.userDisplayContainer} card m-2 text-center shadow-lg rounded-3`}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="card-header">
         <h3><i className="bi bi-info-circle me-2"></i>User Information</h3>
       </div>
@@ -35,7 +41,7 @@ export default function UserDisplay() {
               width={100}
               height={100}
               crop="fill"
-              className={`${styles.profilePicture} rounded-circle mb-3`}
+              className={`${styles.profilePicture} rounded-circle mb-3 border border-primary border-3`}
               style={{ objectFit: 'cover' }}
               onLoad={() => setImageLoaded(true)}
               onClick={() => {
@@ -63,5 +69,5 @@ export default function UserDisplay() {
         onClose={() => setShowModal(false)}
       />
     )}
-  </div>
-)}
+  </motion.div>
+)}}
