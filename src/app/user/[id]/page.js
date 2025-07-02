@@ -29,6 +29,16 @@ export default function UserProfilePage({ params }) {
       fetchProfile();
     }
   }, [id]);
+
+  useEffect(() => {
+    // Initialize tooltips after component mounts and data is loaded
+    if (typeof document !== 'undefined') {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+    }
+  }, [profileData]); // Re-initialize when profileData changes
   
   if (!profileData) {
   return <LoadingMessage />;
@@ -37,9 +47,6 @@ export default function UserProfilePage({ params }) {
   if (error) {
     return <div className="text-danger">Error: {error}</div>;
   }
-
-  console.log("Profile Data:", profileData);
-  console.log("Auth Level:", profileData?.authLevel);
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
@@ -69,10 +76,10 @@ export default function UserProfilePage({ params }) {
           <div className="col-12 text-center mb-3">
               <h1 className="display-4 d-inline-block me-2">{(profileData.firstName || '') + " " + (profileData.lastName || '')}</h1>
               {profileData.authLevel === 1 && (
-                <span className="badge bg-primary align-middle">OWNER</span>
+                <i className="bi bi-star-fill text-warning align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Owner"></i>
               )}
               {profileData.authLevel === 2 && (
-                <span className="badge bg-info align-middle">DEV</span>
+                <i className="bi bi-code-slash text-info align-middle" data-bs-toggle="tooltip" data-bs-placement="top" title="Developer"></i>
               )}
             </div>
           <div className="row mb-3">
