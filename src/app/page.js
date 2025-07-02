@@ -7,6 +7,7 @@ import UserDisplay from './components/UserDisplay';
 import { useUser } from './context/UserContext';
 
 import LoadingMessage from './components/LoadingMessage';
+import styles from './components/UserDisplay.module.css';
 
 export default function Home() {
   const router = useRouter();
