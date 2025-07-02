@@ -18,6 +18,23 @@ export async function POST(request) {
       return NextResponse.json({ error: "Missing UID or file." }, { status: 400 });
     }
 
+    // Fetch current user data to check for existing profile picture
+    const userDocRef = admin.firestore().collection("users").doc(uid);
+    const userDoc = await userDocRef.get();
+    const userData = userDoc.data();
+
+    // If an old profile picture exists, delete it from Cloudinary
+    if (userData && userData.profilePictureUrl) {
+      try {
+        // Assuming public_id is the UID as set during upload
+        await cloudinary.uploader.destroy(uid);
+        console.log("Old profile picture deleted from Cloudinary for UID:", uid);
+      } catch (deleteError) {
+        console.error("Error deleting old profile picture from Cloudinary:", deleteError);
+        // Continue with upload even if old picture deletion fails
+      }
+    }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
