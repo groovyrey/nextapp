@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
@@ -9,6 +9,26 @@ import styles from './UserDisplay.module.css';
 export default function UserDisplay() {
   const router = useRouter();
   const { user, loading, logout } = useUser();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      const fetchUserData = async () => {
+        try {
+          const res = await fetch(`/api/user/${user.uid}`);
+          if (res.ok) {
+            const data = await res.json();
+            setUserData(data);
+          } else {
+            console.error("Failed to fetch user data");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+      fetchUserData();
+    }
+  }, [user]);
 
   if (loading) {
     return <LoadingMessage />;
@@ -21,6 +41,9 @@ export default function UserDisplay() {
       </div>
       {user ? (
         <div className="card-body">
+          {userData && userData.profilePictureUrl && (
+            <img src={userData.profilePictureUrl} alt="Profile" className="rounded-circle mb-3" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+          )}
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column align-items-center gap-2 gap-sm-2 justify-content-sm-center">
             <button className="btn btn-primary w-100 w-sm-auto" onClick={() => router.push(`/user/${user.uid}`)}><i className="bi-person-vcard me-2"></i> View Profile</button>

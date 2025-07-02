@@ -11,6 +11,7 @@ export default function EditUserPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
+  const [profilePictureFile, setProfilePictureFile] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isFetchingUserData, setIsFetchingUserData] = useState(true); // New state for data fetching
@@ -84,6 +85,40 @@ export default function EditUserPage() {
     }
   };
 
+  const handleProfilePictureUpload = async () => {
+    if (!profilePictureFile) {
+      setError("Please select a file to upload.");
+      return;
+    }
+
+    setError('');
+    setSuccess('');
+    setIsUpdating(true);
+
+    const formData = new FormData();
+    formData.append("uid", user.uid);
+    formData.append("file", profilePictureFile);
+
+    try {
+      const res = await fetch('/api/user/upload-profile-picture', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        setSuccess('Profile picture uploaded successfully!');
+        // Optionally, refresh user data to show new profile picture
+      } else {
+        const errorData = await res.json();
+        setError(errorData.error || 'Failed to upload profile picture.');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred during file upload.');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   if (loading || isFetchingUserData) { // Include isFetchingUserData in loading check
     return <LoadingMessage />;
   }
@@ -111,6 +146,17 @@ export default function EditUserPage() {
             <label htmlFor="age" className="form-label">Age</label>
             <input type="number" id="age" className="form-control" placeholder="Age" value={age} onChange={e => setAge(e.target.value)} disabled={isUpdating} />
           </div>
+          <div className="mb-3">
+            <label htmlFor="profilePicture" className="form-label">Profile Picture</label>
+            <input type="file" id="profilePicture" className="form-control" onChange={e => setProfilePictureFile(e.target.files[0])} disabled={isUpdating} />
+          </div>
+          <button className="btn btn-primary w-100 mb-2" onClick={handleProfilePictureUpload} disabled={isUpdating}>
+            {isUpdating ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : (
+              <i className="bi-upload"></i>
+            )}{' '}{isUpdating ? 'Uploading...' : 'Upload Profile Picture'}
+          </button>
           <button className="btn btn-primary w-100" onClick={handleUpdate} disabled={isUpdating}>
             {isUpdating ? (
               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
