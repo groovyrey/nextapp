@@ -77,7 +77,8 @@ export default function UserProfilePage({ params }) {
               height={150}
               crop="fill"
               className="rounded-circle mb-4 mx-auto d-block border border-primary border-3"
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'cover', cursor: 'pointer' }}
+              onClick={() => setIsModalOpen(true)}
             />
           ) : (
             <div
@@ -86,6 +87,7 @@ export default function UserProfilePage({ params }) {
                 width: '150px',
                 height: '150px',
                 backgroundColor: '#e9ecef',
+                cursor: 'not-allowed'
               }}
             >
               <i className="bi bi-person-fill" style={{ fontSize: '75px', color: '#adb5bd' }}></i>
