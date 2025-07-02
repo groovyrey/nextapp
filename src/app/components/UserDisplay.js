@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
 import styles from './UserDisplay.module.css';
+import { CldImage } from 'next-cloudinary';
 
 export default function UserDisplay() {
   const router = useRouter();
@@ -41,9 +42,7 @@ export default function UserDisplay() {
       </div>
       {user ? (
         <div className="card-body">
-          import { CldImage } from 'next-cloudinary';
-
-// ... (rest of the component)
+          
 
           {userData && userData.profilePictureUrl && (
             <CldImage

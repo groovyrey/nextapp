@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import LoadingMessage from '../../../app/components/LoadingMessage';
+import { CldImage } from 'next-cloudinary';
 
 export default function UserProfilePage({ params }) {
   const { id } = params;
@@ -42,9 +43,7 @@ export default function UserProfilePage({ params }) {
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><span className="bi-person-fill"></span>{" "}User Profile</h2>
           {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
-          import { CldImage } from 'next-cloudinary';
-
-// ... (rest of the component)
+          
 
           {profileData.profilePictureUrl && (
             <CldImage
