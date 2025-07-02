@@ -4,3 +4,7 @@
   /* padding: 20px; */
   /* border: 1px solid #ccc; */
 }
+
+.profilePicture {
+  cursor: pointer; /* Indicate that the image is clickable */
+}

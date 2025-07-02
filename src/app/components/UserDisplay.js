@@ -6,11 +6,14 @@ import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
 import styles from './UserDisplay.module.css';
 import { CldImage } from 'next-cloudinary';
+import ProfilePictureModal from './ProfilePictureModal';
 
 export default function UserDisplay() {
   const router = useRouter();
   const { user, userData, loading, logout } = useUser();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalImageUrl, setModalImageUrl] = useState('');
 
   if (loading) {
     return <LoadingMessage />;
@@ -32,9 +35,13 @@ export default function UserDisplay() {
               width={100}
               height={100}
               crop="fill"
-              className="rounded-circle mb-3"
+              className={`${styles.profilePicture} rounded-circle mb-3`}
               style={{ objectFit: 'cover' }}
               onLoad={() => setImageLoaded(true)}
+              onClick={() => {
+                setModalImageUrl(userData.profilePictureUrl);
+                setShowModal(true);
+              }}
             />
           )}
           <p className="card-title">Logged in as: {user.email}</p>
@@ -50,5 +57,11 @@ export default function UserDisplay() {
         </div>
       )}
     </div>
+    {showModal && (
+      <ProfilePictureModal
+        imageUrl={modalImageUrl}
+        onClose={() => setShowModal(false)}
+      />
+    )}
   );
 }
