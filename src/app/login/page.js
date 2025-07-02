@@ -46,11 +46,11 @@ export default function LoginPage() {
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><i className="bi bi-person-circle me-2"></i>Login</h2>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
-          <div className="form-floating input-group mb-3">
+          <div className="form-floating mb-3">
             <input type="email" className="form-control" id="emailInput" placeholder="Email" onChange={e => setEmail(e.target.value)} />
             <label htmlFor="emailInput"><i className="bi bi-envelope me-2"></i>Email</label>
           </div>
-          <div className="form-floating input-group mb-3">
+          <div className="form-floating mb-3">
             <input type="password" className="form-control" id="passwordInput" placeholder="Password" onChange={e => setPassword(e.target.value)} />
             <label htmlFor="passwordInput"><i className="bi bi-lock me-2"></i>Password</label>
           </div>
