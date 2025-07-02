@@ -46,9 +46,9 @@ export default function UserProfilePage({ params }) {
 
 // ... (rest of the component)
 
-          {profileUser.profilePictureUrl && (
+          {profileData.profilePictureUrl && (
             <CldImage
-              src={profileUser.profilePictureUrl}
+              src={profileData.profilePictureUrl}
               alt="Profile"
               width={150}
               height={150}
