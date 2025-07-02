@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import LoadingMessage from '../../components/LoadingMessage';
 
 export default function EditMessagePage() {
   const params = useParams();
