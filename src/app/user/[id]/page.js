@@ -6,6 +6,7 @@ import LoadingMessage from '../../../app/components/LoadingMessage';
 import { CldImage } from 'next-cloudinary';
 import ProfilePictureModal from '../../../app/components/ProfilePictureModal';
 import { motion } from 'framer-motion';
+import { showToast } from '../../../app/utils/toast';
 
 import React from 'react';
 import Link from 'next/link';
@@ -13,7 +14,6 @@ import Link from 'next/link';
 export default function UserProfilePage({ params }) {
   const { id } = React.use(params);
   const [profileData, setProfileData] = useState(null);
-  const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -26,10 +26,10 @@ export default function UserProfilePage({ params }) {
             setProfileData(data);
           } else {
             const errorData = await res.json();
-            setError(errorData.error || 'Failed to fetch profile.');
+            showToast(errorData.error || 'Failed to fetch profile.', 'error');
           }
         } catch (err) {
-          setError('An unexpected error occurred while fetching profile.');
+          showToast('An unexpected error occurred while fetching profile.', 'error');
         }
       };
       fetchProfile();
@@ -63,9 +63,7 @@ export default function UserProfilePage({ params }) {
   return <LoadingMessage />;
 }
 
-  if (error) {
-    return <div className="text-danger">Error: {error}</div>;
-  }
+  
 
   const authLevelInfo = AUTH_LEVEL_RANKS[profileData.authLevel];
 
@@ -80,7 +78,6 @@ export default function UserProfilePage({ params }) {
       >
         <div className="card-body p-4">
           <h2 className="card-title text-center mb-4 display-6 fw-bold text-primary"><span className="bi-person-fill me-2"></span>User Profile</h2>
-          {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
           
           <div className="position-relative mx-auto mb-4" style={{ width: '150px', height: '150px' }}>
             {profileData.profilePictureUrl ? (

@@ -53,8 +53,7 @@ export default function EditUserPage() {
   const [isUpdating, setIsUpdating] = useState(false); // New state for update loading
 
   const handleUpdate = async () => {
-    setError('');
-    setSuccess('');
+    
 
     // Client-side validation
     if (!firstName.trim()) {

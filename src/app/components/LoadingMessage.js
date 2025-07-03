@@ -45,7 +45,7 @@ const LoadingMessage = () => {
         variants={lottieVariants}
         animate="pulse"
       >
-        <Lottie options={defaultOptions} height={200} width={200} />
+        <Lottie options={defaultOptions} className={styles.lottieAnimation} />
       </motion.div>
     </motion.div>
   );

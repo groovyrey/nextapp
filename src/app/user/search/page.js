@@ -4,21 +4,20 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import UserSearchResultCard from '@/app/components/UserSearchResultCard';
 import LoadingMessage from '@/app/components/LoadingMessage';
+import { showToast } from '../../../app/utils/toast';
 
 export default function SearchUserPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
     setSearchResults([]);
 
     if (!searchQuery.trim()) {
-      setError('Please enter a search query.');
+      showToast('Please enter a search query.', 'error');
       setLoading(false);
       return;
     }
@@ -33,7 +32,7 @@ export default function SearchUserPage() {
 
       setSearchResults(data);
     } catch (err) {
-      setError(err.message);
+      showToast(err.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -68,7 +67,7 @@ export default function SearchUserPage() {
               )}
             </button>
           </form>
-          {error && <div className="alert alert-danger mt-3" role="alert">{error}</div>}
+          
         </div>
       </div>
 
