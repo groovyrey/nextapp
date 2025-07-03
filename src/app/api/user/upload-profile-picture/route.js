@@ -1,6 +1,7 @@
 import { admin } from "/lib/firebase-admin.js";
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
+import { revalidatePath } from 'next/cache';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -67,5 +68,36 @@ export async function POST(request) {
   } catch (error) {
     console.error("Error uploading profile picture:", error);
     return NextResponse.json({ error: "Failed to upload profile picture." }, { status: 500 });
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const { uid } = await request.json();
+
+    if (!uid) {
+      return NextResponse.json({ error: "Missing UID." }, { status: 400 });
+    }
+
+    // Delete the profile picture from Cloudinary
+    try {
+      await cloudinary.uploader.destroy(uid);
+      console.log("Profile picture deleted from Cloudinary for UID:", uid);
+    } catch (deleteError) {
+      console.error("Error deleting profile picture from Cloudinary:", deleteError);
+      // Continue to update Firestore even if Cloudinary deletion fails
+    }
+
+    // Remove the profilePictureUrl from Firestore
+    await admin.firestore().collection("users").doc(uid).update({
+      profilePictureUrl: admin.firestore.FieldValue.delete(),
+    });
+
+    console.log("Profile picture URL removed from Firestore for UID:", uid);
+
+    return NextResponse.json({ message: "Profile picture removed successfully." }, { status: 200 });
+  } catch (error) {
+    console.error("Error removing profile picture:", error);
+    return NextResponse.json({ error: "Failed to remove profile picture." }, { status: 500 });
   }
 }

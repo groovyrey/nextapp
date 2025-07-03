@@ -11,6 +11,31 @@ export function UserProvider({ children }) {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Helper function to fetch user data
+  const fetchUserData = async (currentUser) => {
+    try {
+      const res = await fetch(`/api/user/${currentUser.uid}`);
+      if (res.ok) {
+        const data = await res.json();
+        console.log("UserContext: Fetched user data:", data);
+        setUserData(data);
+      } else {
+        console.error("Failed to fetch user data from API");
+        setUserData(null);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setUserData(null);
+    }
+  };
+
+  // Function to refresh user data, exposed via context
+  const refreshUserData = async () => {
+    if (user) {
+      await fetchUserData(user);
+    }
+  };
+
   const login = async (email, password) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -50,22 +75,7 @@ export function UserProvider({ children }) {
           const idTokenResult = await currentUser.getIdTokenResult();
           const userWithClaims = { ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token };
           setUser(userWithClaims);
-
-          // Fetch user data from Firestore
-          try {
-            const res = await fetch(`/api/user/${currentUser.uid}`);
-            if (res.ok) {
-              const data = await res.json();
-              setUserData(data);
-            } else {
-              console.error("Failed to fetch user data from API");
-              setUserData(null);
-            }
-          } catch (error) {
-            console.error("Error fetching user data:", error);
-            setUserData(null);
-          }
-
+          await fetchUserData(currentUser); // Fetch user data when auth state changes
         } else {
           setUser(null);
           setUserData(null);
@@ -77,7 +87,7 @@ export function UserProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, userData, loading, login, logout }}>
+    <UserContext.Provider value={{ user, userData, loading, login, logout, refreshUserData }}>
       {children}
     </UserContext.Provider>
   );

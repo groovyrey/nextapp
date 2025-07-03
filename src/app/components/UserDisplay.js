@@ -12,6 +12,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function UserDisplay() {
   const router = useRouter();
   const { user, userData, loading, logout } = useUser();
+  
+  
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalImageUrl, setModalImageUrl] = useState('');
@@ -62,30 +64,35 @@ export default function UserDisplay() {
     >
       {user ? (
         <div className="card-body">
-          {userData && (userData.profilePictureUrl ? (
-            <CldImage
-              src={userData.profilePictureUrl}
-              alt="Profile"
-              width={100}
-              height={100}
-              crop="fill"
-              className={`rounded-circle mb-3 border border-primary border-3`}
-              style={{ objectFit: 'cover' }}
-              onLoad={() => setImageLoaded(true)}
-            />
-          ) : (
-            <div
-              className={`${styles.profilePicture} rounded-circle mb-3 border border-primary border-3 d-flex align-items-center justify-content-center`}
-              style={{
-                width: '100px',
-                height: '100px',
-                backgroundColor: '#e9ecef',
-                cursor: 'not-allowed'
-              }}
-            >
-              <i className="bi bi-person-fill" style={{ fontSize: '50px', color: '#adb5bd' }}></i>
+          {userData && (
+            <div className="text-center mb-3"> {/* New wrapper div for centering */} 
+              {userData.profilePictureUrl ? (
+                <CldImage
+                  key={userData.profilePictureUrl || "no-profile-picture"}
+                  src={userData.profilePictureUrl}
+                  alt="Profile"
+                  width={100}
+                  height={100}
+                  crop="fill"
+                  className={`rounded-circle border border-primary border-3`}
+                  style={{ objectFit: 'cover' }}
+                  onLoad={() => setImageLoaded(true)}
+                />
+              ) : (
+                <div
+                  className={`${styles.profilePicture} rounded-circle border border-primary border-3 d-flex align-items-center justify-content-center mx-auto`}
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    backgroundColor: '#e9ecef',
+                    cursor: 'not-allowed'
+                  }}
+                >
+                  <i className="bi bi-person-fill" style={{ fontSize: '50px', color: '#adb5bd' }}></i>
+                </div>
+              )}
             </div>
-          ))}
+          )}
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2 gap-md-3">
             <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>

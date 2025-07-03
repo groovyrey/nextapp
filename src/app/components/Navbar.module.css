@@ -164,7 +164,7 @@
   }
 
   .mobileMenuToggle.open .hamburgerLine:nth-child(1) {
-    transform: translateY(9.5px) rotate(45deg);
+    transform: translateY(8px) rotate(45deg);
   }
 
   .mobileMenuToggle.open .hamburgerLine:nth-child(2) {
@@ -188,15 +188,16 @@
     padding: 1rem 0;
     opacity: 0;
     transform: translateY(-10px);
-    visibility: hidden;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0s 0.3s; /* Hide after transition */
+    max-height: 0; /* Add this */
+    overflow: hidden; /* Add this */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, max-height 0.3s ease-out;
   }
 
   .navMenu.showMobileMenu {
     opacity: 1;
     transform: translateY(0);
-    visibility: visible;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    max-height: 500px; /* Add this, or a value large enough to contain content */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out, max-height 0.3s ease-out;
   }
 
   .navbarLinks ul {
