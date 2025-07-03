@@ -3,18 +3,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #6A67CE; /* A vibrant, yet soft purple */
-  --secondary-color: #8B88E8; /* Lighter shade of purple */
-  --accent-color: #FFD700; /* Gold for highlights */
-  --background-color: #F0F2F5; /* Light grey background */
-  --text-color: #333333; /* Darker text for readability */
-  --light-text-color: #666666;
-  --card-background-color: #ffffff;
-  --card-border-color: #e0e0e0;
-  --shadow-color: rgba(0, 0, 0, 0.08); /* Softer shadow */
+  --primary-color: #343a40; /* Dark Charcoal Grey */
+  --secondary-color: #6c757d; /* Medium Grey */
+  --accent-color: #e9ecef; /* Light Grey for highlights */
+  --background-color: #e0e5ec; /* Lighter grey for neomorphism background */
+  --text-color: #212529; /* Darker text for readability */
+  --light-text-color: #6c757d;
+  --card-background-color: #e0e5ec; /* Match background for neomorphism */
+  --card-border-color: #dee2e6;
+  --shadow-light: #ffffff; /* Light shadow for neomorphism */
+  --shadow-dark: #a3b1c6; /* Darker shadow for neomorphism */
   --border-radius-base: 8px;
   --transition-base: all 0.3s ease-in-out;
-  --background-color-dark: #e0e2e5; /* A slightly darker grey for the menu background */
+  --background-color-dark: #e9ecef; /* A slightly darker grey for the menu background */
   --border-color: var(--card-border-color); /* Using existing card border color */
 }
 
@@ -42,55 +43,109 @@ h1, h2, h3, h4, h5, h6 {
 
 .card {
   background-color: var(--card-background-color);
-  border: 1px solid var(--card-border-color);
+  border: none; /* Remove border for neomorphism */
   border-radius: var(--border-radius-base);
-  box-shadow: 0 4px 12px var(--shadow-color);
+  box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
   transition: var(--transition-base);
 }
 
 .card:hover {
-  transform: translateY(-3px); /* Slightly less aggressive lift */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Slightly more pronounced shadow on hover */
+  transform: translateY(0); /* No lift on hover for neomorphism */
+  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light); /* Subtle press effect */
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  background-image: linear-gradient(to bottom right, var(--primary-color), #000000);
+  border: none; /* Remove border for neomorphism */
   border-radius: var(--border-radius-base);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
   color: white; /* Ensure text is white on primary buttons */
+  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
 }
 
 .btn-primary:hover {
-  background-color: var(--secondary-color); /* Lighter primary on hover */
-  border-color: var(--secondary-color);
+  background-image: linear-gradient(to bottom right, #000000, var(--primary-color));
+  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
+}
+
+.btn-secondary {
+  background-image: linear-gradient(to bottom right, var(--secondary-color), #343a40);
+  border: none; /* Remove border for neomorphism */
+  border-radius: var(--border-radius-base);
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-base);
+  color: white;
+  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+}
+
+.btn-secondary:hover {
+  background-image: linear-gradient(to bottom right, #343a40, var(--secondary-color));
+  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
+}
+
+.btn-danger {
+  background-image: linear-gradient(to bottom right, #dc3545, #8b0000);
+  border: none; /* Remove border for neomorphism */
+  border-radius: var(--border-radius-base);
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-base);
+  color: white;
+  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+}
+
+.btn-danger:hover {
+  background-image: linear-gradient(to bottom right, #8b0000, #dc3545);
+  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
 }
 
 .btn-outline-primary {
   color: var(--primary-color);
-  border-color: var(--primary-color);
+  border: none; /* Remove border for neomorphism */
   border-radius: var(--border-radius-base);
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
+  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
 }
 
 .btn-outline-primary:hover {
   background-color: var(--primary-color);
   color: var(--card-background-color);
+  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
 }
 
-.form-control {
+.form-control,
+input[type="file"] {
+  border: none; /* Remove border for neomorphism */
   border-radius: var(--border-radius-base);
-  border: 1px solid var(--card-border-color);
   padding: 0.75rem 1rem;
   transition: var(--transition-base);
+  background-color: var(--card-background-color); /* Match background for neomorphism */
+  box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
 }
 
-.form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.25); /* Adjusted shadow color */
+input[type="file"]::-webkit-file-upload-button {
+  background-color: var(--card-background-color);
+  border: none;
+  border-radius: var(--border-radius-base);
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  box-shadow: 3px 3px 7px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
+  transition: var(--transition-base);
+  cursor: pointer;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+  box-shadow: inset 1px 1px 3px var(--shadow-dark), inset -1px -1px 3px var(--shadow-light);
+}
+
+.form-control:focus,
+input[type="file"]:focus {
+  border-color: transparent; /* Remove border color on focus */
+  box-shadow: inset 1px 1px 3px var(--shadow-dark), inset -1px -1px 3px var(--shadow-light); /* Subtle press effect on focus */
   outline: none;
 }
 
@@ -106,41 +161,9 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
 }
 
-.btn-secondary {
-  background-color: var(--light-text-color);
-  border-color: var(--light-text-color);
-  color: white;
-  border-radius: var(--border-radius-base);
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  transition: var(--transition-base);
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268; /* A slightly darker grey for hover */
-  border-color: #5a6268;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
-  color: white;
-  border-radius: var(--border-radius-base);
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  transition: var(--transition-base);
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-  border-color: #bd2130;
-}
-
 /* Remove subtle background patterns for a cleaner look */
 body::before,
 body::after {
   content: none;
 }
-
-
 

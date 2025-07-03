@@ -52,7 +52,10 @@ export default function UpdateAuthLevelPage() {
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title text-center mb-4">Update User Auth Level</h2>
+          <div className="text-center mb-4">
+            <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
+            <h2 className="card-title text-center">Update User Auth Level</h2>
+          </div>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
           {message && <div className="alert alert-success" role="alert">{message}</div>}
           <form onSubmit={handleSubmit}>

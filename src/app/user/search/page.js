@@ -46,7 +46,10 @@ export default function SearchUserPage() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="text-center my-4 text-primary"><i className="bi bi-search me-2"></i>Search Users</h1>
+      <div className="text-center mb-4">
+        <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
+        <h1 className="text-center my-4 text-primary"><i className="bi bi-search me-2"></i>Search Users</h1>
+      </div>
       <div className="card mb-4">
         <div className="card-body">
           <form onSubmit={handleSearch} className="d-flex">
@@ -77,13 +80,24 @@ export default function SearchUserPage() {
         </div>
       )}
 
-      <div className="row">
+      <motion.div
+        className="row"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.1,
+            },
+          },
+        }}
+        initial="hidden"
+        animate="visible"
+      >
         {searchResults.map((user) => (
-          <div className="col-md-6 col-lg-4 mb-4" key={user.id}>
-            <UserSearchResultCard user={user} />
-          </div>
+          <UserSearchResultCard user={user} key={user.id} />
         ))}
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

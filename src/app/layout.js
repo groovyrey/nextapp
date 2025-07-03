@@ -8,8 +8,8 @@ import BootstrapClient from "./BootstrapClient";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Mensahe para kay rey",
-  description: "App ni reymart",
+  title: "Luloy",
+  description: "Luloy App",
 };
 
 export default function RootLayout({ children }) {

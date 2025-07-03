@@ -6,6 +6,7 @@ import { auth } from "/lib/firebase.js";
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from '../components/LoadingMessage';
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
 	const [email, setEmail] = useState('');
@@ -41,10 +42,19 @@ export default function LoginPage() {
   
 
 	return (
-    <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+    <motion.div 
+      initial={{ opacity: 0, y: -20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      exit={{ opacity: 0, y: 20 }} 
+      transition={{ duration: 0.5 }}
+      className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}
+    >
       <div className="card m-2" style={{ maxWidth: '400px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title text-center mb-4"><i className="bi bi-person-circle me-2"></i>Login</h2>
+          <div className="text-center mb-4">
+            <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
+            <h2 className="card-title text-center"><i className="bi bi-person-circle me-2"></i>Login</h2>
+          </div>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
           <div className="form-floating mb-3">
             <input type="email" className="form-control" id="emailInput" placeholder="Email" onChange={e => setEmail(e.target.value)} />
@@ -65,6 +75,6 @@ export default function LoginPage() {
           <p className="mt-3 text-center">Don't have an account? <a className="text-primary" href="/signup"><i className="bi bi-person-plus me-2"></i>Sign up</a></p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

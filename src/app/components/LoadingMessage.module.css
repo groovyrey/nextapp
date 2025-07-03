@@ -5,22 +5,23 @@
   justify-content: center;
   min-height: 100vh;
   background-color: var(--background-color);
-  animation: fadeIn 0.6s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.loadingMessageContainer .lottie-animation {
+  width: 150px;
+  height: 150px;
 }
 
-.loadingMessageContainer p {
-  font-size: 1.2rem;
-  color: var(--text-color);
-  margin-top: 1.5rem;
-  animation: pulse 1.8s infinite ease-in-out alternate;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .loadingMessageContainer p {
+    font-size: 1rem;
+  }
 }
 
-@keyframes pulse {
-  from { transform: scale(1); opacity: 0.9; }
-  to { transform: scale(1.02); opacity: 1; }
+@media (max-width: 576px) {
+  .loadingMessageContainer .lottie-animation {
+    width: 120px;
+    height: 120px;
+  }
 }

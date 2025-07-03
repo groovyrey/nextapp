@@ -34,10 +34,19 @@ export default function PrivateMessagesPage() {
   // If user is not authenticated or authLevel is not 1, display unauthorized message
   if (!user || user.authLevel !== 1) {
     return (
-      <div className="container text-center my-5">
-        <h1 className="text-danger"><i className="bi bi-exclamation-triangle me-2"></i>Unauthorized Access</h1>
-        <p>You are not authorized to view this page.</p>
-        <Link href="/messages">Go to Messages</Link>
+      <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+        <div className="card m-2 text-center" style={{ maxWidth: '400px', width: '100%' }}>
+          <div className="card-body">
+            <div className="text-center mb-4">
+              <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
+              <h2 className="card-title text-center text-danger"><i className="bi bi-exclamation-triangle me-2"></i>Unauthorized Access</h2>
+            </div>
+            <p className="text-lg text-gray-600 mb-8">You are not authorized to view this page.</p>
+            <Link href="/messages" className="btn btn-primary">
+              <i className="bi-chat-dots me-2"></i> Go to Messages
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }

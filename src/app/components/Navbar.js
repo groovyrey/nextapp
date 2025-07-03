@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
@@ -28,10 +29,15 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   return (
-    <header className={styles.navbarGrid}>
+    <motion.header 
+      className={styles.navbarGrid}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className={styles.navbarBrandContainer}>
         <Link href="/">
-          <i className="bi bi-house-door-fill"></i>Home
+          <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '1.5em', marginRight: '0.5em' }} />
         </Link>
         <button 
           className={`${styles.mobileMenuToggle} ${isMobileMenuOpen ? styles.open : ''}`} 
@@ -65,21 +71,21 @@ export default function Navbar() {
         </div>
         <div className={styles.navbarActions}>
           {user ? (
-            <button onClick={() => { logout(); setIsMobileMenuOpen(false); }}>
+            <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="btn btn-primary">
               <i className="bi bi-box-arrow-right"></i>Logout
             </button>
           ) : (
             <>
-              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary me-2">
                 <i className="bi bi-box-arrow-in-right"></i>Login
               </Link>
-              <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary">
                 <i className="bi bi-person-plus-fill"></i>Sign Up
               </Link>
             </>
           )}
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

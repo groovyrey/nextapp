@@ -6,6 +6,8 @@ import Image from 'next/image';
 import styles from './UserSearchResultCard.module.css';
 
 export default function UserSearchResultCard({ user }) {
+
+
   return (
     <div className={styles.card}>
       <Link href={`/user/${user.id}`} className={styles.link}>

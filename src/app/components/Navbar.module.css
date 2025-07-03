@@ -4,9 +4,15 @@
   align-items: center;
   padding: 1rem 2rem;
   background-color: var(--card-background-color); /* Use white background for a cleaner look */
-  color: var(--text-color);
-  box-shadow: 0 2px 8px var(--shadow-color); /* Softer shadow */
-  border-bottom: 1px solid var(--card-border-color); /* Subtle border */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  color: var(--text-color); /* Change text color back to default */
+  box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); /* Enhanced neomorphic shadow */
+  border-bottom: none; /* Remove border */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10000; /* Increased z-index for the main navbar */
 }
 
 .navbarBrandContainer a {
@@ -146,7 +152,7 @@
       color: var(--text-color);
       font-size: 1.8rem;
       cursor: pointer;
-      z-index: 1000;
+      z-index: 1001; /* Ensure it stays on top */
       width: 30px;
       height: 22px;
       flex-direction: column;
@@ -183,8 +189,8 @@
     position: absolute;
     top: 100%; /* Position below the header */
     left: 0;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    z-index: 999;
+    box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); /* Enhanced neomorphic shadow */
+    z-index: 10000;
     padding: 1rem 0;
     opacity: 0;
     transform: translateY(-10px);
@@ -229,27 +235,5 @@
     padding: 0; /* No padding for children */
   }
 
-  @keyframes slideInFade {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .navMenu.showMobileMenu .navbarLinks ul li,
-  .navMenu.showMobileMenu .navbarActions > * {
-    animation: slideInFade 0.5s ease-out forwards;
-    opacity: 0; /* Start with opacity 0 to let animation handle it */
-  }
-
-  /* Stagger the animations */
-  .navMenu.showMobileMenu .navbarLinks ul li:nth-child(1) { animation-delay: 0.1s; }
-  .navMenu.showMobileMenu .navbarLinks ul li:nth-child(2) { animation-delay: 0.2s; }
-  .navMenu.showMobileMenu .navbarLinks ul li:nth-child(3) { animation-delay: 0.3s; }
-  .navMenu.showMobileMenu .navbarActions > *:nth-child(1) { animation-delay: 0.4s; }
-  .navMenu.showMobileMenu .navbarActions > *:nth-child(2) { animation-delay: 0.5s; }
+  
 }
