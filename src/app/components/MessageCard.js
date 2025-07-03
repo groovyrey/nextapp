@@ -146,9 +146,12 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
             exit="exit"
             transition={{ duration: 0.2 }}
           >
-            <Link href={`/messages/edit/${message.id}`} className={styles.optionButton} onClick={() => setShowOptions(false)}>
+            <button className={styles.optionButton} onClick={() => {
+              router.push(`/messages/edit/${message.id}`);
+              setShowOptions(false);
+            }}>
               <i className="bi bi-pencil-square me-2"></i>Edit
-            </Link>
+            </button>
             <button className={styles.optionButton} onClick={handleChangeVisibility}>
               <i className={`bi ${message.private ? 'bi-eye-slash-fill' : 'bi-eye-fill'} me-2`}></i>
               {message.private ? 'Make Public' : 'Make Private'}

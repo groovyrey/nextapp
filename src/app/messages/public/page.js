@@ -84,10 +84,13 @@ export default function PublicMessagesPage() {
     fetchMessages();
   };
 
-  const handleUpdateMessage = (updatedMessage) => {
+  const handleUpdateMessage = async (updatedMessage) => {
     // A message's visibility might have changed, so we re-fetch to ensure
     // this list only contains public messages.
-    fetchMessages();
+    setPage(1);
+    setPageCursors([null]);
+    setHasNextPage(true);
+    await fetchMessages();
   };
 
   return (

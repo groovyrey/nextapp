@@ -73,7 +73,8 @@ export async function POST(request) {
 
 export async function DELETE(request) {
   try {
-    const { uid } = await request.json();
+    const { searchParams } = new URL(request.url);
+    const uid = searchParams.get("uid");
 
     if (!uid) {
       return NextResponse.json({ error: "Missing UID." }, { status: 400 });

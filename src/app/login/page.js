@@ -6,7 +6,7 @@ import { auth } from "/lib/firebase.js";
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from '../components/LoadingMessage';
-import { toast } from '../utils/toast';
+import { showToast } from '../utils/toast';
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
@@ -30,7 +30,7 @@ export default function LoginPage() {
       await login(email, password);
       router.push('/');
     } catch (err) {
-      toast.error("Login failed: " + err.message);
+      
     } finally {
       setIsLoggingIn(false);
     }

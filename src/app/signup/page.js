@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from '../components/LoadingMessage';
 import { motion } from "framer-motion";
-import { toast } from '../utils/toast';
+import { showToast } from '../utils/toast';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -30,7 +30,7 @@ export default function SignupPage() {
     setIsSigningUp(true);
     try {
       if (!firstName || !lastName || !age) {
-        toast.error("Please fill in all fields.");
+        showToast("Please fill in all fields.", 'error');
         return;
       }
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
@@ -59,14 +59,14 @@ export default function SignupPage() {
         if (sessionRes.ok) {
           router.push('/');
         } else {
-          toast.error('Failed to create session.');
+          showToast('Failed to create session.', 'error');
         }
       } else {
         const errorData = await res.json();
-        toast.error(errorData.error || 'Failed to save user data.');
+        showToast(errorData.error || 'Failed to save user data.', 'error');
       }
     } catch (err) {
-      toast.error("Signup failed: " + err.message);
+      showToast("Signup failed: " + err.message, 'error');
     } finally {
       setIsSigningUp(false);
     }
