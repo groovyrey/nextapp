@@ -7,7 +7,7 @@ import LoadingMessage from '../../../app/components/LoadingMessage';
 import { CldImage } from 'next-cloudinary';
 
 export default function EditUserPage() {
-  const { user, loading } = useUser();
+  const { user, loading, refreshUserData } = useUser();
   const router = useRouter();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -46,6 +46,8 @@ export default function EditUserPage() {
       fetchUserData();
     }
   }, [user, loading, router]);
+
+  
 
   const [isUpdating, setIsUpdating] = useState(false); // New state for update loading
 
@@ -112,7 +114,7 @@ export default function EditUserPage() {
 
       if (res.ok) {
         setSuccess('Profile picture uploaded successfully!');
-        // Optionally, refresh user data to show new profile picture
+        await refreshUserData(); // Refresh user data in context
         const updatedUserData = await res.json();
         setProfilePicturePreviewUrl(updatedUserData.url);
       } else {
@@ -144,7 +146,7 @@ export default function EditUserPage() {
         setSuccess('Profile picture removed successfully!');
         setProfilePicturePreviewUrl(null); // Clear preview
         setProfilePictureFile(null); // Clear file input
-        refreshUserData(); // Refresh user data in context
+        await refreshUserData(); // Refresh user data in context
       } else {
         const errorData = await res.json();
         setError(errorData.error || 'Failed to remove profile picture.');
@@ -208,26 +210,17 @@ export default function EditUserPage() {
               }
             }} disabled={isUpdating} />
           </div>
-          <div className="dropdown mb-2">
-            <button className="btn btn-secondary dropdown-toggle w-100" type="button" id="profilePictureActions" data-bs-toggle="dropdown" aria-expanded="false">
-              Profile Picture Actions
+          <div className="mb-2">
+            <button className="btn btn-secondary w-100" onClick={handleProfilePictureUpload} disabled={isUpdating}>
+              {isUpdating ? (
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              ) : (
+                <i className="bi-upload"></i>
+              )}{' '}{isUpdating ? 'Uploading...' : 'Upload New Picture'}
             </button>
-            <ul className="dropdown-menu w-100" aria-labelledby="profilePictureActions">
-              <li>
-                <button className="dropdown-item" onClick={handleProfilePictureUpload} disabled={isUpdating}>
-                  {isUpdating ? (
-                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  ) : (
-                    <i className="bi-upload"></i>
-                  )}{' '}{isUpdating ? 'Uploading...' : 'Upload New Picture'}
-                </button>
-              </li>
-              <li>
-                <button className="dropdown-item text-danger" onClick={handleRemoveProfilePicture} disabled={isUpdating}>
-                  <i className="bi-trash"></i> Remove Picture
-                </button>
-              </li>
-            </ul>
+            <button className="btn btn-danger w-100 mt-2" onClick={handleRemoveProfilePicture} disabled={isUpdating}>
+              <i className="bi-trash"></i> Remove Picture
+            </button>
           </div>
           <div className="mb-3">
             <label htmlFor="firstName" className="form-label">First Name</label>
