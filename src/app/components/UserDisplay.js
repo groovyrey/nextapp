@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from "next/navigation";
+import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import LoadingMessage from './LoadingMessage';
 import styles from './UserDisplay.module.css';
@@ -43,15 +44,7 @@ export default function UserDisplay() {
     return <LoadingMessage />;
   }
 
-  const handleViewProfile = () => {
-    setShowOptions(false);
-    router.push(`/user/${user.uid}`);
-  };
-
-  const handleEditProfile = () => {
-    setShowOptions(false);
-    router.push(`/user/edit`);
-  };
+  
 
   const handleLogout = () => {
     setShowOptions(false);
@@ -110,12 +103,12 @@ export default function UserDisplay() {
                 exit="exit"
                 transition={{ duration: 0.2 }}
               >
-                <button className={styles.optionButton} onClick={handleViewProfile}>
+                <Link href={`/user/${user.uid}`} className={styles.optionButton} onClick={() => setShowOptions(false)}>
                   <i className="bi bi-person-vcard me-2"></i> View Profile
-                </button>
-                <button className={styles.optionButton} onClick={handleEditProfile}>
+                </Link>
+                <Link href="/user/edit" className={styles.optionButton} onClick={() => setShowOptions(false)}>
                   <i className="bi bi-pencil me-2"></i> Edit Profile
-                </button>
+                </Link>
                 <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right me-2"></i> Logout
                 </button>

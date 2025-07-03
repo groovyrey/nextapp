@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from 'react-hot-toast';
 import { UserProvider } from "./context/UserContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
           </main>
         </UserProvider>
         <BootstrapClient />
+        <Toaster />
       </body>
     </html>
   );

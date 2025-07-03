@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from '../components/LoadingMessage';
 import { motion } from "framer-motion";
+import { toast } from '../utils/toast';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -14,7 +15,6 @@ export default function SignupPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
-  const [error, setError] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
   const router = useRouter();
   const { user, loading } = useUser();
@@ -26,11 +26,11 @@ export default function SignupPage() {
   }, [user, loading, router]);
 
   const handleSignup = async () => {
-    setError('');
+    
     setIsSigningUp(true);
     try {
       if (!firstName || !lastName || !age) {
-        setError("Please fill in all fields.");
+        toast.error("Please fill in all fields.");
         return;
       }
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
@@ -59,14 +59,14 @@ export default function SignupPage() {
         if (sessionRes.ok) {
           router.push('/');
         } else {
-          setError('Failed to create session.');
+          toast.error('Failed to create session.');
         }
       } else {
         const errorData = await res.json();
-        setError(errorData.error || 'Failed to save user data.');
+        toast.error(errorData.error || 'Failed to save user data.');
       }
     } catch (err) {
-      setError("Signup failed: " + err.message);
+      toast.error("Signup failed: " + err.message);
     } finally {
       setIsSigningUp(false);
     }
@@ -94,7 +94,7 @@ export default function SignupPage() {
             <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
             <h2 className="card-title text-center"><i className="bi bi-person-plus-fill me-2"></i>Sign Up</h2>
           </div>
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          
           <div className="form-floating mb-3">
             <input type="text" className="form-control" id="firstNameInput" placeholder="First Name" onChange={e => setFirstName(e.target.value)} />
             <label htmlFor="firstNameInput"><i className="bi bi-person me-2"></i>First Name</label>

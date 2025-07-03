@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import LoadingMessage from '../../../components/LoadingMessage';
+import { showToast } from '../../../utils/toast';
 
 export default function EditMessagePage() {
   const params = useParams();
@@ -13,12 +14,10 @@ export default function EditMessagePage() {
   const [messageSender, setMessageSender] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchMessage = async () => {
       setIsLoading(true);
-      setError('');
       try {
         const response = await fetch(`/api/messages/${id}`);
         if (!response.ok) {
@@ -28,8 +27,7 @@ export default function EditMessagePage() {
         setMessageContent(data.message);
         setMessageSender(data.sender || '');
       } catch (error) {
-        console.error("Failed to fetch message:", error);
-        setError('Failed to load message.');
+        showToast("Failed to fetch message:", 'error');
       } finally {
         setIsLoading(false);
       }
@@ -43,7 +41,6 @@ export default function EditMessagePage() {
   const handleSave = async (e) => {
     e.preventDefault();
     setIsSaving(true);
-    setError('');
     try {
       const response = await fetch(`/api/messages/${id}`, {
         method: 'PUT',
@@ -55,11 +52,10 @@ export default function EditMessagePage() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      alert('Message updated successfully!');
+      showToast('Message updated successfully!', 'success');
       router.push('/messages');
     } catch (error) {
-      console.error("Failed to save message:", error);
-      setError('Failed to save message.');
+      showToast("Failed to save message.", 'error');
     } finally {
       setIsSaving(false);
     }
@@ -69,15 +65,12 @@ export default function EditMessagePage() {
     return <LoadingMessage />;
   }
 
-  if (error) {
-    return <div className="text-danger text-center mt-5">Error: {error}</div>;
-  }
+  
 
   return (
     <div className="container py-5">
       <div className="card p-4 shadow-sm">
         <h1 className="card-title text-center mb-4">Edit Message</h1>
-        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <p className="text-center text-muted mb-4">Editing message with ID: {id}</p>
         
         <form onSubmit={handleSave}>

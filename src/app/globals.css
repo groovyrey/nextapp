@@ -6,13 +6,13 @@
   --primary-color: #343a40; /* Dark Charcoal Grey */
   --secondary-color: #6c757d; /* Medium Grey */
   --accent-color: #e9ecef; /* Light Grey for highlights */
-  --background-color: #e0e5ec; /* Lighter grey for neomorphism background */
+  --background-color: #f0f0f0; /* Light grey for a clean background */
   --text-color: #212529; /* Darker text for readability */
   --light-text-color: #6c757d;
-  --card-background-color: #e0e5ec; /* Match background for neomorphism */
+  --card-background-color: #ffffff; /* White background for cards */
   --card-border-color: #dee2e6;
-  --shadow-light: #ffffff; /* Light shadow for neomorphism */
-  --shadow-dark: #a3b1c6; /* Darker shadow for neomorphism */
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Standard box shadow */
+  --box-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.2); /* Standard box shadow on hover */
   --border-radius-base: 8px;
   --transition-base: all 0.3s ease-in-out;
   --background-color-dark: #e9ecef; /* A slightly darker grey for the menu background */
@@ -43,109 +43,109 @@ h1, h2, h3, h4, h5, h6 {
 
 .card {
   background-color: var(--card-background-color);
-  border: none; /* Remove border for neomorphism */
+  border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius-base);
-  box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+  box-shadow: var(--box-shadow);
   transition: var(--transition-base);
 }
 
 .card:hover {
-  transform: translateY(0); /* No lift on hover for neomorphism */
-  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light); /* Subtle press effect */
+  transform: translateY(-5px); /* Lift on hover */
+  box-shadow: var(--box-shadow-hover);
 }
 
 .btn-primary {
   background-image: linear-gradient(to bottom right, var(--primary-color), #000000);
-  border: none; /* Remove border for neomorphism */
+  border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
   color: white; /* Ensure text is white on primary buttons */
-  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  box-shadow: var(--box-shadow);
 }
 
 .btn-primary:hover {
   background-image: linear-gradient(to bottom right, #000000, var(--primary-color));
-  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
+  box-shadow: var(--box-shadow-hover);
 }
 
 .btn-secondary {
   background-image: linear-gradient(to bottom right, var(--secondary-color), #343a40);
-  border: none; /* Remove border for neomorphism */
+  border: 1px solid var(--secondary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
   color: white;
-  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  box-shadow: var(--box-shadow);
 }
 
 .btn-secondary:hover {
   background-image: linear-gradient(to bottom right, #343a40, var(--secondary-color));
-  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
+  box-shadow: var(--box-shadow-hover);
 }
 
 .btn-danger {
   background-image: linear-gradient(to bottom right, #dc3545, #8b0000);
-  border: none; /* Remove border for neomorphism */
+  border: 1px solid #dc3545;
   border-radius: var(--border-radius-base);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
   color: white;
-  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  box-shadow: var(--box-shadow);
 }
 
 .btn-danger:hover {
   background-image: linear-gradient(to bottom right, #8b0000, #dc3545);
-  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
+  box-shadow: var(--box-shadow-hover);
 }
 
 .btn-outline-primary {
   color: var(--primary-color);
-  border: none; /* Remove border for neomorphism */
+  border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
-  box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  box-shadow: var(--box-shadow);
 }
 
 .btn-outline-primary:hover {
   background-color: var(--primary-color);
   color: var(--card-background-color);
-  box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); /* Subtle press effect */
+  box-shadow: var(--box-shadow-hover);
 }
 
 .form-control,
 input[type="file"] {
-  border: none; /* Remove border for neomorphism */
+  border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius-base);
   padding: 0.75rem 1rem;
   transition: var(--transition-base);
-  background-color: var(--card-background-color); /* Match background for neomorphism */
-  box-shadow: inset 3px 3px 7px var(--shadow-dark), inset -3px -3px 7px var(--shadow-light);
+  background-color: var(--card-background-color);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 input[type="file"]::-webkit-file-upload-button {
-  background-color: var(--card-background-color);
-  border: none;
+  background-color: var(--accent-color);
+  border: 1px solid var(--accent-color);
   border-radius: var(--border-radius-base);
   padding: 0.5rem 1rem;
   margin-right: 1rem;
-  box-shadow: 3px 3px 7px var(--shadow-dark), -3px -3px 7px var(--shadow-light);
+  box-shadow: var(--box-shadow);
   transition: var(--transition-base);
   cursor: pointer;
 }
 
 input[type="file"]::-webkit-file-upload-button:hover {
-  box-shadow: inset 1px 1px 3px var(--shadow-dark), inset -1px -1px 3px var(--shadow-light);
+  box-shadow: var(--box-shadow-hover);
 }
 
 .form-control:focus,
 input[type="file"]:focus {
-  border-color: transparent; /* Remove border color on focus */
-  box-shadow: inset 1px 1px 3px var(--shadow-dark), inset -1px -1px 3px var(--shadow-light); /* Subtle press effect on focus */
+  border-color: var(--primary-color); /* Highlight border on focus */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Standard focus glow */
   outline: none;
 }
 

@@ -3,18 +3,17 @@ import { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
 import { motion } from 'framer-motion';
+import { showToast } from '../../utils/toast';
 
 export default function SendMessage() {
   const [message, setMessage] = useState('');
   const [sender, setSender] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
-  const [error, setError] = useState('');
   const [isSending, setIsSending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
-    setError('');
     try {
       await addDoc(collection(db, 'maindata'), {
         sender: sender,
@@ -25,9 +24,9 @@ export default function SendMessage() {
       setMessage('');
       setSender('');
       setIsPrivate(false);
-      alert('Message sent successfully!');
+      showToast('Message sent successfully!', 'success');
     } catch (error) {
-      setError('Error sending message: ' + error.message);
+      showToast('Error sending message: ' + error.message, 'error');
     } finally {
       setIsSending(false);
     }
@@ -44,7 +43,7 @@ export default function SendMessage() {
       <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
           <h2 className="card-title text-primary text-center mb-4"><i className="bi bi-send me-2"></i>Send a Message</h2>
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="sender" className="form-label"><i className="bi bi-person me-2"></i>Sender Email or Name (Optional)</label>

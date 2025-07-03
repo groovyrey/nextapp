@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useUser } from '../../../app/context/UserContext';
 import LoadingMessage from '../../../app/components/LoadingMessage';
 import { CldImage } from 'next-cloudinary';
+import Link from 'next/link';
+import { showToast } from '../../../app/utils/toast';
 
 export default function EditUserPage() {
   const { user, loading, refreshUserData } = useUser();
@@ -14,8 +16,7 @@ export default function EditUserPage() {
   const [age, setAge] = useState('');
   const [profilePictureFile, setProfilePictureFile] = useState(null);
   const [profilePicturePreviewUrl, setProfilePicturePreviewUrl] = useState(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  
   const [isFetchingUserData, setIsFetchingUserData] = useState(true); // New state for data fetching
 
   useEffect(() => {
@@ -35,10 +36,10 @@ export default function EditUserPage() {
               setProfilePicturePreviewUrl(userData.profilePictureUrl);
             }
           } else {
-            setError('Failed to fetch user data.');
+            showToast('Failed to fetch user data.', 'error');
           }
         } catch (err) {
-          setError('An error occurred while fetching user data.');
+          showToast('An error occurred while fetching user data.', 'error');
         } finally {
           setIsFetchingUserData(false); // End loading
         }
@@ -57,15 +58,15 @@ export default function EditUserPage() {
 
     // Client-side validation
     if (!firstName.trim()) {
-      setError('First Name cannot be empty.');
+      showToast('First Name cannot be empty.', 'error');
       return;
     }
     if (!lastName.trim()) {
-      setError('Last Name cannot be empty.');
+      showToast('Last Name cannot be empty.', 'error');
       return;
     }
     if (!age || isNaN(parseInt(age)) || parseInt(age) <= 0) {
-      setError('Please enter a valid age.');
+      showToast('Please enter a valid age.', 'error');
       return;
     }
 
@@ -80,13 +81,13 @@ export default function EditUserPage() {
       });
 
       if (res.ok) {
-        setSuccess('Profile updated successfully!');
+        showToast('Profile updated successfully!', 'success');
       } else {
         const errorData = await res.json();
-        setError(errorData.error || 'Failed to update profile.');
+        showToast(errorData.error || 'Failed to update profile.', 'error');
       }
     } catch (err) {
-      setError('An unexpected error occurred.');
+      showToast('An unexpected error occurred.', 'error');
     } finally {
       setIsUpdating(false); // End update loading
     }
@@ -94,12 +95,10 @@ export default function EditUserPage() {
 
   const handleProfilePictureUpload = async () => {
     if (!profilePictureFile) {
-      setError("Please select a file to upload.");
+      showToast("Please select a file to upload.", 'error');
       return;
     }
 
-    setError('');
-    setSuccess('');
     setIsUpdating(true);
 
     const formData = new FormData();
@@ -113,24 +112,22 @@ export default function EditUserPage() {
       });
 
       if (res.ok) {
-        setSuccess('Profile picture uploaded successfully!');
+        showToast('Profile picture uploaded successfully!', 'success');
         await refreshUserData(); // Refresh user data in context
         const updatedUserData = await res.json();
         setProfilePicturePreviewUrl(updatedUserData.url);
       } else {
         const errorData = await res.json();
-        setError(errorData.error || 'Failed to upload profile picture.');
+        showToast(errorData.error || 'Failed to upload profile picture.', 'error');
       }
     } catch (err) {
-      setError('An unexpected error occurred during file upload.');
+      showToast('An unexpected error occurred during file upload.', 'error');
     } finally {
       setIsUpdating(false);
     }
   };
 
   const handleRemoveProfilePicture = async () => {
-    setError('');
-    setSuccess('');
     setIsUpdating(true);
 
     try {
@@ -143,16 +140,16 @@ export default function EditUserPage() {
       });
 
       if (res.ok) {
-        setSuccess('Profile picture removed successfully!');
+        showToast('Profile picture removed successfully!', 'success');
         setProfilePicturePreviewUrl(null); // Clear preview
         setProfilePictureFile(null); // Clear file input
         await refreshUserData(); // Refresh user data in context
       } else {
         const errorData = await res.json();
-        setError(errorData.error || 'Failed to remove profile picture.');
+        showToast(errorData.error || 'Failed to remove profile picture.', 'error');
       }
     } catch (err) {
-      setError('An unexpected error occurred during profile picture removal.');
+      showToast('An unexpected error occurred during profile picture removal.', 'error');
     } finally {
       setIsUpdating(false);
     }
@@ -171,8 +168,7 @@ export default function EditUserPage() {
       <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
           <h2 className="card-title text-center mb-4"><span className="bi-person-fill-gear"></span>{" "}Edit Profile</h2>
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
-          {success && <div className="alert alert-success" role="alert">{success}</div>}
+          
           <div className="mb-3">
             <label htmlFor="profilePicture" className="form-label">Profile Picture</label>
             <div className="mb-2 text-center">
@@ -242,7 +238,7 @@ export default function EditUserPage() {
             )}{' '}{isUpdating ? 'Updating...' : 'Update Profile'}
           </button>
           <div className="text-center mt-3">
-            <a href="/" className="btn btn-link">Back to Home</a>
+            <Link href="/" className="btn btn-link">Back to Home</Link>
           </div>
         </div>
       </div>

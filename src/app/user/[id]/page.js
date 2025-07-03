@@ -8,6 +8,7 @@ import ProfilePictureModal from '../../../app/components/ProfilePictureModal';
 import { motion } from 'framer-motion';
 
 import React from 'react';
+import Link from 'next/link';
 
 export default function UserProfilePage({ params }) {
   const { id } = React.use(params);
@@ -140,7 +141,7 @@ export default function UserProfilePage({ params }) {
             </div>
           </div>
           <div className="text-center mt-4 pt-3 border-top">
-            <a href="/" className="btn btn-primary btn-lg"><i className="bi-house-door me-2"></i>Back to Home</a>
+            <Link href="/" className="btn btn-primary btn-lg"><i className="bi-house-door me-2"></i>Back to Home</Link>
           </div>
         </div>
       </motion.div>

@@ -7,6 +7,7 @@ import MessageCard from '@/app/components/MessageCard';
 import LoadingMessage from '@/app/components/LoadingMessage';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { showToast } from '../../utils/toast';
 
 export default function PublicMessagesPage() {
   const [messages, setMessages] = useState([]);
@@ -50,7 +51,7 @@ export default function PublicMessagesPage() {
       }
 
     } catch (error) {
-      console.error("Error fetching messages: ", error);
+      showToast("Error fetching messages: " + error.message, 'error');
     }
     setLoading(false);
   };

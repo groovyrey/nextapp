@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '/lib/firebase';
+import { showToast } from '../utils/toast';
 
 const UserContext = createContext();
 
@@ -20,11 +21,11 @@ export function UserProvider({ children }) {
         console.log("UserContext: Fetched user data:", data);
         setUserData(data);
       } else {
-        console.error("Failed to fetch user data from API");
+        showToast(`Failed to fetch user data from API: ${error.message}`, 'error');
         setUserData(null);
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      showToast(`Error fetching user data: ${error.message}`, 'error');
       setUserData(null);
     }
   };
@@ -52,8 +53,9 @@ export function UserProvider({ children }) {
       if (!res.ok) {
         throw new Error('Failed to create session.');
       }
+      showToast('Logged in successfully!', 'success');
     } catch (error) {
-      console.error('Login failed:', error);
+      showToast(`Login failed: ${error.message}`, 'error');
       throw error;
     }
   };
@@ -63,7 +65,7 @@ export function UserProvider({ children }) {
       await fetch('/api/logout');
       await signOut(auth);
     } catch (error) {
-      console.error('Logout failed:', error);
+      showToast(`Logout failed: ${error.message}`, 'error');
       throw error;
     }
   };

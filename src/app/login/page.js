@@ -6,6 +6,7 @@ import { auth } from "/lib/firebase.js";
 import { useRouter } from "next/navigation";
 import { useUser } from '../context/UserContext';
 import LoadingMessage from '../components/LoadingMessage';
+import { toast } from '../utils/toast';
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
@@ -23,13 +24,13 @@ export default function LoginPage() {
   }, [user, loading, router]);
 	
 	const handleLogin = async () => {
-    setError('');
+    
     setIsLoggingIn(true);
     try {
       await login(email, password);
       router.push('/');
     } catch (err) {
-      setError("Login failed: " + err.message);
+      toast.error("Login failed: " + err.message);
     } finally {
       setIsLoggingIn(false);
     }
@@ -55,7 +56,7 @@ export default function LoginPage() {
             <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
             <h2 className="card-title text-center"><i className="bi bi-person-circle me-2"></i>Login</h2>
           </div>
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          
           <div className="form-floating mb-3">
             <input type="email" className="form-control" id="emailInput" placeholder="Email" onChange={e => setEmail(e.target.value)} />
             <label htmlFor="emailInput"><i className="bi bi-envelope me-2"></i>Email</label>

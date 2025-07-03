@@ -8,6 +8,7 @@ import MessageCard from '@/app/components/MessageCard';
 import LoadingMessage from '@/app/components/LoadingMessage';
 import Link from 'next/link';
 import { useUser } from '@/app/context/UserContext'; // Import useUser
+import { showToast } from '../../utils/toast';
 
 export default function PrivateMessagesPage() {
   const { user, loading: userLoading } = useUser(); // Get user from context
@@ -86,7 +87,7 @@ export default function PrivateMessagesPage() {
       }
 
     } catch (error) {
-      console.error("Error fetching messages: ", error);
+      showToast("Error fetching messages: " + error.message, 'error');
     }
     setLoading(false);
   };

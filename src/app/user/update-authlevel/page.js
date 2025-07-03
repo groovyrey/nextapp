@@ -2,23 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { showToast } from '../../utils/toast';
 
 export default function UpdateAuthLevelPage() {
   const [uid, setUid] = useState("");
   const [authLevel, setAuthLevel] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     setIsUpdating(true);
 
     if (!uid || authLevel === "") {
-      setError("Please enter both UID and Auth Level.");
+      showToast("Please enter both UID and Auth Level.", 'error');
+      setIsUpdating(false);
       return;
     }
 
@@ -34,15 +32,14 @@ export default function UpdateAuthLevelPage() {
       const data = await response.json();
 
       if (response.ok) {
-        setMessage(data.message);
+        showToast(data.message, 'success');
         setUid("");
         setAuthLevel("");
       } else {
-        setError(data.error || "Failed to update auth level.");
+        showToast(data.error || "Failed to update auth level.", 'error');
       }
     } catch (err) {
-      console.error("Error updating auth level:", err);
-      setError("An unexpected error occurred.");
+      showToast("An unexpected error occurred.", 'error');
     } finally {
       setIsUpdating(false);
     }
@@ -56,8 +53,7 @@ export default function UpdateAuthLevelPage() {
             <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
             <h2 className="card-title text-center">Update User Auth Level</h2>
           </div>
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
-          {message && <div className="alert alert-success" role="alert">{message}</div>}
+          
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="uid" className="form-label">User UID:</label>

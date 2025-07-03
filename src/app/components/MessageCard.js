@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation'; // Import useRouter
 import styles from './MessageCard.module.css';
 import { useUser } from '../context/UserContext';
+import { showToast } from '../utils/toast';
 
 export default function MessageCard({ message, onDelete, onUpdateMessage }) {
   const { user } = useUser();
@@ -38,7 +39,7 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
 
   const handleDelete = async () => {
     if (!user || !user.idToken) {
-      console.error('User not authenticated or ID token not available.');
+      showToast('User not authenticated or ID token not available.', 'error');
       return;
     }
 
@@ -61,26 +62,24 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
         if (onDelete) {
           onDelete(message.id);
         }
+        showToast('Message deleted successfully', 'success');
         setShowOptions(false); // Close options after action
         return true; // Indicate success
       } else {
         const errorData = await response.json();
-        console.error('Failed to delete message:', errorData.message);
+        showToast(`Failed to delete message: ${errorData.message}`, 'error');
         return false; // Indicate failure
       }
     } catch (error) {
-      console.error('Error deleting message:', error);
+      showToast('Error deleting message:', 'error');
     }
   };
 
-  const handleEdit = () => {
-    setShowOptions(false); // Close options after action
-    router.push(`/messages/edit/${message.id}`); // Navigate to edit page
-  };
+  
 
   const handleChangeVisibility = async () => {
     if (!user || !user.idToken) {
-      console.error('User not authenticated or ID token not available.');
+      showToast('User not authenticated or ID token not available.', 'error');
       return;
     }
 
@@ -96,19 +95,17 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
       });
 
       if (response.ok) {
-        alert('Message visibility changed successfully');
+        showToast('Message visibility changed successfully', 'success');
         if (onUpdateMessage) {
           onUpdateMessage({ ...message, private: newVisibility });
         }
         setShowOptions(false); // Close options after action
       } else {
         const errorData = await response.json();
-        alert(`Failed to update message visibility: ${errorData.message}`);
-        console.error('Failed to update message visibility:', errorData.message);
+        showToast(`Failed to update message visibility: ${errorData.message}`, 'error');
       }
     } catch (error) {
-      alert(`Error updating message visibility: ${error.message}`);
-      console.error('Error updating message visibility:', error);
+      showToast(`Error updating message visibility: ${error.message}`, 'error');
     }
   };
 
@@ -149,9 +146,9 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
             exit="exit"
             transition={{ duration: 0.2 }}
           >
-            <button className={styles.optionButton} onClick={handleEdit}>
+            <Link href={`/messages/edit/${message.id}`} className={styles.optionButton} onClick={() => setShowOptions(false)}>
               <i className="bi bi-pencil-square me-2"></i>Edit
-            </button>
+            </Link>
             <button className={styles.optionButton} onClick={handleChangeVisibility}>
               <i className={`bi ${message.private ? 'bi-eye-slash-fill' : 'bi-eye-fill'} me-2`}></i>
               {message.private ? 'Make Public' : 'Make Private'}
