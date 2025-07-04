@@ -11,6 +11,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Luloy",
   description: "Luloy App",
+  icons: {
+    icon: '/luloy.svg',
+  },
 };
 
 export default function RootLayout({ children }) {

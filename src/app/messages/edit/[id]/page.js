@@ -16,6 +16,7 @@ export default function EditMessagePage() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
+    document.title = `Edit Message ${id}`;
     const fetchMessage = async () => {
       setIsLoading(true);
       try {

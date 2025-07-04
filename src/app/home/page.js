@@ -14,6 +14,7 @@ export default function Home() {
   const [logoutError, setLogoutError] = useState('');
 
   useEffect(() => {
+    document.title = "Home";
     if (!loading && !user) {
       router.push('/login');
     }

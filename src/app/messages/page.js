@@ -7,6 +7,7 @@ export default function MessagesPage() {
   const router = useRouter();
 
   useEffect(() => {
+    document.title = "Messages";
     router.replace('/messages/public');
   }, [router]);
 

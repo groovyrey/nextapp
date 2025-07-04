@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import { showToast } from '../../utils/toast';
 
 export default function SendMessage() {
+  useEffect(() => {
+    document.title = "Send Message";
+  }, []);
   const [message, setMessage] = useState('');
   const [sender, setSender] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);

@@ -11,6 +11,9 @@ import { useUser } from '@/app/context/UserContext'; // Import useUser
 import { showToast } from '../../utils/toast';
 
 export default function PrivateMessagesPage() {
+  useEffect(() => {
+    document.title = "Private Messages";
+  }, []);
   const { user, loading: userLoading } = useUser(); // Get user from context
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);

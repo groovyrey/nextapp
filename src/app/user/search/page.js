@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import UserSearchResultCard from '@/app/components/UserSearchResultCard';
 import LoadingMessage from '@/app/components/LoadingMessage';
 import { showToast } from '../../../app/utils/toast';
 
 export default function SearchUserPage() {
+  useEffect(() => {
+    document.title = "Search Users";
+  }, []);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -3,21 +3,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #0056b3; /* Professional Blue */
-  --primary-rgb: 0, 86, 179; /* RGB values for --primary-color */
-  --secondary-color: #6c757d; /* Medium Grey */
-  --accent-color: #e0eaf2; /* Light Blue for highlights */
-  --background-color: #f8f9fa; /* Very Light Grey for a clean background */
-  --text-color: #212529; /* Darker text for readability */
-  --light-text-color: #6c757d;
+  --primary-color: #3498db; /* A modern, clean blue */
+  --primary-rgb: 52, 152, 219; /* RGB for --primary-color */
+  --secondary-color: #95a5a6; /* A muted grey */
+  --accent-color: #ecf0f1; /* Very light grey for subtle highlights */
+  --background-color: #ffffff; /* Pure white background */
+  --text-color: #34495e; /* Dark desaturated blue for text */
+  --light-text-color: #7f8c8d;
   --card-background-color: #ffffff; /* White background for cards */
-  --card-border-color: #dee2e6;
-  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Softer box shadow */
-  --box-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.12); /* Softer box shadow on hover */
-  --border-radius-base: 4px; /* Slightly less rounded for professional look */
+  --card-border-color: #e0e0e0; /* Light grey border */
+  --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06); /* Very subtle shadow */
+  --box-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.1); /* Slightly more visible on hover */
+  --border-radius-base: 4px; /* Slightly rounded for a softer modern look */
   --transition-base: all 0.2s ease-in-out;
-  --background-color-dark: #e9ecef; /* A slightly darker grey for the menu background */
-  --border-color: var(--card-border-color); /* Using existing card border color */
+  --background-color-dark: #f4f6f7; /* A very light grey for subtle differentiation */
+  --border-color: var(--card-border-color);
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
@@ -26,13 +31,14 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scroll */
-  line-height: 1.6;
+  overflow-x: hidden;
+  line-height: 1.5;
+  font-size: 1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-color);
-  font-weight: 600;
+  font-weight: 500; /* Slightly lighter font weight for headings */
   margin-bottom: 1rem;
 }
 
@@ -51,7 +57,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card:hover {
-  transform: translateY(-5px); /* Lift on hover */
+  transform: translateY(-3px); /* Subtle lift on hover */
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -62,12 +68,12 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
   padding: 0.75rem 1.5rem;
   transition: var(--transition-base);
-  color: white; /* Ensure text is white on primary buttons */
+  color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-primary:hover {
-  background-color: #004085; /* Darker shade of primary blue */
+  background-color: #2980b9; /* Darker shade of primary blue */
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -83,13 +89,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-secondary:hover {
-  background-color: #5a6268; /* Darker shade of secondary grey */
+  background-color: #7f8c8d; /* Darker shade of secondary grey */
   box-shadow: var(--box-shadow-hover);
 }
 
 .btn-danger {
-  background-color: #dc3545;
-  border: 1px solid #dc3545;
+  background-color: #e74c3c;
+  border: 1px solid #e74c3c;
   border-radius: var(--border-radius-base);
   font-weight: 500;
   padding: 0.75rem 1.5rem;
@@ -99,7 +105,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-danger:hover {
-  background-color: #a71d2a; /* Darker shade of danger red */
+  background-color: #c0392b; /* Darker shade of danger red */
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -125,7 +131,7 @@ input[type="file"] {
   padding: 0.75rem 1rem;
   transition: var(--transition-base);
   background-color: var(--card-background-color);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03); /* Very subtle inset shadow */
 }
 
 input[type="file"]::-webkit-file-upload-button {
@@ -134,7 +140,7 @@ input[type="file"]::-webkit-file-upload-button {
   border-radius: var(--border-radius-base);
   padding: 0.5rem 1rem;
   margin-right: 1rem;
-  box-shadow: none; /* Remove shadow for a cleaner look */
+  box-shadow: none;
   transition: var(--transition-base);
   cursor: pointer;
 }
@@ -145,8 +151,8 @@ input[type="file"]::-webkit-file-upload-button:hover {
 
 .form-control:focus,
 input[type="file"]:focus {
-  border-color: var(--primary-color); /* Highlight border on focus */
-  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25); /* Professional focus glow */
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.15); /* Lighter focus glow */
   outline: none;
 }
 
@@ -155,7 +161,7 @@ input[type="file"]:focus {
 }
 
 .text-danger {
-  color: #dc3545 !important; /* Keep standard danger color */
+  color: #e74c3c !important; /* Modern danger color */
 }
 
 .spinner-border {

@@ -10,6 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { showToast } from '../../utils/toast';
 
 export default function PublicMessagesPage() {
+  useEffect(() => {
+    document.title = "Public Messages";
+  }, []);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);

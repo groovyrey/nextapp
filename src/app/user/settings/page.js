@@ -20,6 +20,7 @@ export default function EditUserPage() {
   const [isFetchingUserData, setIsFetchingUserData] = useState(true); // New state for data fetching
 
   useEffect(() => {
+    document.title = "User Settings";
     if (!loading && !user) {
       router.push('/login');
     } else if (user) {

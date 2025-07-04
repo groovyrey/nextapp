@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { showToast } from '../../utils/toast';
 
 export default function UpdateAuthLevelPage() {
+  useEffect(() => {
+    document.title = "Update User Auth Level";
+  }, []);
   const [uid, setUid] = useState("");
   const [authLevel, setAuthLevel] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);

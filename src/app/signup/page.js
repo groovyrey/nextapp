@@ -20,6 +20,7 @@ export default function SignupPage() {
   const { user, loading } = useUser();
 
   useEffect(() => {
+    document.title = "Sign Up";
     if (!loading && user) {
       router.push('/');
     }

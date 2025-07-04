@@ -17,6 +17,12 @@ export default function UserProfilePage({ params }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    if (profileData) {
+      document.title = `${toTitleCase(profileData.firstName || '')} ${toTitleCase(profileData.lastName || '')}'s Profile`;
+    }
+  }, [profileData]);
+
+  useEffect(() => {
     if (id) {
       const fetchProfile = async () => {
         try {
