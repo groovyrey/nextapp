@@ -11,7 +11,7 @@ import { useUser } from '@/app/context/UserContext'; // Import useUser
 import { showToast } from '../../utils/toast';
 
 export default function PrivateMessagesPage() {
-  const { user, loading: userLoading } = useUser(); // Get user from context
+  const { user, userData, loading: userLoading, refreshUserData } = useUser(); // Get user from context
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -73,10 +73,13 @@ export default function PrivateMessagesPage() {
   }, []);
 
   useEffect(() => {
-    if (!userLoading && user && user.authLevel === 1) {
-      fetchMessages();
+    if (!userLoading && user) {
+      refreshUserData(); // Ensure authLevel is fresh
+      if (userData && userData.authLevel === 1) {
+        fetchMessages();
+      }
     }
-  }, [fetchMessages, user, userLoading]);
+  }, [fetchMessages, user, userLoading, refreshUserData]);
 
   const handleNextPage = () => {
     if (hasNextPage) {
@@ -95,7 +98,7 @@ export default function PrivateMessagesPage() {
   }
 
   // If user is not authenticated or authLevel is not 1, display unauthorized message
-  if (!user || user.authLevel !== 1) {
+  if (!user || !userData || userData.authLevel !== 1) {
     return (
       <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
         <div className="card m-2 text-center" style={{ maxWidth: '400px', width: '100%' }}>

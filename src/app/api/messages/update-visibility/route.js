@@ -9,15 +9,13 @@ export async function POST(request) {
     }
 
     const idToken = authorization.split('Bearer ')[1];
-    let decodedToken;
-    try {
-      decodedToken = await auth.verifyIdToken(idToken);
-    } catch (error) {
-      console.error('Error verifying ID token:', error);
-      return NextResponse.json({ message: 'Unauthorized: Invalid token' }, { status: 401 });
-    }
+    let decodedToken = await auth.verifyIdToken(idToken);
+    const uid = decodedToken.uid;
 
-    if (decodedToken.authLevel !== 1) {
+    const userDoc = await firestore.collection('users').doc(uid).get();
+    const userAuthLevel = userDoc.exists ? userDoc.data().authLevel || 0 : 0;
+
+    if (userAuthLevel !== 1) {
       return NextResponse.json({ message: 'Forbidden: Insufficient permissions' }, { status: 403 });
     }
 

@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useUser } from '../context/UserContext';
 import { database } from '../../../lib/firebase';
-import { ref, query, orderByChild, limitToLast, onValue, off, push, remove, update, endBefore, onChildAdded, onChildChanged, onChildRemoved } from 'firebase/database';
+import { ref, query, orderByChild, limitToLast, onValue, off, push, remove, update, endBefore, onChildAdded, onChildChanged, onChildRemoved, get } from 'firebase/database';
 import ChatMessage from '../components/ChatMessage';
 import MessageSkeleton from '../components/MessageSkeleton';
 import LoadingMessage from '../components/LoadingMessage';
@@ -12,9 +12,10 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { initializeTooltips, disposeTooltips } from '../BootstrapClient';
 import ChatInput from '../components/ChatInput';
+import styles from './chat.module.css';
 
 export default function ChatPage() {
-    const { user, loading: userLoading } = useUser();
+    const { user, loading: userLoading, refreshUserData } = useUser();
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [editingMessageOriginalText, setEditingMessageOriginalText] = useState('');
     const [messages, setMessages] = useState([]);
@@ -105,6 +106,10 @@ export default function ChatPage() {
             toast.error('You must be logged in to access the chat.');
             router.push('/login');
             return;
+        }
+
+        if (!userLoading && user) {
+            refreshUserData(); // Ensure authLevel is fresh
         }
 
         const getMessagesFromCache = () => {
@@ -233,16 +238,59 @@ export default function ChatPage() {
         }
     };
 
+    const [replyingToMessage, setReplyingToMessage] = useState(null);
+
     const handleEditMessage = (messageToEdit) => {
         setEditingMessageId(messageToEdit.id);
         setEditingMessageOriginalText(messageToEdit.text);
+        setReplyingToMessage(null); // Cancel reply when editing
+    };
+
+    const handleReplyToMessage = (messageToReplyTo) => {
+        setReplyingToMessage(messageToReplyTo);
+        setEditingMessageId(null); // Cancel edit when replying
+    };
+
+    const handleReactToMessage = async (messageId, emoji) => {
+        if (!user) {
+            toast.error('You must be logged in to react.');
+            return;
+        }
+        const messageRef = ref(database, `messages/${messageId}/reactions`);
+        const userId = user.uid;
+
+        try {
+            const snapshot = await get(messageRef);
+            const currentReactions = snapshot.val() || {};
+            const newReactions = { ...currentReactions };
+
+            if (!newReactions[emoji]) {
+                newReactions[emoji] = {};
+            }
+
+            if (newReactions[emoji][userId]) {
+                // User already reacted with this emoji, so remove it
+                delete newReactions[emoji][userId];
+                if (Object.keys(newReactions[emoji]).length === 0) {
+                    delete newReactions[emoji];
+                }
+            } else {
+                // Add user's reaction
+                newReactions[emoji][userId] = true;
+            }
+
+            await update(ref(database, `messages/${messageId}`), { reactions: newReactions });
+        } catch (error) {
+            console.error('Error reacting to message:', error);
+            toast.error('Failed to add/remove reaction.');
+        }
     };
 
     return (
         <div className="d-flex flex-column vh-100 align-items-center justify-content-center">
             <div className="card m-2" style={{ maxWidth: '600px', width: '100%', height: '800px' }}>
                 <div className="d-flex flex-column h-100">
-                <div ref={messagesContainerRef} className="container chat-container flex-grow-1 d-flex flex-column-reverse pt-0 pb-0" style={{ overflowY: 'auto' }}>
+                <div ref={messagesContainerRef} className="container chat-container flex-grow-1 d-flex flex-column-reverse pt-10 pb-3" style={{ overflowY: 'auto' }}>
                     {messagesLoading && [...Array(5)].map((_, i) => <MessageSkeleton key={i} isMyMessage={i % 2 === 0} />)}
                     {messages.slice().reverse().map((msg) => (
                         <ChatMessage
@@ -251,6 +299,8 @@ export default function ChatPage() {
                             user={user}
                             onDelete={handleDeleteMessage}
                             onEdit={handleEditMessage}
+                            onReply={handleReplyToMessage}
+                            onReact={handleReactToMessage}
                         />
                     ))}
                 </div>
@@ -261,6 +311,8 @@ export default function ChatPage() {
                         editingMessageOriginalText={editingMessageOriginalText}
                         setEditingMessageId={setEditingMessageId}
                         setEditingMessageOriginalText={setEditingMessageOriginalText}
+                        replyingToMessage={replyingToMessage}
+                        setReplyingToMessage={setReplyingToMessage}
                     />
                 </div>
             </div>

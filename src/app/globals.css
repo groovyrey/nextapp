@@ -3,20 +3,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #3498db; /* A modern, clean blue */
-  --primary-rgb: 52, 152, 219; /* RGB for --primary-color */
-  --secondary-color: #95a5a6; /* A muted grey */
-  --accent-color: #ecf0f1; /* Very light grey for subtle highlights */
-  --background-color: #ffffff; /* Pure white background */
-  --text-color: #34495e; /* Dark desaturated blue for text */
+  --primary-color: #3498db;
+  --primary-rgb: 52, 152, 219;
+  --secondary-color: #95a5a6;
+  --accent-color: #ecf0f1;
+  --background-color: #ffffff;
+  --text-color: #34495e;
   --light-text-color: #7f8c8d;
-  --card-background-color: #ffffff; /* White background for cards */
-  --card-border-color: #e0e0e0; /* Light grey border */
-  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Slightly more pronounced shadow */
-  --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15); /* More visible on hover */
-  --border-radius-base: 8px; /* More rounded for a softer modern look */
-  --transition-base: all 0.3s ease-in-out;
-  --background-color-dark: #f4f6f7; /* A very light grey for subtle differentiation */
+  --card-background-color: #ffffff;
+  --card-border-color: #e0e0e0;
+  --box-shadow: none;
+  --box-shadow-hover: none;
+  --border-radius-base: 2px;
+  --transition-base: all 0.2s ease-in-out;
+  --background-color-dark: #f4f6f7;
   --border-color: var(--card-border-color);
 }
 
@@ -32,20 +32,20 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  line-height: 1.5;
-  font-size: 0.875rem;
+  line-height: 1.2;
+  font-size: 0.75rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-color);
-  font-weight: 500; /* Slightly lighter font weight for headings */
-  margin-bottom: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0.5rem;
 }
 
 .chat-container {
@@ -59,10 +59,11 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--border-radius-base);
   box-shadow: var(--box-shadow);
   transition: var(--transition-base);
+  padding: 0.5rem;
 }
 
 .card:hover {
-  transform: translateY(-3px); /* Subtle lift on hover */
+  transform: none;
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -71,16 +72,16 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
-  padding: 0.75rem 1.5rem;
+  padding: 0.25rem 0.5rem;
   transition: var(--transition-base);
   color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-primary:hover {
-  background-color: #2980b9; /* Darker shade of primary blue */
+  background-color: #2980b9;
   box-shadow: var(--box-shadow-hover);
-  transform: translateY(-2px); /* Subtle lift effect */
+  transform: none;
 }
 
 .btn-secondary {
@@ -88,14 +89,14 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--secondary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
-  padding: 0.75rem 1.5rem;
+  padding: 0.25rem 0.5rem;
   transition: var(--transition-base);
   color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-secondary:hover {
-  background-color: #7f8c8d; /* Darker shade of secondary grey */
+  background-color: #7f8c8d;
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -104,14 +105,14 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #e74c3c;
   border-radius: var(--border-radius-base);
   font-weight: 500;
-  padding: 0.75rem 1.5rem;
+  padding: 0.25rem 0.5rem;
   transition: var(--transition-base);
   color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-danger:hover {
-  background-color: #c0392b; /* Darker shade of danger red */
+  background-color: #c0392b;
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -119,7 +120,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
-  padding: 0.75rem 1.5rem;
+  padding: 0.25rem 0.5rem;
   transition: var(--transition-base);
   box-shadow: var(--box-shadow);
 }
@@ -134,16 +135,16 @@ h1, h2, h3, h4, h5, h6 {
 input[type="file"] {
   border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius-base);
-  padding: 0.75rem 1rem;
+  padding: 0.25rem 0.5rem;
   transition: var(--transition-base);
   background-color: var(--card-background-color);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03); /* Very subtle inset shadow */
+  box-shadow: none;
 }
 
 .form-control:focus,
 input[type="file"]:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25), var(--box-shadow-hover); /* More prominent focus glow with shadow */
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
   outline: none;
 }
 
@@ -152,20 +153,18 @@ input[type="file"]:focus {
 }
 
 .text-danger {
-  color: #e74c3c !important; /* Modern danger color */
+  color: #e74c3c !important;
 }
 
 .spinner-border {
   color: var(--primary-color);
 }
 
-/* Remove subtle background patterns for a cleaner look */
 body::before,
 body::after {
   content: none;
 }
 
-/* Chat message tails */
 .card.bg-primary {
   position: relative;
 }
@@ -173,7 +172,7 @@ body::after {
 .card.bg-primary::after {
   content: '';
   position: absolute;
-  right: -10px; /* Adjust to position the tail */
+  right: -10px;
   bottom: 0;
   width: 0;
   height: 0;
@@ -181,7 +180,6 @@ body::after {
   border-left-color: var(--primary-color);
   border-right: 0;
   border-bottom: 0;
-  
 }
 
 .card.bg-light {
@@ -191,7 +189,7 @@ body::after {
 .card.bg-light::before {
   content: '';
   position: absolute;
-  left: -10px; /* Adjust to position the tail */
+  left: -10px;
   bottom: 0;
   width: 0;
   height: 0;
@@ -199,5 +197,4 @@ body::after {
   border-right-color: var(--card-background-color);
   border-left: 0;
   border-bottom: 0;
-  
 }

@@ -74,12 +74,25 @@ export function UserProvider({ children }) {
     if (auth) {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
-          const idTokenResult = await currentUser.getIdTokenResult();
-          console.log("UserContext: idTokenResult.claims", idTokenResult.claims);
-          const userWithClaims = { ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token };
-          console.log("UserContext: userWithClaims", userWithClaims);
-          setUser(userWithClaims);
-          await fetchUserData(currentUser); // Fetch user data when auth state changes
+          // Fetch user data from Firestore via API
+          const res = await fetch(`/api/user/${currentUser.uid}`);
+          let fetchedUserData = null;
+          if (res.ok) {
+            fetchedUserData = await res.json();
+            console.log("UserContext: Fetched user data:", fetchedUserData);
+            setUserData(fetchedUserData);
+          } else {
+            showToast(`Failed to fetch user data from API: ${error.message}`, 'error');
+            setUserData(null);
+          }
+
+          // Construct the user object with authLevel from fetchedUserData
+          const userObject = {
+            ...currentUser,
+            idToken: await currentUser.getIdToken(), // Get the latest ID token
+            authLevel: fetchedUserData ? fetchedUserData.authLevel : 0, // Use authLevel from Firestore
+          };
+          setUser(userObject);
         } else {
           setUser(null);
           setUserData(null);

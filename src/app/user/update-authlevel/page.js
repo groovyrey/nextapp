@@ -38,6 +38,8 @@ export default function UpdateAuthLevelPage() {
         showToast(data.message, 'success');
         setUid("");
         setAuthLevel("");
+        router.push('/login');
+        router.refresh();
       } else {
         showToast(data.error || "Failed to update auth level.", 'error');
       }

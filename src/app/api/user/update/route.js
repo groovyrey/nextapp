@@ -9,15 +9,17 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Missing or invalid user data." }, { status: 400 });
     }
 
-    await admin.firestore().collection("users").doc(uid).update({
+    const updateData = {
       firstName,
       lastName,
       age: parseInt(age),
-    });
+    };
 
     if (authLevel !== undefined) {
-      await admin.auth().setCustomUserClaims(uid, { authLevel: parseInt(authLevel) });
+      updateData.authLevel = parseInt(authLevel);
     }
+
+    await admin.firestore().collection("users").doc(uid).update(updateData);
 
     return NextResponse.json({ message: "User data updated successfully." }, { status: 200 });
   } catch (error) {

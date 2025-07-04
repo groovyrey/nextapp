@@ -82,20 +82,22 @@ export default function SendMessage() {
               />
               <label className="form-check-label" htmlFor="privateSwitch"><i className="bi bi-eye-slash me-2"></i>Private Message</label>
             </div>
-            <motion.button
-              type="submit"
-              className="btn btn-primary w-100"
-              disabled={isSending}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isSending ? (
-                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              ) : (
-                <i className="bi-send me-2"></i>
-              )}{' '}
-              {isSending ? 'Sending...' : 'Send Message'}
-            </motion.button>
+            <div className="d-grid gap-2">
+              <motion.button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSending}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {isSending ? (
+                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                ) : (
+                  <i className="bi-send me-2"></i>
+                )}{' '}
+                {isSending ? 'Sending...' : 'Send Message'}
+              </motion.button>
+            </div>
           </form>
         </div>
       </div>

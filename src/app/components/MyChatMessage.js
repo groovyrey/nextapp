@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+
 import { motion } from 'framer-motion';
 import { AUTH_LEVEL_RANKS } from '../utils/AuthRankSystem';
 import MessageOptionsModal from './MessageOptionsModal';
 import { capitalizeName } from '../utils/capitalizeName';
 import styles from './ChatMessage.module.css';
 
-export default function MyChatMessage({ message, user, onDelete, onEdit }) {
+export default function MyChatMessage({ message, user, onDelete, onEdit, onReact }) {
     const messageCardRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     const holdTimeoutRef = useRef(null);
@@ -45,11 +46,27 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
                 onMouseLeave={handleTouchEnd} // Clear timeout if mouse leaves while holding
                 >
                 <div className="d-flex flex-column">
+                    {message.replyTo && (
+                        <div className="border-start border-info ps-2 mb-2">
+                            <small className="text-info fw-bold">Replying to {message.replyTo.senderName}:</small>
+                            <p className="text-muted mb-0 small text-truncate">{message.replyTo.text}</p>
+                        </div>
+                    )}
                     <small className="fw-bold mb-1">
                         {capitalizeName(message.senderName)} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[message.senderAuthLevel].color}`}></i>}
                     </small>
                     <p className="mb-0">{message.text} {message.isEdited && <small className="text-muted">(Edited)</small>}</p>
+                    {message.reactions && (
+                        <div className="d-flex mt-2">
+                            {Object.entries(message.reactions).map(([emoji, users]) => (
+                                <span key={emoji} className="badge bg-light text-dark me-1" style={{ cursor: 'pointer' }}>
+                                    {emoji} {Object.keys(users).length}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
+                
             </div>
             <MessageOptionsModal
                 show={showModal}
@@ -58,6 +75,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
                 onEdit={onEdit}
                 message={message}
                 user={user}
+                onReact={onReact}
             />
         </motion.div>
     );

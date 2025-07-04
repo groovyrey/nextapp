@@ -116,13 +116,15 @@ export default function SignupPage() {
             <input type="password" className="form-control" id="passwordInput" placeholder="Password" onChange={e => setPassword(e.target.value)} />
             <label htmlFor="passwordInput"><i className="bi bi-lock me-2"></i>Password</label>
           </div>
-          <button className="btn btn-primary w-100" onClick={handleSignup} disabled={isSigningUp}>
-            {isSigningUp ? (
-              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            ) : (
-              <i className="bi-person-plus me-2"></i>
-            )}{' '}{isSigningUp ? 'Signing up...' : 'Sign Up'}
-          </button>
+          <div className="d-grid gap-2">
+            <button className="btn btn-primary" onClick={handleSignup} disabled={isSigningUp}>
+              {isSigningUp ? (
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              ) : (
+                <i className="bi-person-plus me-2"></i>
+              )}{' '}{isSigningUp ? 'Signing up...' : 'Sign Up'}
+            </button>
+          </div>
           <p className="mt-3 text-center">Already have an account? <a className="text-primary" href="/login"><i className="bi bi-box-arrow-in-right me-2"></i>Login</a></p>
         </div>
       </div>

@@ -13,8 +13,7 @@ export async function GET(request, { params }) {
     }
 
     const userData = userDoc.data();
-    const userRecord = await admin.auth().getUser(id);
-    const authLevel = userRecord.customClaims?.authLevel || 0;
+    const authLevel = userData.authLevel || 0;
 
     const publicUserData = {
       firstName: userData.firstName,

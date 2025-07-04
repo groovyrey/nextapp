@@ -1,5 +1,4 @@
-import { admin } from '/lib/firebase-admin';
-import { auth } from 'firebase-admin';
+import { admin, auth, firestore } from '/lib/firebase-admin';
 
 export async function POST(req) {
   try {
@@ -10,8 +9,13 @@ export async function POST(req) {
       return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 });
     }
 
-    const decodedToken = await auth().verifyIdToken(idToken);
-    if (decodedToken.authLevel !== 1) {
+    const decodedToken = await auth.verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+
+    const userDoc = await firestore.collection('users').doc(uid).get();
+    const userAuthLevel = userDoc.exists ? userDoc.data().authLevel || 0 : 0;
+
+    if (userAuthLevel !== 1) {
       return new Response(JSON.stringify({ message: 'Forbidden: Insufficient authorization' }), { status: 403 });
     }
 

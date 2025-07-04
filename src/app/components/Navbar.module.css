@@ -76,12 +76,13 @@
 .navbarActions {
   display: flex;
   gap: 1.2rem;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
 .navbarActions a,
 .navbarActions button {
-  background-color: var(--primary-color); /* Primary button style */
+  background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); /* Subtle gradient for buttons */
   color: var(--card-background-color);
   border: 1px solid var(--primary-color);
   padding: 0.6rem 1.2rem;
@@ -205,14 +206,13 @@
 
   .navbarLinks ul {
     flex-direction: column;
-    gap: 0.8rem;
     margin-bottom: 1rem;
   }
 
   .navbarActions {
     flex-direction: column;
-    gap: 0.8rem;
     align-items: center;
+    gap: 0.5rem; /* Add gap for mobile view */
   }
 
   .navbarActions a,
@@ -230,6 +230,7 @@
     background-color: transparent; /* No background for children */
     box-shadow: none; /* No shadow for children */
     padding: 0; /* No padding for children */
+    gap: 0; /* Remove gap for mobile */
   }
 
   

@@ -9,9 +9,7 @@ export async function PUT(request) {
       return NextResponse.json({ error: "Missing or invalid user ID or auth level." }, { status: 400 });
     }
 
-    await admin.auth().setCustomUserClaims(uid, { authLevel: parseInt(authLevel) });
-    // Revoke all refresh tokens for the user to force re-authentication
-    await admin.auth().revokeRefreshTokens(uid);
+    await admin.firestore().collection('users').doc(uid).set({ authLevel: parseInt(authLevel) }, { merge: true });
 
     return NextResponse.json({ message: "User auth level updated successfully." }, { status: 200 });
   } catch (error) {

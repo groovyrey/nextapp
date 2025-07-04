@@ -26,18 +26,16 @@ export async function GET(request) {
     
 
     // Filter out sensitive data before sending to client
-    const publicUsers = await Promise.all(users.map(async (user) => {
-      const userRecord = await admin.auth().getUser(user.id);
-      const authLevel = userRecord.customClaims?.authLevel || 0;
+    const publicUsers = users.map((user) => {
       return {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         profilePictureUrl: user.profilePictureUrl || null,
-        authLevel: authLevel,
+        authLevel: user.authLevel || 0, // Assuming authLevel is now directly in the user's Firestore document
       };
-    }));
+    });
 
     return NextResponse.json(publicUsers, { status: 200 });
   } catch (error) {

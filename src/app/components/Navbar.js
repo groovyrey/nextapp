@@ -79,7 +79,7 @@ export default function Navbar() {
             </button>
           ) : (
             <>
-              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary me-2">
+              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary mb-2">
                 <i className="bi bi-box-arrow-in-right"></i>Login
               </Link>
               <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary">

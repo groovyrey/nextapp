@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 
 import styles from './MessageOptionsModal.module.css';
 
-export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, message, user, showDeleteEdit = true }) {
+export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, message, user, showDeleteEdit = true, onReply, onReact }) {
     const router = useRouter();
 
     const handleEditClick = () => {
@@ -53,9 +53,9 @@ export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, me
                 {message && (
                     <div className="mb-3">
                         {message.senderId === user.uid ? (
-                            <MyChatMessage message={message} user={user} />
+                            <MyChatMessage message={message} user={user} onReact={onReact} />
                         ) : (
-                            <OtherChatMessage message={message} user={user} />
+                            <OtherChatMessage message={message} user={user} onReact={onReact} />
                         )}
                     </div>
                 )}
@@ -66,6 +66,18 @@ export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, me
                 )}
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-around align-items-stretch p-2">
+                <div className="dropup-center dropup flex-fill mx-1">
+                    <button className="btn btn-secondary btn-sm w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i className="bi bi-emoji-smile me-2"></i>React
+                    </button>
+                    <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" href="#" onClick={() => { onReact(message.id, '👍'); onHide(); }}>👍 Like</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => { onReact(message.id, '❤️'); onHide(); }}>❤️ Love</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => { onReact(message.id, '😂'); onHide(); }}>😂 Laugh</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => { onReact(message.id, '😮'); onHide(); }}>😮 Wow</a></li>
+                        <li><a className="dropdown-item" href="#" onClick={() => { onReact(message.id, '😢'); onHide(); }}>😢 Sad</a></li>
+                    </ul>
+                </div>
                 {showDeleteEdit && (
                     <Button variant="danger" size="sm" onClick={() => { onDelete(message.id); onHide(); }} className={`flex-fill mx-1 ${styles.roundedButton}`}>
                         <i className="bi bi-trash me-2"></i>Delete
@@ -79,6 +91,11 @@ export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, me
                 {!showDeleteEdit && (
                     <Button size="sm" onClick={handleViewProfileClick} className={`flex-fill mx-1 ${styles.roundedButton} ${styles.transparentButton}`}>
                         <i className="bi bi-person-circle me-2"></i>View Profile
+                    </Button>
+                )}
+                {!showDeleteEdit && (
+                    <Button variant="info" size="sm" onClick={() => { onReply(message); onHide(); }} className={`flex-fill mx-1 ${styles.roundedButton}`}>
+                        <i className="bi bi-reply-fill me-2"></i>Reply
                     </Button>
                 )}
                 <Button variant="secondary" size="sm" onClick={handleCopyClick} className={`flex-fill mx-1 ${styles.roundedButton}`}>
