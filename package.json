@@ -22,5 +22,8 @@
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
     "react-lottie": "^1.2.10"
+  },
+  "devDependencies": {
+    "eslint": "^9.30.1"
   }
 }
