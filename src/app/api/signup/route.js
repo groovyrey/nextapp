@@ -1,6 +1,6 @@
 import { admin } from "/lib/firebase-admin.js";
 import { NextResponse } from "next/server";
-import { capitalizeName } from "../../../utils/capitalizeName";
+import { capitalizeName } from "../../utils/capitalizeName";
 
 export async function POST(request) {
   try {
