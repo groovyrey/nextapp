@@ -3,16 +3,13 @@
   grid-template-columns: auto 1fr auto; /* Brand | Links | Actions */
   align-items: center;
   padding: 1rem 2rem;
-  background-color: var(--card-background-color); /* Use white background for a cleaner look */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
-  color: var(--text-color); /* Change text color back to default */
-  box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); /* Enhanced neomorphic shadow */
-  border-bottom: none; /* Remove border */
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
   position: relative;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* Adjusted z-index to allow toasts to appear above */
+  z-index: 1000;
 }
 
 .navbarBrandContainer a {

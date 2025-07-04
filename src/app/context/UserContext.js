@@ -75,7 +75,9 @@ export function UserProvider({ children }) {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
           const idTokenResult = await currentUser.getIdTokenResult();
+          console.log("UserContext: idTokenResult.claims", idTokenResult.claims);
           const userWithClaims = { ...currentUser, authLevel: idTokenResult.claims.authLevel, idToken: idTokenResult.token };
+          console.log("UserContext: userWithClaims", userWithClaims);
           setUser(userWithClaims);
           await fetchUserData(currentUser); // Fetch user data when auth state changes
         } else {

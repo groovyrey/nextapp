@@ -49,7 +49,7 @@ export default function LoginPage() {
       animate={{ opacity: 1, y: 0 }} 
       exit={{ opacity: 0, y: 20 }} 
       transition={{ duration: 0.5 }}
-      className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}
+      className="d-flex flex-column align-items-center justify-content-center px-3" style={{ minHeight: '80vh' }}
     >
       <div className="card m-2" style={{ maxWidth: '400px', width: '100%' }}>
         <div className="card-body">

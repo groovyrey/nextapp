@@ -31,9 +31,7 @@ export default function Navbar() {
   return (
     <motion.header 
       className={styles.navbarGrid}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      
     >
       <div className={styles.navbarBrandContainer}>
         <Link href="/">
@@ -65,6 +63,11 @@ export default function Navbar() {
             <li>
               <Link href="/user/search" onClick={() => setIsMobileMenuOpen(false)}>
                 Search Users
+              </Link>
+            </li>
+            <li>
+              <Link href="/chat" onClick={() => setIsMobileMenuOpen(false)}>
+                Global Chat
               </Link>
             </li>
           </ul>

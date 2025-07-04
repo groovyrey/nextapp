@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <UserProvider>
           <Navbar />
-          <main className="container py-3">
+          <main>
             {children}
           </main>
         </UserProvider>
