@@ -1,5 +1,6 @@
 import { admin } from "/lib/firebase-admin.js";
 import { NextResponse } from "next/server";
+import { capitalizeName } from "../../../utils/capitalizeName";
 
 export async function POST(request) {
   try {
@@ -12,9 +13,12 @@ export async function POST(request) {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
+    const capitalizedFirstName = capitalizeName(firstName);
+    const capitalizedLastName = capitalizeName(lastName);
+
     await admin.firestore().collection("users").doc(uid).set({
-      firstName,
-      lastName,
+      firstName: capitalizedFirstName,
+      lastName: capitalizedLastName,
       age: parseInt(age),
       email: decodedToken.email,
     });

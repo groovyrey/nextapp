@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../../../lib/firebase';
 import { collection, query, where, orderBy, limit, getDocs, startAfter } from 'firebase/firestore';
 import MessageCard from '@/app/components/MessageCard';
@@ -11,9 +11,6 @@ import { useUser } from '@/app/context/UserContext'; // Import useUser
 import { showToast } from '../../utils/toast';
 
 export default function PrivateMessagesPage() {
-  useEffect(() => {
-    document.title = "Private Messages";
-  }, []);
   const { user, loading: userLoading } = useUser(); // Get user from context
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,41 +18,7 @@ export default function PrivateMessagesPage() {
   const [pageCursors, setPageCursors] = useState([null]); // pageCursors[0] is for page 1 (no cursor)
   const [hasNextPage, setHasNextPage] = useState(true);
 
-  const handleDeleteMessage = (deletedMessageId) => {
-    fetchMessages();
-  };
-
-  const handleUpdateMessage = (updatedMessage) => {
-    // A message's visibility might have changed, so we re-fetch to ensure
-    // this list only contains private messages.
-    fetchMessages();
-  };
-
-  if (userLoading) {
-    return <LoadingMessage />;
-  }
-
-  // If user is not authenticated or authLevel is not 1, display unauthorized message
-  if (!user || user.authLevel !== 1) {
-    return (
-      <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
-        <div className="card m-2 text-center" style={{ maxWidth: '400px', width: '100%' }}>
-          <div className="card-body">
-            <div className="text-center mb-4">
-              <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
-              <h2 className="card-title text-center text-danger"><i className="bi bi-exclamation-triangle me-2"></i>Unauthorized Access</h2>
-            </div>
-            <p className="text-lg text-gray-600 mb-8">You are not authorized to view this page.</p>
-            <Link href="/messages" className="btn btn-primary">
-              <i className="bi-chat-dots me-2"></i> Go to Messages
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     setLoading(true);
     try {
       const q = query(
@@ -93,11 +56,27 @@ export default function PrivateMessagesPage() {
       showToast("Error fetching messages: " + error.message, 'error');
     }
     setLoading(false);
+  }, [page, pageCursors]);
+
+  const handleDeleteMessage = (deletedMessageId) => {
+    fetchMessages();
+  };
+
+  const handleUpdateMessage = (updatedMessage) => {
+    // A message's visibility might have changed, so we re-fetch to ensure
+    // this list only contains private messages.
+    fetchMessages();
   };
 
   useEffect(() => {
-    fetchMessages();
-  }, [page]);
+    document.title = "Private Messages";
+  }, []);
+
+  useEffect(() => {
+    if (!userLoading && user && user.authLevel === 1) {
+      fetchMessages();
+    }
+  }, [fetchMessages, user, userLoading]);
 
   const handleNextPage = () => {
     if (hasNextPage) {
@@ -110,6 +89,30 @@ export default function PrivateMessagesPage() {
       setPage(prevPage => prevPage - 1);
     }
   };
+
+  if (userLoading) {
+    return <LoadingMessage />;
+  }
+
+  // If user is not authenticated or authLevel is not 1, display unauthorized message
+  if (!user || user.authLevel !== 1) {
+    return (
+      <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+        <div className="card m-2 text-center" style={{ maxWidth: '400px', width: '100%' }}>
+          <div className="card-body">
+            <div className="text-center mb-4">
+              <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
+              <h2 className="card-title text-center text-danger"><i className="bi bi-exclamation-triangle me-2"></i>Unauthorized Access</h2>
+            </div>
+            <p className="text-lg text-gray-600 mb-8">You are not authorized to view this page.</p>
+            <Link href="/messages" className="btn btn-primary">
+              <i className="bi-chat-dots me-2"></i> Go to Messages
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">

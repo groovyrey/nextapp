@@ -10,6 +10,8 @@ export async function PUT(request) {
     }
 
     await admin.auth().setCustomUserClaims(uid, { authLevel: parseInt(authLevel) });
+    // Revoke all refresh tokens for the user to force re-authentication
+    await admin.auth().revokeRefreshTokens(uid);
 
     return NextResponse.json({ message: "User auth level updated successfully." }, { status: 200 });
   } catch (error) {

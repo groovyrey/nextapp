@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { AUTH_LEVEL_RANKS } from '../utils/AuthRankSystem';
 import MessageOptionsModal from './MessageOptionsModal';
+import { capitalizeName } from '../utils/capitalizeName';
 import styles from './ChatMessage.module.css';
 
 export default function MyChatMessage({ message, user, onDelete, onEdit }) {
@@ -33,19 +34,19 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.2 }}
             whileTap={{ scale: 1.05 }} // Slightly increase size while holding
-            onMouseDown={handleTouchStart}
-            onMouseUp={handleTouchEnd}
-            onMouseLeave={handleTouchEnd} // Clear timeout if mouse leaves while holding
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
         >
             <div
                 ref={messageCardRef}
                 className={`${styles.messageCard} ${styles.myMessage}`}
+                onMouseDown={handleTouchStart}
+                onMouseUp={handleTouchEnd}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onMouseLeave={handleTouchEnd} // Clear timeout if mouse leaves while holding
                 >
                 <div className="d-flex flex-column">
                     <small className="fw-bold mb-1">
-                        {message.senderName} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[message.senderAuthLevel].color}`}></i>}
+                        {capitalizeName(message.senderName)} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[message.senderAuthLevel].color}`}></i>}
                     </small>
                     <p className="mb-0">{message.text} {message.isEdited && <small className="text-muted">(Edited)</small>}</p>
                 </div>

@@ -4,17 +4,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useUser } from '../context/UserContext';
 import { database } from '../../../lib/firebase';
-import { ref, query, orderByChild, limitToLast, onValue, off, push, remove, update } from 'firebase/database';
+import { ref, query, orderByChild, limitToLast, onValue, off, push, remove, update, endBefore, onChildAdded, onChildChanged, onChildRemoved } from 'firebase/database';
 import ChatMessage from '../components/ChatMessage';
 import MessageSkeleton from '../components/MessageSkeleton';
 import LoadingMessage from '../components/LoadingMessage';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { initializeTooltips, disposeTooltips } from '../BootstrapClient';
+import ChatInput from '../components/ChatInput';
 
 export default function ChatPage() {
     const { user, loading: userLoading } = useUser();
-    const [message, setMessage] = useState('');
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [editingMessageOriginalText, setEditingMessageOriginalText] = useState('');
     const [messages, setMessages] = useState([]);
@@ -23,54 +23,76 @@ export default function ChatPage() {
     const router = useRouter();
     const messagesContainerRef = useRef(null);
     const oldestMessageTimestamp = useRef(null);
-    const messageInputRef = useRef(null);
+
+    const INITIAL_MESSAGE_LOAD_COUNT = 8;
+    const LOAD_MORE_COUNT = 5;
 
     const loadMoreMessages = useCallback(() => {
-        if (!hasMore || !user) return;
+        if (!hasMore || !user || messagesLoading) return;
 
         setMessagesLoading(true);
         const messagesRef = ref(database, 'messages');
         const messagesQuery = query(
             messagesRef,
             orderByChild('timestamp'),
-            limitToLast(messages.length + 5)
+            endBefore(oldestMessageTimestamp.current),
+            limitToLast(LOAD_MORE_COUNT)
         );
+
+        // Store current scroll state before fetching new messages
+        const oldScrollHeight = messagesContainerRef.current?.scrollHeight;
+        const oldScrollTop = messagesContainerRef.current?.scrollTop;
 
         onValue(messagesQuery, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                const loadedMessages = Object.keys(data).map(key => ({
+                const newOlderMessages = Object.keys(data).map(key => ({
                     id: key,
                     ...data[key]
                 })).sort((a, b) => a.timestamp - b.timestamp);
 
-                if (loadedMessages.length === messages.length) {
+                if (newOlderMessages.length < LOAD_MORE_COUNT) {
                     setHasMore(false);
                 }
-                setMessages(loadedMessages);
+
+                if (newOlderMessages.length > 0) {
+                    oldestMessageTimestamp.current = newOlderMessages[0].timestamp;
+                }
+
+                setMessages(prevMessages => [...newOlderMessages, ...prevMessages]);
+
+                // After messages are rendered, adjust scroll position
+                // Use a setTimeout to ensure DOM has updated
+                setTimeout(() => {
+                    if (messagesContainerRef.current && oldScrollHeight !== undefined && oldScrollTop !== undefined) {
+                        const newScrollHeight = messagesContainerRef.current.scrollHeight;
+                        messagesContainerRef.current.scrollTop = newScrollHeight - oldScrollHeight + oldScrollTop;
+                    }
+                }, 0);
+
             } else {
                 setHasMore(false);
             }
             setMessagesLoading(false);
         }, { onlyOnce: true });
-    }, [hasMore, user, messages.length]);
+    }, [hasMore, user, messagesLoading]);
 
     useEffect(() => {
         const container = messagesContainerRef.current;
         const handleScroll = () => {
-            if (container.scrollTop === 0 && !messagesLoading) {
+            if (container.scrollTop + container.clientHeight >= container.scrollHeight - 5 && !messagesLoading && hasMore) {
                 loadMoreMessages();
             }
         };
 
         container?.addEventListener('scroll', handleScroll);
         return () => container?.removeEventListener('scroll', handleScroll);
-    }, [messagesLoading, loadMoreMessages]);
+    }, [messagesLoading, loadMoreMessages, hasMore]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             initializeTooltips();
-        }, 100); // Small delay to ensure DOM is updated
+        }, 100);
 
         return () => {
             clearTimeout(timer);
@@ -85,75 +107,121 @@ export default function ChatPage() {
             return;
         }
 
+        const getMessagesFromCache = () => {
+            try {
+                const cachedMessages = localStorage.getItem('chatMessages');
+                return cachedMessages ? JSON.parse(cachedMessages) : [];
+            } catch (error) {
+                console.error('Error reading from localStorage:', error);
+                return [];
+            }
+        };
+
+        const saveMessagesToCache = (messagesToSave) => {
+            try {
+                localStorage.setItem('chatMessages', JSON.stringify(messagesToSave));
+            } catch (error) {
+                console.error('Error writing to localStorage:', error);
+            }
+        };
+
         if (user) {
-            // Load initial messages
-            loadMoreMessages();
-
-            // Setup listener for all messages to handle additions, deletions, and updates
             const messagesRef = ref(database, 'messages');
-            const allMessagesQuery = query(messagesRef, orderByChild('timestamp'));
 
-            const unsubscribe = onValue(allMessagesQuery, (snapshot) => {
+            // Load from cache first
+            const cached = getMessagesFromCache();
+            if (cached.length > 0) {
+                setMessages(cached);
+                setMessagesLoading(false);
+                if (cached.length > 0) {
+                    oldestMessageTimestamp.current = cached[0].timestamp;
+                }
+            } else {
+                setMessagesLoading(true);
+            }
+
+            // Initial Load from Firebase
+            const initialQuery = query(
+                messagesRef,
+                orderByChild('timestamp'),
+                limitToLast(INITIAL_MESSAGE_LOAD_COUNT)
+            );
+
+            const unsubscribeInitial = onValue(initialQuery, (snapshot) => {
                 const data = snapshot.val();
+                let firebaseMessages = [];
                 if (data) {
-                    const loadedMessages = Object.keys(data).map(key => ({
+                    firebaseMessages = Object.keys(data).map(key => ({
                         id: key,
                         ...data[key]
                     })).sort((a, b) => a.timestamp - b.timestamp);
-                    setMessages(loadedMessages);
+                }
 
-                    // Scroll to bottom when new message arrives, but only if user is near bottom
+                // Merge cached and firebase messages, prioritizing firebase
+                const mergedMessages = [...cached, ...firebaseMessages].reduce((acc, msg) => {
+                    if (!acc.some(existingMsg => existingMsg.id === msg.id)) {
+                        acc.push(msg);
+                    }
+                    return acc;
+                }, []).sort((a, b) => a.timestamp - b.timestamp);
+
+                setMessages(mergedMessages);
+                saveMessagesToCache(mergedMessages); // Save merged messages to cache
+
+                if (mergedMessages.length > 0) {
+                    oldestMessageTimestamp.current = mergedMessages[0].timestamp;
+                }
+                setTimeout(() => {
+                    messagesContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 0);
+                setMessagesLoading(false);
+            }, { onlyOnce: true });
+
+            const onChildAddedListener = onChildAdded(messagesRef, (snapshot) => {
+                const newMessage = { id: snapshot.key, ...snapshot.val() };
+                setMessages(prevMessages => {
+                    if (prevMessages.some(msg => msg.id === newMessage.id)) {
+                        return prevMessages;
+                    }
+                    const updatedMessages = [...prevMessages, newMessage].sort((a, b) => a.timestamp - b.timestamp);
+                    saveMessagesToCache(updatedMessages); // Update cache on add
                     if (messagesContainerRef.current) {
                         const { scrollHeight, scrollTop, clientHeight } = messagesContainerRef.current;
-                        // Only scroll if user is within 100px of the bottom
-                        if (scrollHeight - scrollTop <= clientHeight + 100) {
-                            messagesContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                        // Only scroll if user is within 100px of the bottom (which is scrollTop 0 in flex-column-reverse)
+                        if (scrollTop <= 100) {
+                            messagesContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }
                     }
-                } else {
-                    setMessages([]); // Clear messages if no data
-                }
+                    return updatedMessages;
+                });
+            });
+
+            const onChildChangedListener = onChildChanged(messagesRef, (snapshot) => {
+                const updatedMessage = { id: snapshot.key, ...snapshot.val() };
+                setMessages(prevMessages => {
+                    const newMessages = prevMessages.map(msg => (msg.id === updatedMessage.id ? updatedMessage : msg));
+                    saveMessagesToCache(newMessages); // Update cache on change
+                    return newMessages;
+                });
+            });
+
+            const onChildRemovedListener = onChildRemoved(messagesRef, (snapshot) => {
+                const deletedMessageId = snapshot.key;
+                setMessages(prevMessages => {
+                    const newMessages = prevMessages.filter(msg => msg.id !== deletedMessageId);
+                    saveMessagesToCache(newMessages); // Update cache on remove
+                    return newMessages;
+                });
             });
 
             return () => {
-                unsubscribe();
+                unsubscribeInitial();
+                off(messagesRef, 'child_added', onChildAddedListener);
+                off(messagesRef, 'child_changed', onChildChangedListener);
+                off(messagesRef, 'child_removed', onChildRemovedListener);
             };
         }
-    }, [user, userLoading, router, loadMoreMessages]);
-
-    const sendMessage = async (e) => {
-        e.preventDefault();
-        if (!user || !message.trim()) return;
-
-        if (editingMessageId) {
-            // Save edited message
-            try {
-                await update(ref(database, `messages/${editingMessageId}`), { text: message, isEdited: true });
-                toast.success('Message updated successfully!');
-                setEditingMessageId(null);
-                setEditingMessageOriginalText('');
-                setMessage('');
-            } catch (error) {
-                console.error('Error updating message:', error);
-                toast.error('Failed to update message.');
-            }
-        } else {
-            // Send new message
-            try {
-                await push(ref(database, 'messages'), {
-                    text: message,
-                    senderId: user.uid,
-                    senderName: user.displayName ? user.displayName.split(' ')[0] : user.email,
-                    senderAuthLevel: user.authLevel || 'N/A',
-                    timestamp: Date.now(),
-                });
-                setMessage('');
-            } catch (error) {
-                console.error('Error sending message:', error);
-                toast.error('Failed to send message.');
-            }
-        }
-    };
+    }, [user, userLoading, router]);
 
     const handleDeleteMessage = async (messageId) => {
         try {
@@ -168,25 +236,15 @@ export default function ChatPage() {
     const handleEditMessage = (messageToEdit) => {
         setEditingMessageId(messageToEdit.id);
         setEditingMessageOriginalText(messageToEdit.text);
-        setMessage(messageToEdit.text);
-        if (messageInputRef.current) {
-            messageInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    };
-
-    const handleCancelEdit = () => {
-        setEditingMessageId(null);
-        setEditingMessageOriginalText('');
-        setMessage('');
     };
 
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center vh-100">
-            <div className="card m-2" style={{ maxWidth: '600px', width: '100%', minHeight: '80vh' }}>
-                <div className="d-flex flex-column flex-grow-1" style={{ overflowY: 'auto' }}>
-                <div ref={messagesContainerRef} className="container chat-container py-4 flex-grow-1">
+        <div className="d-flex flex-column vh-100 align-items-center justify-content-center">
+            <div className="card m-2" style={{ maxWidth: '600px', width: '100%', height: '800px' }}>
+                <div className="d-flex flex-column h-100">
+                <div ref={messagesContainerRef} className="container chat-container flex-grow-1 d-flex flex-column-reverse pt-0 pb-0" style={{ overflowY: 'auto' }}>
                     {messagesLoading && [...Array(5)].map((_, i) => <MessageSkeleton key={i} isMyMessage={i % 2 === 0} />)}
-                    {messages.map((msg) => (
+                    {messages.slice().reverse().map((msg) => (
                         <ChatMessage
                             key={msg.id}
                             message={msg}
@@ -197,37 +255,13 @@ export default function ChatPage() {
                     ))}
                 </div>
                 <div className="p-3 bg-light">
-                    {editingMessageId && (
-                        <div className="d-flex align-items-center justify-content-between p-2 mb-2 bg-info-subtle rounded">
-                            <small className="text-muted text-truncate me-2">
-                                Editing: {editingMessageOriginalText}
-                            </small>
-                            <button
-                                type="button"
-                                className="btn-close"
-                                aria-label="Cancel edit"
-                                onClick={handleCancelEdit}
-                            ></button>
-                        </div>
-                    )}
-                    <div className="container">
-                        <form onSubmit={sendMessage}>
-                            <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Type your message..."
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    disabled={!user}
-                                    ref={messageInputRef}
-                                />
-                                <button type="submit" className="btn btn-primary" disabled={!user || !message.trim()}>
-                                    {editingMessageId ? <i className="bi bi-save"></i> : <i className="bi bi-send"></i>}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    <ChatInput
+                        user={user}
+                        editingMessageId={editingMessageId}
+                        editingMessageOriginalText={editingMessageOriginalText}
+                        setEditingMessageId={setEditingMessageId}
+                        setEditingMessageOriginalText={setEditingMessageOriginalText}
+                    />
                 </div>
             </div>
             </div>

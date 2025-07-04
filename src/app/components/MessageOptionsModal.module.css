@@ -1,0 +1,9 @@
+.rounded-button {
+    border-radius: 0.5rem !important; /* Adjust as needed for desired roundness */
+}
+
+.transparent-button {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: var(--bs-info) !important; /* Use Bootstrap info color for text */
+}

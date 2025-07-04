@@ -29,8 +29,11 @@ export async function middleware(request) {
 
   const user = await responseAPI.json();
 
-  // Redirect if authLevel is not 1 for /messages/private
-  if (request.nextUrl.pathname === "/messages/private" && user.authLevel !== 1) {
+  // Define paths that require authLevel 1
+  const authLevel1Paths = ["/messages/private", "/user/update-authlevel"];
+
+  // Check if the current path requires authLevel 1 and if the user has it
+  if (authLevel1Paths.some(path => request.nextUrl.pathname.startsWith(path)) && user.authLevel !== 1) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -39,5 +42,5 @@ export async function middleware(request) {
 
 //Add your protected routes
 export const config = {
-  matcher: ["/home"],
+  matcher: ["/home", "/messages/:path*", "/user/:path*", "/chat"],
 };
