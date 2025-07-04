@@ -15,7 +15,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
         e.preventDefault(); // Prevent default to avoid text selection on long press
         holdTimeoutRef.current = setTimeout(() => {
             setShowModal(true);
-        }, 500); // 500ms for a "hold"
+        }, 1000); // 1000ms for a "hold"
     };
 
     const handleTouchEnd = () => {
@@ -32,6 +32,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.2 }}
+            whileTap={{ scale: 1.05 }} // Slightly increase size while holding
             onMouseDown={handleTouchStart}
             onMouseUp={handleTouchEnd}
             onMouseLeave={handleTouchEnd} // Clear timeout if mouse leaves while holding
@@ -44,7 +45,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
                 >
                 <div className="d-flex flex-column">
                     <small className="fw-bold mb-1">
-                        {message.senderName} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon}`}></i>}
+                        {message.senderName} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[message.senderAuthLevel].color}`}></i>}
                     </small>
                     <p className="mb-0">{message.text} {message.isEdited && <small className="text-muted">(Edited)</small>}</p>
                 </div>

@@ -10,6 +10,6 @@ export default function ChatMessage({ message, user, onDelete, onEdit }) {
     if (isMyMessage) {
         return <MyChatMessage message={message} user={user} onDelete={onDelete} onEdit={() => onEdit(message)} />;
     } else {
-        return <OtherChatMessage message={message} />;
+        return <OtherChatMessage message={message} user={user} />;
     }
 }

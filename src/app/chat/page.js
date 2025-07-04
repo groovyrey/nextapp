@@ -23,6 +23,7 @@ export default function ChatPage() {
     const router = useRouter();
     const messagesContainerRef = useRef(null);
     const oldestMessageTimestamp = useRef(null);
+    const messageInputRef = useRef(null);
 
     const loadMoreMessages = useCallback(() => {
         if (!hasMore || !user) return;
@@ -168,6 +169,9 @@ export default function ChatPage() {
         setEditingMessageId(messageToEdit.id);
         setEditingMessageOriginalText(messageToEdit.text);
         setMessage(messageToEdit.text);
+        if (messageInputRef.current) {
+            messageInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     };
 
     const handleCancelEdit = () => {
@@ -216,6 +220,7 @@ export default function ChatPage() {
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                     disabled={!user}
+                                    ref={messageInputRef}
                                 />
                                 <button type="submit" className="btn btn-primary" disabled={!user || !message.trim()}>
                                     {editingMessageId ? <i className="bi bi-save"></i> : <i className="bi bi-send"></i>}

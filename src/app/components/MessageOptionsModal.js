@@ -3,21 +3,49 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import MyChatMessage from './MyChatMessage';
+import OtherChatMessage from './OtherChatMessage';
+import toast from 'react-hot-toast';
 
 
-export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, message, user }) {
+export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, message, user, showDeleteEdit = true }) {
 
     const handleEditClick = () => {
         onEdit(message);
         onHide();
     };
 
+    const handleCopyClick = async () => {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(message.text);
+                toast.success('Message copied to clipboard!');
+            } else {
+                // Fallback for browsers that do not support navigator.clipboard
+                const textarea = document.createElement('textarea');
+                textarea.value = message.text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                toast.success('Message copied to clipboard (fallback)!');
+            }
+        } catch (err) {
+            console.error('Failed to copy message:', err);
+            toast.error('Failed to copy message.');
+        }
+        onHide();
+    };
+
     return (
         <Modal show={show} onHide={onHide} centered contentClassName="bg-white border-0 shadow-sm rounded-3">
             <Modal.Body className="p-3">
-                {message && user && (
+                {message && (
                     <div className="mb-3">
-                        <MyChatMessage message={message} user={user} />
+                        {message.senderId === user.uid ? (
+                            <MyChatMessage message={message} user={user} />
+                        ) : (
+                            <OtherChatMessage message={message} user={user} />
+                        )}
                     </div>
                 )}
                 {message && (
@@ -27,11 +55,18 @@ export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, me
                 )}
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-around p-2">
-                <Button variant="danger" size="sm" onClick={() => { onDelete(message.id); onHide(); }}>
-                    <i className="bi bi-trash me-2"></i>Delete
-                </Button>
-                <Button variant="primary" size="sm" onClick={handleEditClick}>
-                    <i className="bi bi-pencil me-2"></i>Edit
+                {showDeleteEdit && (
+                    <Button variant="danger" size="sm" onClick={() => { onDelete(message.id); onHide(); }}>
+                        <i className="bi bi-trash me-2"></i>Delete
+                    </Button>
+                )}
+                {showDeleteEdit && (
+                    <Button variant="primary" size="sm" onClick={handleEditClick}>
+                        <i className="bi bi-pencil me-2"></i>Edit
+                    </Button>
+                )}
+                <Button variant="secondary" size="sm" onClick={handleCopyClick}>
+                    <i className="bi bi-copy me-2"></i>Copy
                 </Button>
             </Modal.Footer>
         </Modal>
