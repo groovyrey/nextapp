@@ -8,7 +8,7 @@
   color: var(--text-color); /* Change text color back to default */
   box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light); /* Enhanced neomorphic shadow */
   border-bottom: none; /* Remove border */
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -85,7 +85,7 @@
 .navbarActions a,
 .navbarActions button {
   background-color: var(--primary-color); /* Primary button style */
-  color: white;
+  color: var(--card-background-color);
   border: 1px solid var(--primary-color);
   padding: 0.6rem 1.2rem;
   border-radius: var(--border-radius-base); /* Use global border-radius */
@@ -102,9 +102,9 @@
 .navbarActions button:hover {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
-  color: white;
+  color: var(--card-background-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Slightly more pronounced shadow on hover */
+  box-shadow: var(--box-shadow-hover);
 }
 
 .navbarActions button i,
@@ -164,7 +164,7 @@
     display: block;
     width: 100%;
     height: 3px;
-    background-color: var(--text-color);
+    background-color: var(--primary-color);
     border-radius: 3px;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   }

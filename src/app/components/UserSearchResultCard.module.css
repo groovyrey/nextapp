@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   padding: 15px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--card-border-color);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  background-color: var(--card-background-color);
   transition: transform 0.2s ease-in-out;
 }
 
@@ -31,7 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
+  background-color: var(--background-color);
 }
 
 .profilePicture {
@@ -42,7 +42,7 @@
 
 .placeholderPicture {
   font-size: 40px;
-  color: #ccc;
+  color: var(--light-text-color);
 }
 
 .userInfo {
@@ -53,5 +53,5 @@
   margin: 0;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-color);
 }

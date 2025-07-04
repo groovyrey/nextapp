@@ -106,8 +106,8 @@ export default function UserDisplay() {
                 <Link href={`/user/${user.uid}`} className={styles.optionButton} onClick={() => setShowOptions(false)}>
                   <i className="bi bi-person-vcard me-2"></i> View Profile
                 </Link>
-                <Link href="/user/edit" className={styles.optionButton} onClick={() => setShowOptions(false)}>
-                  <i className="bi bi-pencil me-2"></i> Edit Profile
+                <Link href="/user/settings" className={styles.optionButton} onClick={() => setShowOptions(false)}>
+                  <i className="bi bi-gear me-2"></i> User Settings
                 </Link>
                 <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right me-2"></i> Logout

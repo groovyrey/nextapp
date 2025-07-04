@@ -3,18 +3,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #343a40; /* Dark Charcoal Grey */
+  --primary-color: #0056b3; /* Professional Blue */
+  --primary-rgb: 0, 86, 179; /* RGB values for --primary-color */
   --secondary-color: #6c757d; /* Medium Grey */
-  --accent-color: #e9ecef; /* Light Grey for highlights */
-  --background-color: #f0f0f0; /* Light grey for a clean background */
+  --accent-color: #e0eaf2; /* Light Blue for highlights */
+  --background-color: #f8f9fa; /* Very Light Grey for a clean background */
   --text-color: #212529; /* Darker text for readability */
   --light-text-color: #6c757d;
   --card-background-color: #ffffff; /* White background for cards */
   --card-border-color: #dee2e6;
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Standard box shadow */
-  --box-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.2); /* Standard box shadow on hover */
-  --border-radius-base: 8px;
-  --transition-base: all 0.3s ease-in-out;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Softer box shadow */
+  --box-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.12); /* Softer box shadow on hover */
+  --border-radius-base: 4px; /* Slightly less rounded for professional look */
+  --transition-base: all 0.2s ease-in-out;
   --background-color-dark: #e9ecef; /* A slightly darker grey for the menu background */
   --border-color: var(--card-border-color); /* Using existing card border color */
 }
@@ -55,7 +56,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background-image: linear-gradient(to bottom right, var(--primary-color), #000000);
+  background-color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
@@ -66,12 +67,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-  background-image: linear-gradient(to bottom right, #000000, var(--primary-color));
+  background-color: #004085; /* Darker shade of primary blue */
   box-shadow: var(--box-shadow-hover);
 }
 
 .btn-secondary {
-  background-image: linear-gradient(to bottom right, var(--secondary-color), #343a40);
+  background-color: var(--secondary-color);
   border: 1px solid var(--secondary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
@@ -82,12 +83,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-secondary:hover {
-  background-image: linear-gradient(to bottom right, #343a40, var(--secondary-color));
+  background-color: #5a6268; /* Darker shade of secondary grey */
   box-shadow: var(--box-shadow-hover);
 }
 
 .btn-danger {
-  background-image: linear-gradient(to bottom right, #dc3545, #8b0000);
+  background-color: #dc3545;
   border: 1px solid #dc3545;
   border-radius: var(--border-radius-base);
   font-weight: 500;
@@ -98,7 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-danger:hover {
-  background-image: linear-gradient(to bottom right, #8b0000, #dc3545);
+  background-color: #a71d2a; /* Darker shade of danger red */
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -133,7 +134,7 @@ input[type="file"]::-webkit-file-upload-button {
   border-radius: var(--border-radius-base);
   padding: 0.5rem 1rem;
   margin-right: 1rem;
-  box-shadow: var(--box-shadow);
+  box-shadow: none; /* Remove shadow for a cleaner look */
   transition: var(--transition-base);
   cursor: pointer;
 }
@@ -145,7 +146,7 @@ input[type="file"]::-webkit-file-upload-button:hover {
 .form-control:focus,
 input[type="file"]:focus {
   border-color: var(--primary-color); /* Highlight border on focus */
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Standard focus glow */
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25); /* Professional focus glow */
   outline: none;
 }
 

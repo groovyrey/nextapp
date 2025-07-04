@@ -10,6 +10,7 @@ export default function SearchUserPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -23,6 +24,7 @@ export default function SearchUserPage() {
     }
 
     try {
+      setError(false); // Clear previous errors
       const response = await fetch(`/api/user/search?query=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
 
@@ -33,6 +35,7 @@ export default function SearchUserPage() {
       setSearchResults(data);
     } catch (err) {
       showToast(err.message, 'error');
+      setError(true); // Set error state
     } finally {
       setLoading(false);
     }

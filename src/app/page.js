@@ -1,69 +1,63 @@
-"use client";
-import React, { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation";
-import { motion } from 'framer-motion';
+'use client';
 
-import UserDisplay from './components/UserDisplay';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUser } from './context/UserContext';
-
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 import LoadingMessage from './components/LoadingMessage';
 
-export default function Home() {
+export default function LandingPage() {
+  const { user, loading } = useUser();
   const router = useRouter();
-  const { user, userData, loading } = useUser();
-  const [logoutError, setLogoutError] = useState('');
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
+    if (!loading && user) {
+      router.push('/home');
     }
   }, [user, loading, router]);
 
-  const handleLogout = async () => {
-    setLogoutError(''); // Clear previous errors
-    try {
-      const res = await fetch('/api/logout');
-      if (res.ok) {
-        router.push('/login');
-      } else {
-        const errorData = await res.json();
-        setLogoutError(`Failed to log out: ${errorData.message}`);
-      }
-    } catch (err) {
-      setLogoutError('An unexpected error occurred during logout.');
-    }
-  };
-
-  if (loading || !user) {
+  if (loading) {
     return <LoadingMessage />;
   }
 
   return (
-    <div className="min-h-screen d-flex flex-column align-items-center justify-content-center">
-      {userData && (
-        <motion.div
-          className="greeting-text"
-          style={{
-            textAlign: 'center',
-            background: 'linear-gradient(90deg, #000000, #f8f9fa, #000000, #f8f9fa, #000000)',
-            backgroundSize: '200% 100%', // Adjusted background size for seamless repetition
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-          animate={{
-            backgroundPosition: ['0% 50%', '100% 50%'], // Animate from 0% to 100% for seamless loop
-          }}
-          transition={{
-            duration: 5, // Adjusted duration for a smoother, less noticeable loop
-            ease: 'linear',
-            repeat: Infinity,
-          }}
-        >
-          <h1>{`Welcome to Luloy, ${userData.firstName}!`}</h1>
-        </motion.div>
-      )}
-      <UserDisplay />
-      {logoutError && <div className="alert alert-danger mt-3" role="alert">{logoutError}</div>}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="flex flex-col items-center justify-center min-h-screen bg-background-color text-text-color p-4"
+    >
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="text-5xl font-bold text-primary mb-6 text-center"
+      >
+        Welcome to Luloy!
+      </motion.h1>
+      <motion.p
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+        className="text-xl text-center max-w-2xl mb-8"
+      >
+        Connect with friends, share your thoughts, and explore a vibrant community.
+      </motion.p>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+      >
+        <div className="d-flex justify-content-center gap-3">
+          <Link href="/login" className="btn btn-primary text-lg px-8 py-3">
+            <i className="bi bi-box-arrow-in-right me-2"></i>Login
+          </Link>
+          <Link href="/signup" className="btn btn-secondary text-lg px-8 py-3">
+            <i className="bi bi-person-plus-fill me-2"></i>Sign Up
+          </Link>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }

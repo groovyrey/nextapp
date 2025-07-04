@@ -166,7 +166,7 @@ export default function EditUserPage() {
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
       <div className="card m-2" style={{ maxWidth: '600px', width: '100%' }}>
         <div className="card-body">
-          <h2 className="card-title text-center mb-4"><span className="bi-person-fill-gear"></span>{" "}Edit Profile</h2>
+          <h2 className="card-title text-center mb-4"><span className="bi-person-fill-gear"></span>{" "}User Settings</h2>
           
           <div className="mb-3">
             <label htmlFor="profilePicture" className="form-label">Profile Picture</label>

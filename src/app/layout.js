@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <UserProvider>
           <Navbar />
-          <main className="container py-5">
+          <main className="container py-3">
             {children}
           </main>
         </UserProvider>

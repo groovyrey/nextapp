@@ -6,7 +6,7 @@ export async function middleware(request) {
 
   // Return to /login if don't have a session
   if (!session) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Call the authentication endpoint
@@ -19,19 +19,19 @@ export async function middleware(request) {
       });
     } catch (error) {
       console.error("Error fetching auth API:", error);
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
   // Return to /login if token is not authorized
   if (responseAPI.status !== 200) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   const user = await responseAPI.json();
 
   // Redirect if authLevel is not 1 for /messages/private
   if (request.nextUrl.pathname === "/messages/private" && user.authLevel !== 1) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
@@ -39,5 +39,5 @@ export async function middleware(request) {
 
 //Add your protected routes
 export const config = {
-  matcher: ["/"],
+  matcher: ["/home"],
 };
