@@ -46,7 +46,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit }) {
                     <small className="fw-bold mb-1">
                         {message.senderName} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon}`}></i>}
                     </small>
-                    <p className="mb-0">{message.text}</p>
+                    <p className="mb-0">{message.text} {message.isEdited && <small className="text-muted">(Edited)</small>}</p>
                 </div>
             </div>
             <MessageOptionsModal

@@ -1,4 +1,3 @@
-
 .skeletonContainer {
     display: flex;
     align-items: center;
@@ -26,4 +25,23 @@
 
 .skeletonText:last-child {
     width: 70%;
+}
+
+.myMessageSkeleton {
+    justify-content: flex-end;
+}
+
+.myMessageSkeleton .skeletonAvatar {
+    order: 2;
+    margin-right: 0;
+    margin-left: 1rem;
+}
+
+.myMessageSkeleton .skeletonTextContainer {
+    order: 1;
+    text-align: right;
+}
+
+.otherMessageSkeleton {
+    justify-content: flex-start;
 }

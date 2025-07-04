@@ -15,6 +15,8 @@ import { initializeTooltips, disposeTooltips } from '../BootstrapClient';
 export default function ChatPage() {
     const { user, loading: userLoading } = useUser();
     const [message, setMessage] = useState('');
+    const [editingMessageId, setEditingMessageId] = useState(null);
+    const [editingMessageOriginalText, setEditingMessageOriginalText] = useState('');
     const [messages, setMessages] = useState([]);
     const [messagesLoading, setMessagesLoading] = useState(true);
     const [hasMore, setHasMore] = useState(true);
@@ -122,18 +124,33 @@ export default function ChatPage() {
         e.preventDefault();
         if (!user || !message.trim()) return;
 
-        try {
-            await push(ref(database, 'messages'), {
-                text: message,
-                senderId: user.uid,
-                senderName: user.displayName ? user.displayName.split(' ')[0] : user.email,
-                senderAuthLevel: user.authLevel || 'N/A',
-                timestamp: Date.now(),
-            });
-            setMessage('');
-        } catch (error) {
-            console.error('Error sending message:', error);
-            toast.error('Failed to send message.');
+        if (editingMessageId) {
+            // Save edited message
+            try {
+                await update(ref(database, `messages/${editingMessageId}`), { text: message, isEdited: true });
+                toast.success('Message updated successfully!');
+                setEditingMessageId(null);
+                setEditingMessageOriginalText('');
+                setMessage('');
+            } catch (error) {
+                console.error('Error updating message:', error);
+                toast.error('Failed to update message.');
+            }
+        } else {
+            // Send new message
+            try {
+                await push(ref(database, 'messages'), {
+                    text: message,
+                    senderId: user.uid,
+                    senderName: user.displayName ? user.displayName.split(' ')[0] : user.email,
+                    senderAuthLevel: user.authLevel || 'N/A',
+                    timestamp: Date.now(),
+                });
+                setMessage('');
+            } catch (error) {
+                console.error('Error sending message:', error);
+                toast.error('Failed to send message.');
+            }
         }
     };
 
@@ -147,26 +164,24 @@ export default function ChatPage() {
         }
     };
 
-    const handleEditMessage = async (messageId, newText) => {
-        try {
-            await update(ref(database, `messages/${messageId}`), { text: newText });
-            toast.success('Message updated successfully!');
-        } catch (error) {
-            console.error('Error updating message:', error);
-            toast.error('Failed to update message.');
-        }
+    const handleEditMessage = (messageToEdit) => {
+        setEditingMessageId(messageToEdit.id);
+        setEditingMessageOriginalText(messageToEdit.text);
+        setMessage(messageToEdit.text);
     };
 
-    if (userLoading) {
-        return <LoadingMessage />;
-    }
+    const handleCancelEdit = () => {
+        setEditingMessageId(null);
+        setEditingMessageOriginalText('');
+        setMessage('');
+    };
 
     return (
         <div className="d-flex flex-column align-items-center justify-content-center vh-100">
             <div className="card m-2" style={{ maxWidth: '600px', width: '100%', minHeight: '80vh' }}>
                 <div className="d-flex flex-column flex-grow-1" style={{ overflowY: 'auto' }}>
                 <div ref={messagesContainerRef} className="container chat-container py-4 flex-grow-1">
-                    {messagesLoading && [...Array(5)].map((_, i) => <MessageSkeleton key={i} />)}
+                    {messagesLoading && [...Array(5)].map((_, i) => <MessageSkeleton key={i} isMyMessage={i % 2 === 0} />)}
                     {messages.map((msg) => (
                         <ChatMessage
                             key={msg.id}
@@ -178,6 +193,19 @@ export default function ChatPage() {
                     ))}
                 </div>
                 <div className="p-3 bg-light">
+                    {editingMessageId && (
+                        <div className="d-flex align-items-center justify-content-between p-2 mb-2 bg-info-subtle rounded">
+                            <small className="text-muted text-truncate me-2">
+                                Editing: {editingMessageOriginalText}
+                            </small>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                aria-label="Cancel edit"
+                                onClick={handleCancelEdit}
+                            ></button>
+                        </div>
+                    )}
                     <div className="container">
                         <form onSubmit={sendMessage}>
                             <div className="input-group">
@@ -190,7 +218,7 @@ export default function ChatPage() {
                                     disabled={!user}
                                 />
                                 <button type="submit" className="btn btn-primary" disabled={!user || !message.trim()}>
-                                    <i className="bi bi-send"></i>
+                                    {editingMessageId ? <i className="bi bi-save"></i> : <i className="bi bi-send"></i>}
                                 </button>
                             </div>
                         </form>
