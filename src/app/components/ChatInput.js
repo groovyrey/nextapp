@@ -116,16 +116,17 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
                         <small>{message.length}/500</small> {/* Character counter */}
                     </div>
                     <div className="input-group">
-                        <input
-                            type="text"
+                        <textarea
                             className="form-control"
                             placeholder="Type your message..."
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             disabled={!user || isSending} // Disable input while sending
                             ref={messageInputRef}
-                            maxLength={500} // Added character limit
-                        />
+                            rows="3" // Allow multiple lines
+                            style={{ resize: 'none' }} // Prevent manual resizing
+                            maxLength={500} // Character limit
+                        ></textarea>
                     </div>
                     <div className="d-grid gap-2 mt-2">
                         <button type="submit" className="btn btn-primary" disabled={!user || !message.trim() || isSending}> {/* Disable button while sending */}
