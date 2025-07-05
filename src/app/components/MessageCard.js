@@ -10,13 +10,9 @@ import { showToast } from '../utils/toast';
 export default function MessageCard({ message, onDelete, onUpdateMessage }) {
   const { user, userData } = useUser();
   const router = useRouter(); // Initialize useRouter
+
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
 
   const optionsVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -36,6 +32,11 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [optionsRef]);
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
 
   const handleDelete = async () => {
     if (!user || !user.idToken) {
@@ -63,7 +64,6 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
           onDelete(message.id);
         }
         showToast('Message deleted successfully', 'success');
-        setShowOptions(false); // Close options after action
         return true; // Indicate success
       } else {
         const errorData = await response.json();
@@ -74,8 +74,6 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
       showToast('Error deleting message:', 'error');
     }
   };
-
-  
 
   const handleChangeVisibility = async () => {
     if (!user || !user.idToken) {
@@ -99,7 +97,6 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
         if (onUpdateMessage) {
           onUpdateMessage({ ...message, private: newVisibility });
         }
-        setShowOptions(false); // Close options after action
       } else {
         const errorData = await response.json();
         showToast(`Failed to update message visibility: ${errorData.message}`, 'error');
@@ -121,11 +118,46 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
         <div className={styles.cardHeader}>
           <h5 className="card-title"><i className="bi bi-person-circle me-2"></i>{" "}{message.sender === "" ? <span className="text-danger">?</span> : <span>{message.sender}</span>}</h5>
           {user && userData && userData.authLevel === 1 && (
-            <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
-              <i className="bi bi-three-dots"></i>
-            </button>
+            <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2 gap-md-3">
+              <button className="btn btn-link" onClick={() => setShowOptions(!showOptions)}>
+                <i className="bi bi-three-dots"></i>
+              </button>
+            </div>
           )}
         </div>
+        <AnimatePresence>
+          {showOptions && (
+            <motion.div
+              ref={optionsRef}
+              className={styles.optionsMenu}
+              variants={optionsVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ duration: 0.2 }}
+            >
+              <button className="btn btn-link text-start" onClick={() => {
+                router.push(`/messages/edit/${message.id}`);
+                setShowOptions(false);
+              }}>
+                <i className="bi bi-pencil-square me-2"></i>Edit
+              </button>
+              <button className="btn btn-link text-start" onClick={() => {
+                handleChangeVisibility();
+                setShowOptions(false);
+              }}>
+                <i className={`bi ${message.private ? 'bi-eye-slash-fill' : 'bi-eye-fill'} me-2`}></i>
+                {message.private ? 'Make Public' : 'Make Private'}
+              </button>
+              <button className="btn btn-link text-danger text-start" onClick={() => {
+                handleDelete();
+                setShowOptions(false);
+              }}>
+                <i className="bi bi-trash-fill me-2"></i>Delete
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <p className="card-text fs-5">{message.message}</p>
         <div className="d-flex justify-content-between align-items-center">
           <small className="">
@@ -134,34 +166,6 @@ export default function MessageCard({ message, onDelete, onUpdateMessage }) {
           </small>
         </div>
       </div>
-
-      <AnimatePresence>
-        {showOptions && (
-          <motion.div
-            ref={optionsRef}
-            className={styles.optionsMenu}
-            variants={optionsVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ duration: 0.2 }}
-          >
-            <button className={styles.optionButton} onClick={() => {
-              router.push(`/messages/edit/${message.id}`);
-              setShowOptions(false);
-            }}>
-              <i className="bi bi-pencil-square me-2"></i>Edit
-            </button>
-            <button className={styles.optionButton} onClick={handleChangeVisibility}>
-              <i className={`bi ${message.private ? 'bi-eye-slash-fill' : 'bi-eye-fill'} me-2`}></i>
-              {message.private ? 'Make Public' : 'Make Private'}
-            </button>
-            <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleDelete}>
-              <i className="bi bi-trash-fill me-2"></i>Delete
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 }

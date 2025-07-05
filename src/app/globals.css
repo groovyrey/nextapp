@@ -3,20 +3,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #3498db;
-  --primary-rgb: 52, 152, 219;
-  --secondary-color: #95a5a6;
-  --accent-color: #ecf0f1;
-  --background-color: #ffffff;
-  --text-color: #34495e;
-  --light-text-color: #7f8c8d;
-  --card-background-color: #ffffff;
-  --card-border-color: #e0e0e0;
-  --box-shadow: none;
-  --box-shadow-hover: none;
-  --border-radius-base: 2px;
+  --primary-color: #007bff; /* A clean, standard blue */
+  --primary-rgb: 0, 123, 255;
+  --secondary-color: #6c757d; /* Muted grey */
+  --accent-color: #e9ecef; /* Light grey for accents */
+  --background-color: #f8f9fa; /* Very light grey background */
+  --text-color: #343a40; /* Darker grey for text */
+  --light-text-color: #6c757d; /* Muted grey for light text */
+  --card-background-color: #ffffff; /* White cards */
+  --card-border-color: #dee2e6; /* Subtle card borders */
+  --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Minimal shadow */
+  --box-shadow-hover: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* Slightly more on hover */
+  --border-radius-base: 0.25rem; /* Slightly rounded corners */
   --transition-base: all 0.2s ease-in-out;
-  --background-color-dark: #f4f6f7;
+  --background-color-dark: #e9ecef; /* Darker background for contrast */
   --border-color: var(--card-border-color);
 }
 
@@ -32,8 +32,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  line-height: 1.2;
-  font-size: 0.75rem;
+  line-height: 1.5; /* Increased line height for better readability */
+  font-size: 0.875rem; /* Slightly larger base font size */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -59,11 +59,11 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--border-radius-base);
   box-shadow: var(--box-shadow);
   transition: var(--transition-base);
-  padding: 0.5rem;
+  padding: 1rem; /* Increased padding for a cleaner look */
 }
 
 .card:hover {
-  transform: none;
+  transform: translateY(-2px); /* Subtle lift on hover */
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -72,14 +72,15 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem; /* Increased padding for buttons */
   transition: var(--transition-base);
   color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-primary:hover {
-  background-color: #2980b9;
+  background-color: #0056b3; /* Darker shade on hover */
+  border-color: #0056b3;
   box-shadow: var(--box-shadow-hover);
   transform: none;
 }
@@ -89,30 +90,32 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--secondary-color);
   border-radius: var(--border-radius-base);
   font-weight: 500;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
   transition: var(--transition-base);
   color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-secondary:hover {
-  background-color: #7f8c8d;
+  background-color: #5a6268; /* Darker shade on hover */
+  border-color: #5a6268;
   box-shadow: var(--box-shadow-hover);
 }
 
 .btn-danger {
-  background-color: #e74c3c;
-  border: 1px solid #e74c3c;
+  background-color: #dc3545; /* Standard danger color */
+  border: 1px solid #dc3545;
   border-radius: var(--border-radius-base);
   font-weight: 500;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
   transition: var(--transition-base);
   color: white;
   box-shadow: var(--box-shadow);
 }
 
 .btn-danger:hover {
-  background-color: #c0392b;
+  background-color: #c82333; /* Darker shade on hover */
+  border-color: #bd2130;
   box-shadow: var(--box-shadow-hover);
 }
 
@@ -120,7 +123,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: var(--border-radius-base);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
   transition: var(--transition-base);
   box-shadow: var(--box-shadow);
 }
@@ -135,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 input[type="file"] {
   border: 1px solid var(--card-border-color);
   border-radius: var(--border-radius-base);
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem; /* Increased padding for form controls */
   transition: var(--transition-base);
   background-color: var(--card-background-color);
   box-shadow: none;
@@ -153,11 +156,31 @@ input[type="file"]:focus {
 }
 
 .text-danger {
-  color: #e74c3c !important;
+  color: #dc3545 !important;
 }
 
 .spinner-border {
   color: var(--primary-color);
+}
+
+/* Ensure no underlines on links or buttons */
+a, button {
+  text-decoration: none !important;
+}
+
+a:hover, button:hover {
+  text-decoration: none !important;
+}
+
+.btn-link {
+  font-weight: 400;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
 body::before,

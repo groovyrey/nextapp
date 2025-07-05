@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { database } from '../../../lib/firebase';
 import { useUser } from '../context/UserContext';
@@ -10,6 +11,7 @@ import { capitalizeName } from '../utils/capitalizeName';
 export default function ChatInput({ editingMessageId, editingMessageOriginalText, setEditingMessageId, setEditingMessageOriginalText, replyingToMessage, setReplyingToMessage }) {
     const { user, userData } = useUser();
     const [message, setMessage] = useState('');
+    const [isSending, setIsSending] = useState(false); // New state for sending status
     const messageInputRef = useRef(null);
 
     useEffect(() => {
@@ -25,7 +27,9 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
 
     const sendMessage = async (e) => {
         e.preventDefault();
-        if (!user || !message.trim()) return;
+        if (!user || !message.trim() || isSending) return; // Prevent sending if already sending
+
+        setIsSending(true); // Set sending state to true
 
         if (editingMessageId) {
             // Save edited message
@@ -38,6 +42,8 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
             } catch (error) {
                 console.error('Error updating message:', error);
                 toast.error('Failed to update message.');
+            } finally {
+                setIsSending(false); // Reset sending state
             }
         } else {
             // Send new message
@@ -65,6 +71,8 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
             } catch (error) {
                 console.error('Error sending message:', error);
                 toast.error('Failed to send message.');
+            } finally {
+                setIsSending(false); // Reset sending state
             }
         }
     };
@@ -84,7 +92,13 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
     return (
         <div className="py-4 px-3 bg-light">
             {(editingMessageId || replyingToMessage) && (
-                <div className="d-flex align-items-center justify-content-between p-2 mb-2 bg-info-subtle rounded">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.2 }}
+                    className="d-flex align-items-center justify-content-between p-2 mb-2 bg-info-subtle rounded"
+                >
                     <small className="text-muted text-truncate me-2">
                         {editingMessageId ? `Editing: ${editingMessageOriginalText}` : `Replying to: ${replyingToMessage?.senderName || 'Unknown'}: "${replyingToMessage?.text}"`}
                     </small>
@@ -94,7 +108,7 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
                         aria-label={editingMessageId ? "Cancel edit" : "Cancel reply"}
                         onClick={editingMessageId ? handleCancelEdit : handleCancelReply}
                     ></button>
-                </div>
+                </motion.div>
             )}
             <div className="container">
                 <form onSubmit={sendMessage}>
@@ -108,14 +122,21 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
                             placeholder="Type your message..."
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            disabled={!user}
+                            disabled={!user || isSending} // Disable input while sending
                             ref={messageInputRef}
                             maxLength={500} // Added character limit
                         />
                     </div>
                     <div className="d-grid gap-2 mt-2">
-                        <button type="submit" className="btn btn-primary" disabled={!user || !message.trim()}>
-                            {editingMessageId ? <i className="bi bi-save"></i> : <i className="bi bi-send"></i>}
+                        <button type="submit" className="btn btn-primary" disabled={!user || !message.trim() || isSending}> {/* Disable button while sending */}
+                            {isSending ? (
+                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            ) : editingMessageId ? (
+                                <i className="bi bi-save"></i>
+                            ) : (
+                                <i className="bi bi-send"></i>
+                            )}
+                            {isSending ? ' Sending...' : editingMessageId ? ' Save' : ' Send'} {/* Change button text */}
                         </button>
                     </div>
                 </form>

@@ -7,19 +7,7 @@
   /* No specific styles for .profilePicture here, as cursor is handled inline */
 }
 
-.optionsButton {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  transition: color 0.2s ease-in-out;
-}
-
-.optionsButton:hover {
-  color: var(--primary-color);
-}
+/* .optionsButton and .optionButton styles are now handled by Bootstrap's btn-link */
 
 .optionsMenu {
   position: absolute;
@@ -36,31 +24,6 @@
   z-index: 10;
 }
 
-.optionButton {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  padding: 0.75rem 1.5rem;
-  text-align: left;
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  text-decoration: none; /* Remove underline for links */
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-}
-
-.optionButton:hover {
-  background-color: var(--hover-color);
-  color: var(--primary-color);
-}
-
 .deleteOptionButton {
-  color: var(--danger-color);
-}
-
-.deleteOptionButton:hover {
-  background-color: var(--danger-background-color);
   color: var(--danger-color);
 }

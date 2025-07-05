@@ -54,7 +54,7 @@ export default function LandingPage() {
           <Link href="/login" className="btn btn-primary text-lg px-8 py-3">
             <i className="bi bi-box-arrow-in-right me-2"></i>Login
           </Link>
-          <Link href="/signup" className="btn btn-secondary text-lg px-8 py-3">
+          <Link href="/signup" className="btn btn-secondary btn-lg">
             <i className="bi bi-person-plus-fill me-2"></i>Sign Up
           </Link>
         </div>

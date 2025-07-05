@@ -1,10 +1,10 @@
 
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useUser } from '../context/UserContext';
 import { database } from '../../../lib/firebase';
-import { ref, query, orderByChild, limitToLast, onValue, off, push, remove, update, endBefore, onChildAdded, onChildChanged, onChildRemoved, get } from 'firebase/database';
+import { ref, remove, update, get } from 'firebase/database';
 import ChatMessage from '../components/ChatMessage';
 import MessageSkeleton from '../components/MessageSkeleton';
 import LoadingMessage from '../components/LoadingMessage';
@@ -13,70 +13,17 @@ import { useRouter } from 'next/navigation';
 import { initializeTooltips, disposeTooltips } from '../BootstrapClient';
 import ChatInput from '../components/ChatInput';
 import styles from './chat.module.css';
+import { useMessages } from '../hooks/useMessages';
 
 export default function ChatPage() {
     const { user, loading: userLoading, refreshUserData } = useUser();
     const [editingMessageId, setEditingMessageId] = useState(null);
     const [editingMessageOriginalText, setEditingMessageOriginalText] = useState('');
-    const [messages, setMessages] = useState([]);
-    const [messagesLoading, setMessagesLoading] = useState(true);
-    const [hasMore, setHasMore] = useState(true);
     const router = useRouter();
+
     const messagesContainerRef = useRef(null);
-    const oldestMessageTimestamp = useRef(null);
 
-    const INITIAL_MESSAGE_LOAD_COUNT = 8;
-    const LOAD_MORE_COUNT = 5;
-
-    const loadMoreMessages = useCallback(() => {
-        if (!hasMore || !user || messagesLoading) return;
-
-        setMessagesLoading(true);
-        const messagesRef = ref(database, 'messages');
-        const messagesQuery = query(
-            messagesRef,
-            orderByChild('timestamp'),
-            endBefore(oldestMessageTimestamp.current),
-            limitToLast(LOAD_MORE_COUNT)
-        );
-
-        // Store current scroll state before fetching new messages
-        const oldScrollHeight = messagesContainerRef.current?.scrollHeight;
-        const oldScrollTop = messagesContainerRef.current?.scrollTop;
-
-        onValue(messagesQuery, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                const newOlderMessages = Object.keys(data).map(key => ({
-                    id: key,
-                    ...data[key]
-                })).sort((a, b) => a.timestamp - b.timestamp);
-
-                if (newOlderMessages.length < LOAD_MORE_COUNT) {
-                    setHasMore(false);
-                }
-
-                if (newOlderMessages.length > 0) {
-                    oldestMessageTimestamp.current = newOlderMessages[0].timestamp;
-                }
-
-                setMessages(prevMessages => [...newOlderMessages, ...prevMessages]);
-
-                // After messages are rendered, adjust scroll position
-                // Use a setTimeout to ensure DOM has updated
-                setTimeout(() => {
-                    if (messagesContainerRef.current && oldScrollHeight !== undefined && oldScrollTop !== undefined) {
-                        const newScrollHeight = messagesContainerRef.current.scrollHeight;
-                        messagesContainerRef.current.scrollTop = newScrollHeight - oldScrollHeight + oldScrollTop;
-                    }
-                }, 0);
-
-            } else {
-                setHasMore(false);
-            }
-            setMessagesLoading(false);
-        }, { onlyOnce: true });
-    }, [hasMore, user, messagesLoading]);
+    const { messages, messagesLoading, hasMore, loadMoreMessages } = useMessages(user, userLoading, refreshUserData, messagesContainerRef);
 
     useEffect(() => {
         const container = messagesContainerRef.current;
@@ -88,7 +35,7 @@ export default function ChatPage() {
 
         container?.addEventListener('scroll', handleScroll);
         return () => container?.removeEventListener('scroll', handleScroll);
-    }, [messagesLoading, loadMoreMessages, hasMore]);
+    }, [messagesLoading, loadMoreMessages, hasMore, messagesContainerRef]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -106,125 +53,6 @@ export default function ChatPage() {
             toast.error('You must be logged in to access the chat.');
             router.push('/login');
             return;
-        }
-
-        if (!userLoading && user) {
-            refreshUserData(); // Ensure authLevel is fresh
-        }
-
-        const getMessagesFromCache = () => {
-            try {
-                const cachedMessages = localStorage.getItem('chatMessages');
-                return cachedMessages ? JSON.parse(cachedMessages) : [];
-            } catch (error) {
-                console.error('Error reading from localStorage:', error);
-                return [];
-            }
-        };
-
-        const saveMessagesToCache = (messagesToSave) => {
-            try {
-                localStorage.setItem('chatMessages', JSON.stringify(messagesToSave));
-            } catch (error) {
-                console.error('Error writing to localStorage:', error);
-            }
-        };
-
-        if (user) {
-            const messagesRef = ref(database, 'messages');
-
-            // Load from cache first
-            const cached = getMessagesFromCache();
-            if (cached.length > 0) {
-                setMessages(cached);
-                setMessagesLoading(false);
-                if (cached.length > 0) {
-                    oldestMessageTimestamp.current = cached[0].timestamp;
-                }
-            } else {
-                setMessagesLoading(true);
-            }
-
-            // Initial Load from Firebase
-            const initialQuery = query(
-                messagesRef,
-                orderByChild('timestamp'),
-                limitToLast(INITIAL_MESSAGE_LOAD_COUNT)
-            );
-
-            const unsubscribeInitial = onValue(initialQuery, (snapshot) => {
-                const data = snapshot.val();
-                let firebaseMessages = [];
-                if (data) {
-                    firebaseMessages = Object.keys(data).map(key => ({
-                        id: key,
-                        ...data[key]
-                    })).sort((a, b) => a.timestamp - b.timestamp);
-                }
-
-                // Merge cached and firebase messages, prioritizing firebase
-                const mergedMessages = [...cached, ...firebaseMessages].reduce((acc, msg) => {
-                    if (!acc.some(existingMsg => existingMsg.id === msg.id)) {
-                        acc.push(msg);
-                    }
-                    return acc;
-                }, []).sort((a, b) => a.timestamp - b.timestamp);
-
-                setMessages(mergedMessages);
-                saveMessagesToCache(mergedMessages); // Save merged messages to cache
-
-                if (mergedMessages.length > 0) {
-                    oldestMessageTimestamp.current = mergedMessages[0].timestamp;
-                }
-                setTimeout(() => {
-                    messagesContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 0);
-                setMessagesLoading(false);
-            }, { onlyOnce: true });
-
-            const onChildAddedListener = onChildAdded(messagesRef, (snapshot) => {
-                const newMessage = { id: snapshot.key, ...snapshot.val() };
-                setMessages(prevMessages => {
-                    if (prevMessages.some(msg => msg.id === newMessage.id)) {
-                        return prevMessages;
-                    }
-                    const updatedMessages = [...prevMessages, newMessage].sort((a, b) => a.timestamp - b.timestamp);
-                    saveMessagesToCache(updatedMessages); // Update cache on add
-                    if (messagesContainerRef.current) {
-                        const { scrollHeight, scrollTop, clientHeight } = messagesContainerRef.current;
-                        // Only scroll if user is within 100px of the bottom (which is scrollTop 0 in flex-column-reverse)
-                        if (scrollTop <= 100) {
-                            messagesContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }
-                    return updatedMessages;
-                });
-            });
-
-            const onChildChangedListener = onChildChanged(messagesRef, (snapshot) => {
-                const updatedMessage = { id: snapshot.key, ...snapshot.val() };
-                setMessages(prevMessages => {
-                    const newMessages = prevMessages.map(msg => (msg.id === updatedMessage.id ? updatedMessage : msg));
-                    saveMessagesToCache(newMessages); // Update cache on change
-                    return newMessages;
-                });
-            });
-
-            const onChildRemovedListener = onChildRemoved(messagesRef, (snapshot) => {
-                const deletedMessageId = snapshot.key;
-                setMessages(prevMessages => {
-                    const newMessages = prevMessages.filter(msg => msg.id !== deletedMessageId);
-                    saveMessagesToCache(newMessages); // Update cache on remove
-                    return newMessages;
-                });
-            });
-
-            return () => {
-                unsubscribeInitial();
-                off(messagesRef, 'child_added', onChildAddedListener);
-                off(messagesRef, 'child_changed', onChildChangedListener);
-                off(messagesRef, 'child_removed', onChildRemovedListener);
-            };
         }
     }, [user, userLoading, router]);
 
@@ -260,22 +88,41 @@ export default function ChatPage() {
         const userId = user.uid;
 
         try {
-            const snapshot = await get(messageRef);
-            const currentReactions = snapshot.val() || {};
+            const messageSnapshot = await get(ref(database, `messages/${messageId}`));
+            const currentMessage = messageSnapshot.val();
+            const currentReactions = currentMessage?.reactions || {};
             const newReactions = { ...currentReactions };
 
-            if (!newReactions[emoji]) {
-                newReactions[emoji] = {};
+            let hasReactedWithCurrentEmoji = newReactions[emoji] && newReactions[emoji][userId];
+            let existingReactionEmoji = null;
+
+            // Find if the user has reacted with any other emoji
+            for (const [existingEmoji, userIdsObject] of Object.entries(currentReactions)) {
+                if (existingEmoji !== emoji && userIdsObject && userIdsObject[userId]) {
+                    existingReactionEmoji = existingEmoji;
+                    break;
+                }
             }
 
-            if (newReactions[emoji][userId]) {
-                // User already reacted with this emoji, so remove it
+            if (hasReactedWithCurrentEmoji) {
+                // User clicked the same emoji, so remove their reaction
                 delete newReactions[emoji][userId];
                 if (Object.keys(newReactions[emoji]).length === 0) {
                     delete newReactions[emoji];
                 }
             } else {
-                // Add user's reaction
+                // If user reacted with a different emoji, remove the old one first
+                if (existingReactionEmoji) {
+                    delete newReactions[existingReactionEmoji][userId];
+                    if (Object.keys(newReactions[existingReactionEmoji]).length === 0) {
+                        delete newReactions[existingReactionEmoji];
+                    }
+                }
+
+                // Add the new reaction
+                if (!newReactions[emoji]) {
+                    newReactions[emoji] = {};
+                }
                 newReactions[emoji][userId] = true;
             }
 
@@ -287,9 +134,8 @@ export default function ChatPage() {
     };
 
     return (
-        <div className="d-flex flex-column vh-100 align-items-center justify-content-center">
-            <div className="card m-2" style={{ maxWidth: '600px', width: '100%', height: '800px' }}>
-                <div className="d-flex flex-column h-100">
+        <div className="d-flex flex-column vh-100">
+            <div className="d-flex flex-column h-100">
                 <div ref={messagesContainerRef} className="container chat-container flex-grow-1 d-flex flex-column-reverse pt-10 pb-3" style={{ overflowY: 'auto' }}>
                     {messagesLoading && [...Array(5)].map((_, i) => <MessageSkeleton key={i} isMyMessage={i % 2 === 0} />)}
                     {messages.slice().reverse().map((msg) => (
@@ -315,7 +161,6 @@ export default function ChatPage() {
                         setReplyingToMessage={setReplyingToMessage}
                     />
                 </div>
-            </div>
             </div>
         </div>
     );

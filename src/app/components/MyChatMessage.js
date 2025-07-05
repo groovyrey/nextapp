@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 
 import { motion } from 'framer-motion';
@@ -8,12 +10,13 @@ import MessageOptionsModal from './MessageOptionsModal';
 import { capitalizeName } from '../utils/capitalizeName';
 import styles from './ChatMessage.module.css';
 
-export default function MyChatMessage({ message, user, onDelete, onEdit, onReply, onReact, onMessageRendered }) {
+export default function MyChatMessage({ message, user, onDelete, onEdit, onReply, onReact, onMessageRendered, isPreview = false }) {
     const messageCardRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     const holdTimeoutRef = useRef(null);
 
     const handleTouchStart = (e) => {
+        if (isPreview) return; // Disable for preview messages
         e.preventDefault(); // Prevent default to avoid text selection on long press
         holdTimeoutRef.current = setTimeout(() => {
             setShowModal(true);
@@ -21,6 +24,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit, onReply
     };
 
     const handleTouchEnd = () => {
+        if (isPreview) return; // Disable for preview messages
         clearTimeout(holdTimeoutRef.current);
     };
 
@@ -53,23 +57,47 @@ export default function MyChatMessage({ message, user, onDelete, onEdit, onReply
                 >
                 <div className="d-flex flex-column">
                     {message.replyTo && (
-                        <div className="border-start border-info ps-2 mb-2">
+                        <motion.div
+                            className="border-start border-info ps-2 mb-2"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
                             <small className="text-info fw-bold">Replying to {message.replyTo.senderName}:</small>
                             <p className="text-muted mb-0 small text-truncate">{message.replyTo.text}</p>
-                        </div>
+                        </motion.div>
                     )}
                     <small className="fw-bold mb-1">
                         {capitalizeName(message.senderName)} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[message.senderAuthLevel].color}`}></i>}
                     </small>
                     <p className="mb-0">{message.text} {message.isEdited && <small className="text-muted">(Edited)</small>}</p>
                     {message.reactions && (
-                        <div className="d-flex mt-2">
-                            {Object.entries(message.reactions).map(([emoji, users]) => (
-                                <span key={emoji} className="badge bg-light text-dark me-1" style={{ cursor: 'pointer' }}>
+                        <motion.div
+                            className="d-flex mt-2"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                visible: { transition: { staggerChildren: 0.05 } },
+                                hidden: {},
+                            }}
+                        >
+                            {Object.entries(message.reactions)
+                                .filter(([emoji]) => emoji !== null && emoji !== undefined && emoji !== 'null' && emoji !== 'undefined') // Filter out null/undefined emoji keys and string 'null'/'undefined'
+                                .map(([emoji, users]) => (
+                                <motion.span
+                                    key={emoji}
+                                    className="badge bg-light text-dark me-1"
+                                    style={{ cursor: 'pointer' }}
+                                    variants={{
+                                        visible: { opacity: 1, scale: 1 },
+                                        hidden: { opacity: 0, scale: 0.8 },
+                                    }}
+                                    whileTap={{ scale: 1.2 }} // Add this line for animation on click
+                                >
                                     {emoji} {Object.keys(users).length}
-                                </span>
+                                </motion.span>
                             ))}
-                        </div>
+                        </motion.div>
                     )}
                 </div>
                 

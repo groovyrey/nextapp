@@ -88,7 +88,7 @@ export default function UserDisplay() {
           )}
           <p className="card-title">Logged in as: {user.email}</p>
           <div className="d-flex flex-column flex-md-row align-items-center justify-content-center gap-2 gap-md-3">
-            <button className={styles.optionsButton} onClick={() => setShowOptions(!showOptions)}>
+            <button className="btn btn-link" onClick={() => setShowOptions(!showOptions)}>
               <i className="bi bi-three-dots"></i>
             </button>
           </div>
@@ -103,13 +103,13 @@ export default function UserDisplay() {
                 exit="exit"
                 transition={{ duration: 0.2 }}
               >
-                <Link href={`/user/${user.uid}`} className={styles.optionButton} onClick={() => setShowOptions(false)}>
+                <Link href={`/user/${user.uid}`} className="btn btn-link text-start" onClick={() => setShowOptions(false)}>
                   <i className="bi bi-person-vcard me-2"></i> View Profile
                 </Link>
-                <Link href="/user/settings" className={styles.optionButton} onClick={() => setShowOptions(false)}>
+                <Link href="/user/settings" className="btn btn-link text-start" onClick={() => setShowOptions(false)}>
                   <i className="bi bi-gear me-2"></i> User Settings
                 </Link>
-                <button className={`${styles.optionButton} ${styles.deleteOptionButton}`} onClick={handleLogout}>
+                <button className="btn btn-link text-danger text-start" onClick={handleLogout}>
                   <i className="bi bi-box-arrow-right me-2"></i> Logout
                 </button>
               </motion.div>

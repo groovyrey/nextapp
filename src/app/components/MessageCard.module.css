@@ -35,20 +35,6 @@
   font-size: 0.85rem;
 }
 
-.optionsButton {
-  background: none;
-  border: none;
-  color: var(--text-color);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  transition: color 0.2s ease-in-out;
-}
-
-.optionsButton:hover {
-  color: var(--primary-color);
-}
-
 .optionsMenu {
   position: absolute;
   bottom: 0;
@@ -65,29 +51,15 @@
 }
 
 .optionButton {
-  background: none;
-  border: none;
-  color: var(--text-color);
+  /* Using Bootstrap's btn-link for consistent styling */
   padding: 0.75rem 1.5rem;
   text-align: left;
-  cursor: pointer;
   font-size: 1rem;
   display: flex;
   align-items: center;
   width: 100%;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-}
-
-.optionButton:hover {
-  background-color: var(--hover-color);
-  color: var(--primary-color);
 }
 
 .deleteOptionButton {
-  color: var(--danger-color);
-}
-
-.deleteOptionButton:hover {
-  background-color: var(--danger-background-color);
-  color: var(--danger-color);
+  color: var(--danger-color); /* Keep danger color for text */
 }

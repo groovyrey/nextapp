@@ -2,8 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
 import { UserProvider } from "./context/UserContext";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+
 import Navbar from "./components/Navbar";
 import BootstrapClient from "./BootstrapClient";
 const inter = Inter({ subsets: ["latin"] });
