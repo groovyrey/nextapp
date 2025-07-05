@@ -87,16 +87,7 @@ export const useMessages = (user, userLoading, refreshUserData, messagesContaine
 
             const messagesRef = ref(database, 'messages');
 
-            const cached = getMessagesFromCache();
-            if (cached.length > 0) {
-                setMessages(cached);
-                setMessagesLoading(false);
-                if (cached.length > 0) {
-                    oldestMessageTimestamp.current = cached[0].timestamp;
-                }
-            } else {
-                setMessagesLoading(true);
-            }
+            setMessagesLoading(true);
 
             const initialQuery = query(
                 messagesRef,
@@ -114,18 +105,11 @@ export const useMessages = (user, userLoading, refreshUserData, messagesContaine
                     })).sort((a, b) => a.timestamp - b.timestamp);
                 }
 
-                const mergedMessages = [...cached, ...firebaseMessages].reduce((acc, msg) => {
-                    if (!acc.some(existingMsg => existingMsg.id === msg.id)) {
-                        acc.push(msg);
-                    }
-                    return acc;
-                }, []).sort((a, b) => a.timestamp - b.timestamp);
+                setMessages(firebaseMessages);
+                saveMessagesToCache(firebaseMessages);
 
-                setMessages(mergedMessages);
-                saveMessagesToCache(mergedMessages);
-
-                if (mergedMessages.length > 0) {
-                    oldestMessageTimestamp.current = mergedMessages[0].timestamp;
+                if (firebaseMessages.length > 0) {
+                    oldestMessageTimestamp.current = firebaseMessages[0].timestamp;
                 }
                 setTimeout(() => {
                     messagesContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
