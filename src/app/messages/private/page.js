@@ -20,6 +20,7 @@ export default function PrivateMessagesPage() {
 
   const fetchMessages = useCallback(async () => {
     setLoading(true);
+    setMessages([]); // Clear messages to show skeleton during loading
     try {
       const q = query(
         collection(db, "maindata"),
@@ -73,13 +74,10 @@ export default function PrivateMessagesPage() {
   }, []);
 
   useEffect(() => {
-    if (!userLoading && user) {
-      refreshUserData(); // Ensure authLevel is fresh
-      if (userData && userData.authLevel === 1) {
-        fetchMessages();
-      }
+    if (!userLoading && user && userData && userData.authLevel === 1) {
+      fetchMessages();
     }
-  }, [fetchMessages, user, userLoading, refreshUserData]);
+  }, [page, pageCursors, user, userLoading, userData, refreshUserData]);
 
   const handleNextPage = () => {
     if (hasNextPage) {
@@ -93,7 +91,7 @@ export default function PrivateMessagesPage() {
     }
   };
 
-  if (userLoading) {
+  if (userLoading || loading) {
     return <LoadingMessage />;
   }
 
