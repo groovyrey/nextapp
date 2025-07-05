@@ -8,7 +8,7 @@ import MessageOptionsModal from './MessageOptionsModal';
 import { capitalizeName } from '../utils/capitalizeName';
 import styles from './ChatMessage.module.css';
 
-export default function MyChatMessage({ message, user, onDelete, onEdit, onReact }) {
+export default function MyChatMessage({ message, user, onDelete, onEdit, onReply, onReact, onMessageRendered }) {
     const messageCardRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     const holdTimeoutRef = useRef(null);
@@ -27,6 +27,12 @@ export default function MyChatMessage({ message, user, onDelete, onEdit, onReact
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    useEffect(() => {
+        if (onMessageRendered) {
+            onMessageRendered();
+        }
+    }, [message, onMessageRendered]);
 
     return (
         <motion.div
@@ -73,6 +79,7 @@ export default function MyChatMessage({ message, user, onDelete, onEdit, onReact
                 onHide={handleCloseModal}
                 onDelete={onDelete}
                 onEdit={onEdit}
+                onReply={onReply}
                 message={message}
                 user={user}
                 onReact={onReact}

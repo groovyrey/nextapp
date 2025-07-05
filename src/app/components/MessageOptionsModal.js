@@ -93,11 +93,9 @@ export default function MessageOptionsModal({ show, onHide, onDelete, onEdit, me
                         <i className="bi bi-person-circle me-2"></i>View Profile
                     </Button>
                 )}
-                {!showDeleteEdit && (
-                    <Button variant="info" size="sm" onClick={() => { onReply(message); onHide(); }} className={`flex-fill mx-1 ${styles.roundedButton}`}>
-                        <i className="bi bi-reply-fill me-2"></i>Reply
-                    </Button>
-                )}
+                <Button variant="info" size="sm" onClick={() => { onReply(message); onHide(); }} className={`flex-fill mx-1 ${styles.roundedButton}`}>
+                    <i className="bi bi-reply-fill me-2"></i>Reply
+                </Button>
                 <Button variant="secondary" size="sm" onClick={handleCopyClick} className={`flex-fill mx-1 ${styles.roundedButton}`}>
                     <i className="bi bi-copy me-2"></i>Copy
                 </Button>
