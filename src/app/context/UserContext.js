@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '/lib/firebase';
 import { showToast } from '../utils/toast';
@@ -10,23 +10,41 @@ const UserContext = createContext();
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [allUsersData, setAllUsersData] = useState({});
+  const fetchingUsers = useRef(new Set()); // To track users currently being fetched
   const [loading, setLoading] = useState(true);
 
   // Helper function to fetch user data
-  const fetchUserData = async (currentUser) => {
+  const fetchUserData = async (uid) => {
     try {
-      const res = await fetch(`/api/user/${currentUser.uid}`);
+      const res = await fetch(`/api/user/${uid}`);
       if (res.ok) {
         const data = await res.json();
         console.log("UserContext: Fetched user data:", data);
-        setUserData(data);
+        return data;
       } else {
         showToast(`Failed to fetch user data from API: ${error.message}`, 'error');
-        setUserData(null);
+        return null;
       }
     } catch (error) {
       showToast(`Error fetching user data: ${error.message}`, 'error');
-      setUserData(null);
+      return null;
+    }
+  };
+
+  const fetchAndStoreUserData = async (uid) => {
+    if (allUsersData[uid] || fetchingUsers.current.has(uid)) {
+      return;
+    }
+
+    fetchingUsers.current.add(uid);
+    try {
+      const data = await fetchUserData(uid);
+      if (data) {
+        setAllUsersData(prevData => ({ ...prevData, [uid]: data }));
+      }
+    } finally {
+      fetchingUsers.current.delete(uid);
     }
   };
 
@@ -75,14 +93,11 @@ export function UserProvider({ children }) {
       const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
         if (currentUser) {
           // Fetch user data from Firestore via API
-          const res = await fetch(`/api/user/${currentUser.uid}`);
-          let fetchedUserData = null;
-          if (res.ok) {
-            fetchedUserData = await res.json();
-            console.log("UserContext: Fetched user data:", fetchedUserData);
+          const fetchedUserData = await fetchUserData(currentUser.uid);
+          if (fetchedUserData) {
             setUserData(fetchedUserData);
+            setAllUsersData(prevData => ({ ...prevData, [currentUser.uid]: fetchedUserData }));
           } else {
-            showToast(`Failed to fetch user data from API: ${error.message}`, 'error');
             setUserData(null);
           }
 
@@ -104,7 +119,7 @@ export function UserProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, userData, loading, login, logout, refreshUserData }}>
+    <UserContext.Provider value={{ user, userData, allUsersData, loading, login, logout, refreshUserData, fetchAndStoreUserData }}>
       {children}
     </UserContext.Provider>
   );

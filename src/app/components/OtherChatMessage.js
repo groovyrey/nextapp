@@ -2,15 +2,19 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+
+import { useUser } from '../context/UserContext';
 import { AUTH_LEVEL_RANKS } from '../utils/AuthRankSystem';
 import MessageOptionsModal from './MessageOptionsModal';
 import { capitalizeName } from '../utils/capitalizeName';
 import styles from './ChatMessage.module.css';
 
 export default function OtherChatMessage({ message, user, onReply, onReact, onMessageRendered, isPreview = false }) {
+    const { allUsersData, fetchAndStoreUserData } = useUser();
     const messageCardRef = useRef(null);
     const [showModal, setShowModal] = useState(false);
     const holdTimeoutRef = useRef(null);
+    const [senderAuthLevel, setSenderAuthLevel] = useState(message.senderAuthLevel);
 
     const handleTouchStart = (e) => {
         if (isPreview) return; // Disable for preview messages
@@ -34,6 +38,28 @@ export default function OtherChatMessage({ message, user, onReply, onReact, onMe
             onMessageRendered();
         }
     }, [message, onMessageRendered]);
+
+    useEffect(() => {
+        const fetchSenderAuthLevel = async () => {
+            if (message.senderId) {
+                await fetchAndStoreUserData(message.senderId);
+                if (allUsersData[message.senderId]) {
+                    setSenderAuthLevel(allUsersData[message.senderId].authLevel);
+                }
+            }
+        };
+        fetchSenderAuthLevel();
+    }, [message.senderId, allUsersData, fetchAndStoreUserData]);
+
+    useEffect(() => {
+        if (message.reactions) {
+            Object.values(message.reactions).forEach(users => {
+                Object.keys(users).forEach(userId => {
+                    fetchAndStoreUserData(userId);
+                });
+            });
+        }
+    }, [message.reactions, fetchAndStoreUserData]);
 
     return (
         <motion.div
@@ -65,7 +91,7 @@ export default function OtherChatMessage({ message, user, onReply, onReact, onMe
                         </motion.div>
                     )}
                     <small className="fw-bold mb-1">
-                        {capitalizeName(message.senderName)} {AUTH_LEVEL_RANKS[message.senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[message.senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[message.senderAuthLevel].color}`}></i>}
+                        {capitalizeName(message.senderName)} {AUTH_LEVEL_RANKS[senderAuthLevel] && <i className={`${AUTH_LEVEL_RANKS[senderAuthLevel].icon} ${AUTH_LEVEL_RANKS[senderAuthLevel].color}`}></i>}
                     </small>
                     <p className="mb-0">{message.text} {message.isEdited && <small className="text-muted">(Edited)</small>}</p>
                     {message.reactions && (
@@ -83,7 +109,7 @@ export default function OtherChatMessage({ message, user, onReply, onReact, onMe
                                 .map(([emoji, users]) => (
                                 <motion.span
                                     key={emoji}
-                                    className="badge bg-light text-dark me-1"
+                                    className={`${styles.badgeWithTooltip} badge bg-light text-dark me-1`}
                                     style={{ cursor: 'pointer' }}
                                     variants={{
                                         visible: { opacity: 1, scale: 1 },

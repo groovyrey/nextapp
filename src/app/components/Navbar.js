@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
-  const { user, userData, logout } = useUser();
+  const { user, userData, logout, loading } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -84,7 +84,9 @@ export default function Navbar() {
           </ul>
         </div>
         <div className={styles.navbarActions}>
-          {user ? (
+          {loading ? (
+            <div className={styles.loadingSpinner}></div> // Or any loading indicator you prefer
+          ) : user ? (
             <div className={styles.userProfileContainer}>
               <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className={`btn btn-primary ${styles.userProfileButton}`}>
                 {userData?.profilePictureUrl ? (

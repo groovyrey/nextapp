@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { showToast } from '../../../app/utils/toast';
 
 import React from 'react';
+import { AUTH_LEVEL_RANKS } from '../../../app/utils/AuthRankSystem';
 import Link from 'next/link';
 
 export default function UserProfilePage({ params }) {
@@ -54,11 +55,7 @@ export default function UserProfilePage({ params }) {
     }
   }, [profileData]); // Re-initialize when profileData changes
 
-  const AUTH_LEVEL_RANKS = {
-    1: { title: "Lead Developer", icon: "bi-braces", color: "text-danger" },
-    2: { title: "Developer", icon: "bi-code-slash", color: "text-info" },
-    // Add more auth levels as needed
-  };
+  
 
   const toTitleCase = (str) => {
     if (!str) return '';

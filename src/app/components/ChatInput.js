@@ -53,7 +53,7 @@ export default function ChatInput({ editingMessageId, editingMessageOriginalText
                     text: message,
                     senderId: user.uid,
                     senderName: senderName,
-                    senderAuthLevel: userData.authLevel || 'N/A',
+                    
                     timestamp: Date.now(),
                 };
 

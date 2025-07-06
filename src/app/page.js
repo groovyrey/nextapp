@@ -1,13 +1,21 @@
 "use client";
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useUser } from './context/UserContext';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 // Import any other components like MessageCard if you want to reuse them for feature highlights
 
 export default function LandingPage() {
+  const { user, loading } = useUser();
+  const router = useRouter();
+
   useEffect(() => {
+    if (!loading && user) {
+      router.push('/home');
+    }
     document.title = "Welcome to Luloy!";
-  }, []);
+  }, [user, loading, router]);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
