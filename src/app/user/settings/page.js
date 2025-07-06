@@ -116,12 +116,8 @@ export default function EditUserPage() {
     setIsUpdating(true);
 
     try {
-      const res = await fetch('/api/user/upload-profile-picture', {
+      const res = await fetch(`/api/user/upload-profile-picture?uid=${user.uid}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uid: user.uid }),
       });
 
       if (res.ok) {

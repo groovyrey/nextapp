@@ -221,3 +221,7 @@ body::after {
   border-left: 0;
   border-bottom: 0;
 }
+
+.main-content {
+  padding: 1rem;
+}

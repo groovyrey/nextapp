@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <UserProvider>
           <Navbar />
-          <main>
+          <main className="main-content">
             {children}
           </main>
         </UserProvider>

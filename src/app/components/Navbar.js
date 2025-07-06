@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { useUser } from '../context/UserContext';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
-  const { user, logout } = useUser();
+  const { user, userData, logout } = useUser();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -28,10 +29,20 @@ export default function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
+  const handleLogout = () => {
+    logout();
+    setIsMobileMenuOpen(false);
+    setIsDropdownOpen(false);
+  };
+
+  const handleDropdownLinkClick = () => {
+    setIsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <motion.header 
       className={styles.navbarGrid}
-      
     >
       <div className={styles.navbarBrandContainer}>
         <Link href="/">
@@ -74,12 +85,40 @@ export default function Navbar() {
         </div>
         <div className={styles.navbarActions}>
           {user ? (
-            <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="btn btn-primary">
-              <i className="bi bi-box-arrow-right"></i>Logout
-            </button>
+            <div className={styles.userProfileContainer}>
+              <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className={`btn btn-primary ${styles.userProfileButton}`}>
+                {userData?.profilePictureUrl ? (
+                  <img src={userData.profilePictureUrl} alt={userData.firstName} className={styles.profilePicture} />
+                ) : (
+                  <i className="bi bi-person-circle"></i>
+                )}
+                <span className="ms-2">{userData?.firstName}</span>
+              </button>
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div 
+                    className={styles.dropdownMenu}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Link href={`/user/${user.uid}`} onClick={handleDropdownLinkClick}>
+                      <i className="bi bi-person-fill"></i> View Profile
+                    </Link>
+                    <Link href="/user/settings" onClick={handleDropdownLinkClick}>
+                      <i className="bi bi-gear-fill"></i> Settings
+                    </Link>
+                    <button onClick={handleLogout}>
+                      <i className="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ) : (
             <>
-              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary mb-2">
+              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary">
                 <i className="bi bi-box-arrow-in-right"></i>Login
               </Link>
               <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)} className="btn btn-primary">
