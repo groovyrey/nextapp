@@ -8,8 +8,8 @@
 }
 
 .loadingMessageContainer .lottie-animation {
-  width: 250px;
-  height: 250px;
+  width: 10%;
+  height: 10%;
 }
 
 /* Responsive adjustments */
@@ -21,7 +21,7 @@
 
 @media (max-width: 576px) {
   .loadingMessageContainer .lottie-animation {
-    width: 120px;
-    height: 120px;
+    width: 15%;
+  height: 15%;
   }
 }
