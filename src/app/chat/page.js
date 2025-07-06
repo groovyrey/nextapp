@@ -49,6 +49,7 @@ export default function ChatPage() {
     }, [messages]);
 
     useEffect(() => {
+        document.title = "Chat";
         if (!userLoading && !user) {
             toast.error('You must be logged in to access the chat.');
             router.push('/login');

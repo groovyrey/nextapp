@@ -3,8 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { showToast } from '../../utils/toast';
+import { useUser } from '@/app/context/UserContext';
+import Link from 'next/link';
+import LoadingMessage from '@/app/components/LoadingMessage';
 
 export default function UpdateAuthLevelPage() {
+  const { user, userData, loading: userLoading } = useUser();
   useEffect(() => {
     document.title = "Update User Auth Level";
   }, []);
@@ -12,6 +16,29 @@ export default function UpdateAuthLevelPage() {
   const [authLevel, setAuthLevel] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
+
+  if (userLoading) {
+    return <LoadingMessage />;
+  }
+
+  if (!user || !userData || userData.authLevel !== 1) {
+    return (
+      <div className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
+        <div className="card m-2 text-center" style={{ maxWidth: '400px', width: '100%' }}>
+          <div className="card-body">
+            <div className="text-center mb-4">
+              <img src="/luloy.svg" alt="Luloy Logo" style={{ height: '3em', marginBottom: '1em' }} />
+              <h2 className="card-title text-center text-danger"><i className="bi bi-exclamation-triangle me-2"></i>Unauthorized Access</h2>
+            </div>
+            <p className="text-lg text-gray-600 mb-8">You are not authorized to view this page.</p>
+            <Link href="/" className="btn btn-primary">
+              <i className="bi-house-door me-2"></i> Go to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

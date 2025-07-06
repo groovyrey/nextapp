@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { showToast } from '../../../app/utils/toast';
 
 export default function EditUserPage() {
-  const { user, loading, refreshUserData } = useUser();
+  const { user, userData, loading, refreshUserData } = useUser();
   const router = useRouter();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -23,31 +23,16 @@ export default function EditUserPage() {
     document.title = "User Settings";
     if (!loading && !user) {
       router.push('/login');
-    } else if (user) {
-      const fetchUserData = async () => {
-        setIsFetchingUserData(true); // Start loading
-        try {
-          const res = await fetch(`/api/user/${user.uid}`);
-          if (res.ok) {
-            const userData = await res.json();
-            setFirstName(userData.firstName || '');
-            setLastName(userData.lastName || '');
-            setAge(userData.age || '');
-            if (userData.profilePictureUrl) {
-              setProfilePicturePreviewUrl(userData.profilePictureUrl);
-            }
-          } else {
-            showToast('Failed to fetch user data.', 'error');
-          }
-        } catch (err) {
-          showToast('An error occurred while fetching user data.', 'error');
-        } finally {
-          setIsFetchingUserData(false); // End loading
-        }
-      };
-      fetchUserData();
+    } else if (user && userData) {
+      setFirstName(userData.firstName || '');
+      setLastName(userData.lastName || '');
+      setAge(userData.age || '');
+      if (userData.profilePictureUrl) {
+        setProfilePicturePreviewUrl(userData.profilePictureUrl);
+      }
+      setIsFetchingUserData(false); // Data is available from context
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, userData]);
 
   
 

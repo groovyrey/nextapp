@@ -21,6 +21,7 @@ export async function POST(request) {
       lastName: capitalizedLastName,
       age: parseInt(age),
       email: decodedToken.email,
+      authLevel: 0, // Default authLevel for new users
     });
 
     return NextResponse.json({ message: "User data saved successfully." }, { status: 200 });

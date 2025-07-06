@@ -1,70 +1,47 @@
-"use client";
-import React, { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation";
-import { motion } from 'framer-motion';
+'use client';
 
-import UserDisplay from '../components/UserDisplay';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUser } from '../context/UserContext';
-
+import { motion } from 'framer-motion';
 import LoadingMessage from '../components/LoadingMessage';
+import UserDisplay from '../components/UserDisplay';
 
-export default function Home() {
+export default function HomePage() {
+  const { user, loading, userData } = useUser();
   const router = useRouter();
-  const { user, userData, loading } = useUser();
-  const [logoutError, setLogoutError] = useState('');
 
   useEffect(() => {
     document.title = "Home";
     if (!loading && !user) {
-      router.push('/login');
+      router.push('/');
     }
   }, [user, loading, router]);
 
-  const handleLogout = async () => {
-    setLogoutError(''); // Clear previous errors
-    try {
-      const res = await fetch('/api/logout');
-      if (res.ok) {
-        router.push('/login');
-      } else {
-        const errorData = await res.json();
-        setLogoutError(`Failed to log out: ${errorData.message}`);
-      }
-    } catch (err) {
-      setLogoutError('An unexpected error occurred during logout.');
-    }
-  };
-
-  if (loading || !user) {
+  if (loading) {
     return <LoadingMessage />;
   }
 
+  if (!user) {
+    return null; // Or a message like "Please log in to view this page."
+  }
+
   return (
-    <div className="min-h-screen d-flex flex-column align-items-center justify-content-center">
-      {userData && (
-        <motion.div
-          className="greeting-text"
-          style={{
-            textAlign: 'center',
-            background: 'linear-gradient(90deg, #000000, #f8f9fa, #000000, #f8f9fa, #000000)',
-            backgroundSize: '200% 100%', // Adjusted background size for seamless repetition
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-          animate={{
-            backgroundPosition: ['0% 50%', '100% 50%'], // Animate from 0% to 100% for seamless loop
-          }}
-          transition={{
-            duration: 5, // Adjusted duration for a smoother, less noticeable loop
-            ease: 'linear',
-            repeat: Infinity,
-          }}
-        >
-          <h1>{`Welcome to Luloy, ${userData.firstName}!`}</h1>
-        </motion.div>
-      )}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="flex flex-col items-center justify-center min-h-screen w-screen bg-background-color text-text-color p-4"
+    >
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="text-5xl font-bold text-primary mb-6 text-center"
+      >
+        Welcome, {userData?.firstName || user?.email || 'User'}!
+      </motion.h1>
       <UserDisplay />
-      {logoutError && <div className="alert alert-danger mt-3" role="alert">{logoutError}</div>}
-    </div>
+    </motion.div>
   );
 }

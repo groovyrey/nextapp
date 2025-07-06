@@ -16,6 +16,7 @@ export async function GET(request, { params }) {
     const authLevel = userData.authLevel || 0;
 
     const publicUserData = {
+      uid: id,
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,

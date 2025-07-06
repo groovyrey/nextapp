@@ -139,6 +139,22 @@ export default function UserProfilePage({ params }) {
               <p className="text-muted">{profileData.email.split('@')[0].substring(0, 3) + '***@' + profileData.email.split('@')[1]}</p>
             </div>
             <div className="col-12 col-md-6">
+              <p className="mb-1"><strong>UID:</strong></p>
+              <div className="d-flex align-items-center">
+                <p className="text-muted mb-0 me-2" style={{ wordBreak: 'break-all' }}>{profileData.uid}</p>
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => {
+                    navigator.clipboard.writeText(profileData.uid);
+                    showToast('UID copied to clipboard!', 'success');
+                  }}
+                  title="Copy UID"
+                >
+                  <i className="bi bi-clipboard"></i>
+                </button>
+              </div>
+            </div>
+            <div className="col-12 col-md-6">
               <p className="mb-1"><strong>Age:</strong></p>
               <p className="text-muted">{profileData.age}</p>
             </div>
