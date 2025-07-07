@@ -1,23 +1,21 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+
 import { useUser } from '../context/UserContext';
 import { motion } from 'framer-motion';
 import LoadingMessage from '../components/LoadingMessage';
 import { gsap } from 'gsap';
 
 
-export default function HomePage() {
+export default function HomePageContent() {
   const { user, loading, userData } = useUser();
-  const router = useRouter();
+  
   const welcomeRef = useRef(null);
 
   useEffect(() => {
     document.title = "Home";
-    if (!loading && !user) {
-      router.push('/');
-    }
+    
 
     if (welcomeRef.current) {
       gsap.fromTo(
@@ -26,7 +24,7 @@ export default function HomePage() {
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, ease: "power3.out" }
       );
     }
-  }, [user, loading, router]);
+  }, [user, loading]);
 
   if (loading) {
     return <LoadingMessage />;
