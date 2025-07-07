@@ -21,7 +21,7 @@
 }
 
 .modalContent {
-  background: var(--card-background-color);
+  background: transparent; /* Made background transparent */
   padding: 20px;
   border-radius: 8px;
   position: relative;
@@ -44,14 +44,23 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  /* Using Bootstrap's btn-close for consistent styling */
   font-size: 24px;
   cursor: pointer;
-  color: var(--text-color);
+  color: var(--bs-white); /* Changed text color to white */
+  background-color: var(--bs-primary); /* Changed background color to primary theme color */
+  border: none; /* Removed border */
+  border-radius: 50%; /* Made it circular */
+  width: 40px; /* Set a fixed width */
+  height: 40px; /* Set a fixed height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001; /* Ensure it's above other content */
 }
 
 .modalImage {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  border-radius: 8px; /* Added rounded corners to the image */
 }
