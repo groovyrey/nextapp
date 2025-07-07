@@ -68,10 +68,16 @@ export default function EditUserPage() {
       if (res.ok) {
         showToast('Profile updated successfully!', 'success');
       } else {
-        const errorData = await res.json();
+        let errorData = {};
+        try {
+          errorData = await res.json();
+        } catch (jsonError) {
+          console.error("Failed to parse error response:", jsonError);
+        }
         showToast(errorData.error || 'Failed to update profile.', 'error');
       }
     } catch (err) {
+      console.error("An unexpected error occurred during profile update:", err);
       showToast('An unexpected error occurred.', 'error');
     } finally {
       setIsUpdating(false); // End update loading
@@ -102,10 +108,16 @@ export default function EditUserPage() {
         const updatedUserData = await res.json();
         setProfilePicturePreviewUrl(updatedUserData.url);
       } else {
-        const errorData = await res.json();
+        let errorData = {};
+        try {
+          errorData = await res.json();
+        } catch (jsonError) {
+          console.error("Failed to parse error response:", jsonError);
+        }
         showToast(errorData.error || 'Failed to upload profile picture.', 'error');
       }
     } catch (err) {
+      console.error("An unexpected error occurred during file upload:", err);
       showToast('An unexpected error occurred during file upload.', 'error');
     } finally {
       setIsUpdating(false);
@@ -126,10 +138,16 @@ export default function EditUserPage() {
         setProfilePictureFile(null); // Clear file input
         await refreshUserData(); // Refresh user data in context
       } else {
-        const errorData = await res.json();
+        let errorData = {};
+        try {
+          errorData = await res.json();
+        } catch (jsonError) {
+          console.error("Failed to parse error response:", jsonError);
+        }
         showToast(errorData.error || 'Failed to remove profile picture.', 'error');
       }
     } catch (err) {
+      console.error("An unexpected error occurred during profile picture removal:", err);
       showToast('An unexpected error occurred during profile picture removal.', 'error');
     } finally {
       setIsUpdating(false);
@@ -195,7 +213,7 @@ export default function EditUserPage() {
                 <i className="bi-upload"></i>
               )}{' '}{isUpdating ? 'Uploading...' : 'Upload New Picture'}
             </button>
-            <button className="btn btn-danger w-100 mt-2" onClick={handleRemoveProfilePicture} disabled={isUpdating}>
+            <button className="btn btn-danger w-100 mt-2" onClick={handleRemoveProfilePicture} disabled={isUpdating || !userData?.profilePictureUrl}>
               <i className="bi-trash"></i> Remove Picture
             </button>
           </div>

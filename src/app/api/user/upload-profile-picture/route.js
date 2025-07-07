@@ -28,7 +28,7 @@ export async function POST(request) {
     if (userData && userData.profilePictureUrl) {
       try {
         // Assuming public_id is the UID as set during upload
-        await cloudinary.uploader.destroy(uid);
+        await cloudinary.uploader.destroy(`profile_pictures/${uid}`);
         console.log("Old profile picture deleted from Cloudinary for UID:", uid);
       } catch (deleteError) {
         console.error("Error deleting old profile picture from Cloudinary:", deleteError);
@@ -64,6 +64,7 @@ export async function POST(request) {
 
     console.log("Profile picture URL saved to Firestore for UID:", uid);
 
+    revalidatePath('/');
     return NextResponse.json({ message: "Profile picture uploaded successfully.", url: uploadResult.secure_url }, { status: 200 });
   } catch (error) {
     console.error("Error uploading profile picture:", error);
@@ -82,7 +83,7 @@ export async function DELETE(request) {
 
     // Delete the profile picture from Cloudinary
     try {
-      await cloudinary.uploader.destroy(uid);
+      await cloudinary.uploader.destroy(`profile_pictures/${uid}`);
       console.log("Profile picture deleted from Cloudinary for UID:", uid);
     } catch (deleteError) {
       console.error("Error deleting profile picture from Cloudinary:", deleteError);
@@ -96,6 +97,7 @@ export async function DELETE(request) {
 
     console.log("Profile picture URL removed from Firestore for UID:", uid);
 
+    revalidatePath('/');
     return NextResponse.json({ message: "Profile picture removed successfully." }, { status: 200 });
   } catch (error) {
     console.error("Error removing profile picture:", error);

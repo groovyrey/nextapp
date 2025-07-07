@@ -23,11 +23,12 @@ export function UserProvider({ children }) {
         console.log("UserContext: Fetched user data:", data);
         return data;
       } else {
-        showToast(`Failed to fetch user data from API: ${error.message}`, 'error');
+        const errorText = await res.text();
+        showToast(`Failed to fetch user data from API: ${errorText || 'Unknown error'}`, 'error');
         return null;
       }
     } catch (error) {
-      showToast(`Error fetching user data: ${error.message}`, 'error');
+      showToast(`Error fetching user data: ${error instanceof Error ? error.message : String(error)}`, 'error');
       return null;
     }
   };
@@ -51,7 +52,11 @@ export function UserProvider({ children }) {
   // Function to refresh user data, exposed via context
   const refreshUserData = async () => {
     if (user) {
-      await fetchUserData(user);
+      const fetchedUserData = await fetchUserData(user.uid);
+      if (fetchedUserData) {
+        setUserData(fetchedUserData);
+        setAllUsersData(prevData => ({ ...prevData, [user.uid]: fetchedUserData }));
+      }
     }
   };
 
@@ -73,7 +78,7 @@ export function UserProvider({ children }) {
       }
       showToast('Logged in successfully!', 'success');
     } catch (error) {
-      showToast(`Login failed: ${error.message}`, 'error');
+      showToast(`Login failed: ${error instanceof Error ? error.message : String(error)}`, 'error');
       throw error;
     }
   };
@@ -83,7 +88,7 @@ export function UserProvider({ children }) {
       await fetch('/api/logout');
       await signOut(auth);
     } catch (error) {
-      showToast(`Logout failed: ${error.message}`, 'error');
+      showToast(`Logout failed: ${error instanceof Error ? error.message : String(error)}`, 'error');
       throw error;
     }
   };
