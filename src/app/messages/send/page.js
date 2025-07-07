@@ -57,7 +57,9 @@ export default function SendMessage() {
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
                 placeholder="Your email or name (e.g., Anonymous)"
+                maxLength={50}
               />
+              <small className="form-text text-muted">{sender.length}/50</small>
             </div>
             <div className="mb-3">
               <label htmlFor="message" className="form-label"><i className="bi bi-chat-left-text me-2"></i>Message Content</label>
@@ -68,8 +70,10 @@ export default function SendMessage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your message here..."
+                maxLength={100}
                 required
               ></textarea>
+              <small className="form-text text-muted">{message.length}/100</small>
             </div>
             <div className="form-check form-switch mb-3">
               <input
