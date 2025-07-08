@@ -11,12 +11,12 @@
 
 .optionsMenu {
   position: absolute;
-  bottom: 0;
+  bottom: 100%; /* Position above the button */
   left: 0;
   right: 0;
   background-color: var(--background-color-dark);
-  border-top: 1px solid var(--border-color);
-  border-radius: 0 0 var(--border-radius-base) var(--border-radius-base);
+  border-bottom: 1px solid var(--border-color); /* Change to bottom border */
+  border-radius: var(--border-radius-base) var(--border-radius-base) 0 0; /* Adjust border-radius */
   display: flex;
   flex-direction: column;
   padding: 0.5rem 0;

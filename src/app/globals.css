@@ -18,6 +18,8 @@
   --transition-base: all 0.2s ease-in-out;
   --background-color-dark: #e9ecef; /* Darker background for contrast */
   --border-color: var(--card-border-color);
+  --navbar-background-color: #ffffff; /* White background for navbar */
+  --navbar-background-color: #ffffff; /* White background for navbar */
 }
 
 html,

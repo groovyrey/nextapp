@@ -1,0 +1,151 @@
+.offcanvasBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+.offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: var(--background-color);
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+}
+
+.offcanvasHeader {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.offcanvasBody {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbarLinks ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbarLinks li {
+  margin-bottom: 1rem;
+}
+
+.navbarLinks a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: bold;
+  display: block;
+  padding: 0.5rem 0;
+}
+
+.navbarLinks a:hover {
+  color: var(--primary-color);
+}
+
+.navbarActions {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.navbarActions .btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.userProfileContainer {
+  margin-top: 1rem;
+  position: relative;
+}
+
+.userProfileButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.profilePicture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+.dropdownMenu {
+  position: absolute;
+  bottom: 100%; /* Position above the button */
+  left: 0;
+  right: 0;
+  background-color: var(--background-color-dark);
+  border-bottom: 1px solid var(--border-color); /* Change to bottom border */
+  border-radius: var(--border-radius-base) var(--border-radius-base) 0 0; /* Adjust border-radius */
+  padding-bottom: 1rem; /* Adjust padding */
+  padding-top: 0.5rem;
+  box-shadow: var(--box-shadow-hover);
+  z-index: 10;
+}
+
+.dropdownMenu a,
+.dropdownMenu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdownMenu a i,
+.dropdownMenu button i {
+  margin-right: 0.5rem;
+}
+
+.dropdownMenu a:hover,
+.dropdownMenu button:hover {
+  color: var(--primary-color);
+}
+
+.loadingSpinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--primary-color);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
