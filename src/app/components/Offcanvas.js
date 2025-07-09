@@ -67,6 +67,11 @@ export default function Offcanvas({ isOpen, onClose }) {
                       <i className="bi bi-chat-dots me-2"></i>Global Chat
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/code" onClick={onClose}>
+                      <i className="bi bi-code-slash me-2"></i>Luloy Codes
+                    </Link>
+                  </li>
                 </ul>
               </div>
               <div className={styles.navbarActions}>
